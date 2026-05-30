@@ -1,0 +1,1300 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="MALGOA - the Mala Gazetted Officers Association of Andhra Pradesh (Reg. No. 185/2025). A premier body of Gazetted Officers, elected representatives and senior professionals of the Mala community, founded on the constitutional ideals of Dr. B.R. Ambedkar." />
+  <title>MALGOA - Mala Gazetted Officers Association</title>
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            /* ── Constitutional & Historic palette (locked - Part 2.1) ── */
+            'ambedkar-blue': '#003F7F',
+            'navy-deep':     '#0F1E2E',
+            bronze:          '#B8962E',
+            'bronze-light':  '#D4B043',
+            parchment:       '#FAF7F2',
+            'text-primary':  '#1A1A1A',
+            'text-muted':    '#5C5C5C',
+            divider:         '#E8E3D7',
+
+            /* ── Legacy aliases (kept for backwards compatibility) ── */
+            navy:   { DEFAULT: '#1a2d42', light: '#243d5a', dark: '#0f1e2e' },
+            gold:   { DEFAULT: '#c9a84c', light: '#e0c472', dark: '#a8892e' },
+            cream:  '#f8f6f2',
+            muted:  '#6b7280',
+          },
+          fontFamily: {
+            heading: ['Playfair Display', 'serif'],
+            body:    ['Inter', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest" defer></script>
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #ffffff;
+      color: #1A1A1A;
+      font-size: 16px;
+      line-height: 1.85;          /* document-grade readability */
+      letter-spacing: 0.01em;
+    }
+    h1,h2,h3,h4,h5,h6 {
+      font-family: 'Playfair Display', serif;
+      line-height: 1.2;
+      letter-spacing: normal;
+    }
+
+    /* Page routing */
+    .page-section { display: none; }
+    .page-section.active { display: block; }
+
+    /* Splash */
+    #splash {
+      position: fixed; inset: 0; z-index: 9999;
+      background: #0F1E2E;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
+    #splash.fade-out { opacity: 0; visibility: hidden; pointer-events: none; }
+    .splash-spinner {
+      width: 52px; height: 52px;
+      border: 3px solid rgba(184,150,46,0.2);
+      border-top-color: #B8962E;
+      border-radius: 50%;
+      animation: spin 0.9s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Nav */
+    #main-nav { transition: box-shadow 0.2s; }
+    #main-nav.scrolled { box-shadow: 0 2px 14px rgba(0,63,127,0.28); }
+    .nav-link {
+      position: relative; font-weight: 500; font-size: 0.875rem;
+      color: #cdd9e6; transition: color 0.2s;
+      font-family: 'Inter', sans-serif; background: transparent; cursor: pointer;
+    }
+    .nav-link:hover { color: #D4B043; }
+    .nav-link::after {
+      content: ''; position: absolute; bottom: -3px; left: 0;
+      width: 0; height: 2px; background: #B8962E;
+      transition: width 0.22s ease;
+    }
+    .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+    .nav-link.active { color: #D4B043; }
+
+    /* Mobile menu */
+    #mobile-menu { display: none; }
+    #mobile-menu.open { display: block; }
+
+    /* Hero */
+    .hero-bg {
+      min-height: 100vh;
+      background:
+        radial-gradient(ellipse at top right, rgba(184,150,46,0.10) 0%, transparent 55%),
+        radial-gradient(ellipse at bottom left, rgba(0,63,127,0.55) 0%, transparent 60%),
+        linear-gradient(135deg, #0F1E2E 0%, #003F7F 55%, #0F1E2E 100%);
+      display: flex; align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-bg::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(184,150,46,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(184,150,46,0.04) 1px, transparent 1px);
+      background-size: 64px 64px;
+      pointer-events: none;
+      opacity: 0.6;
+    }
+    .hero-bg > * { position: relative; z-index: 1; }
+
+    /* Cards */
+    .card {
+      background: #fff;
+      border: 1px solid #E8E3D7;
+      border-radius: 0.5rem;
+      box-shadow: 0 1px 5px rgba(0,63,127,0.05);
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .card:hover { box-shadow: 0 8px 24px rgba(0,63,127,0.12); transform: translateY(-2px); }
+    .top-bronze { border-top: 4px solid #B8962E; }
+
+    /* Avatars */
+    .leader-photo {
+      width: 116px; height: 116px; border-radius: 50%;
+      object-fit: cover; border: 3px solid #B8962E; background: #FAF7F2;
+    }
+    .team-placeholder, .leader-placeholder {
+      width: 116px; height: 116px; border-radius: 50%;
+      background: #FAF7F2; border: 3px solid #E8E3D7;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .patron-photo {
+      width: 94px; height: 94px; border-radius: 50%;
+      object-fit: cover; border: 2px solid #B8962E; background: #FAF7F2;
+    }
+
+    /* Heritage scholarly layout */
+    .heritage-prose { max-width: 72ch; }
+    .heritage-prose p { margin-bottom: 1.4rem; }
+    .heritage-prose h3 { color: #003F7F; font-size: 1.5rem; margin: 2.75rem 0 0.75rem; }
+    .heritage-eyebrow { color: #B8962E; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; font-size: .78rem; }
+    .ornament { display: flex; align-items: center; gap: .75rem; margin: 0.9rem 0 2.25rem; }
+    .ornament::before, .ornament::after { content: ''; height: 1px; flex: 1; }
+    .ornament::before { background: linear-gradient(90deg, transparent, #B8962E); }
+    .ornament::after  { background: linear-gradient(90deg, #B8962E, transparent); }
+    .ornament i { color: #B8962E; }
+    .pull-quote {
+      border-left: 3px solid #B8962E; padding: .35rem 0 .35rem 1.5rem; margin: 1.75rem 0;
+      font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.3rem;
+      color: #003F7F; line-height: 1.6;
+    }
+    blockquote.verbatim { border-left: 3px solid #E8E3D7; padding-left: 1.5rem; margin: 1.25rem 0; color: #3a3a3a; }
+    .heritage-illustration { width: 100%; display: flex; justify-content: center; margin: 2.5rem 0 2rem; }
+    .heritage-illustration svg { height: 96px; width: auto; opacity: 0.95; }
+    .heritage-illustration svg .accent { stroke: #B8962E; }
+    .heritage-illustration svg .primary { stroke: #003F7F; }
+    .heritage-illustration svg .fill-accent { fill: #B8962E; }
+    .heritage-illustration svg .fill-primary { fill: #003F7F; }
+    .creed { background: #003F7F; color: #FAF7F2; border-radius: .6rem; padding: 2.25rem; margin: 2.75rem 0; }
+    .creed .q { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.3rem; line-height: 1.62; color: #D4B043; }
+
+    /* Reveal-on-scroll */
+    @keyframes fadeSlideUp { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
+    .reveal { opacity: 0; }
+    .reveal.in-view { animation: fadeSlideUp 0.7s cubic-bezier(.22,.61,.36,1) forwards; }
+    .reveal.d1 { animation-delay: .12s; } .reveal.d2 { animation-delay: .24s; } .reveal.d3 { animation-delay: .36s; }
+
+    /* Gallery */
+    #uttandhra-gallery,
+    #formation-gallery { display: none; }
+    #uttandhra-gallery.tab-active,
+    #formation-gallery.tab-active { display: grid; }
+    .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 6px; }
+    .gallery-thumb { aspect-ratio: 1; overflow: hidden; border-radius: 4px; cursor: pointer; }
+    .gallery-thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.25s; }
+    .gallery-thumb:hover img { transform: scale(1.06); }
+    .tab-btn {
+      padding: 0.5rem 1.25rem; border-radius: 0.375rem;
+      font-family: 'Inter', sans-serif; font-weight: 600; font-size: 0.875rem;
+      border: 2px solid #003F7F; color: #003F7F;
+      transition: background 0.18s, color 0.18s; cursor: pointer; background: #fff;
+    }
+    .tab-btn.active { background: #003F7F; color: #fff; }
+    .tab-btn:hover:not(.active) { background: #eef3f8; }
+
+    /* Lightbox */
+    #lightbox {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.93); z-index: 2000;
+      align-items: center; justify-content: center;
+    }
+    #lightbox.open { display: flex; }
+    #lightbox-img { max-width: 90vw; max-height: 85vh; object-fit: contain; border-radius: 4px; }
+
+    /* Forms */
+    .field {
+      width: 100%; padding: 0.72rem 1rem;
+      border: 1.5px solid #d8d2c4; border-radius: 0.375rem;
+      outline: none; font-family: 'Inter', sans-serif;
+      transition: border-color 0.18s, box-shadow 0.18s; background: #fff; color: #1A1A1A;
+    }
+    .field:focus { border-color: #003F7F; box-shadow: 0 0 0 3px rgba(0,63,127,0.10); }
+    .field.field-error { border-color: #dc2626; }
+    select.field {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' fill='none' stroke='%235C5C5C' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right .8rem center; padding-right: 2.4rem;
+    }
+    .error-msg { color: #dc2626; font-size: 0.78rem; margin-top: 3px; display: none; }
+    .error-msg.show { display: block; }
+    #form-result { display: none; padding: 0.75rem 1rem; border-radius: 0.375rem; font-weight: 500; }
+    #form-result.success { background: #dcfce7; color: #166534; display: block; }
+    #form-result.error   { background: #fee2e2; color: #991b1b; display: block; }
+
+    /* Section rule */
+    .section-rule { width: 3rem; height: 3px; background: #B8962E; border-radius: 2px; margin: 0.75rem 0 1.5rem; }
+
+    /* Announcement strip */
+    .announce-strip { background: #003F7F; color: #FAF7F2; }
+    .announce-strip strong { color: #D4B043; }
+
+    /* Focus visible */
+    *:focus-visible { outline: 2px solid #B8962E; outline-offset: 2px; }
+
+    /* Buttons */
+    .btn-primary {
+      display: inline-block; background: #003F7F; color: #ffffff;
+      font-family: 'Inter', sans-serif; font-weight: 600; letter-spacing: 0.02em;
+      padding: 0.72rem 1.75rem; border-radius: 0.375rem;
+      transition: background 0.18s, box-shadow 0.18s; cursor: pointer; border: none;
+    }
+    .btn-primary:hover { background: #B8962E; box-shadow: 0 4px 14px rgba(184,150,46,0.35); }
+    .btn-cta {
+      display: inline-block; background: #B8962E; color: #0F1E2E;
+      font-family: 'Inter', sans-serif; font-weight: 600; letter-spacing: 0.02em;
+      padding: 0.72rem 1.75rem; border-radius: 0.375rem;
+      transition: background 0.18s, box-shadow 0.18s; cursor: pointer; border: none;
+    }
+    .btn-cta:hover { background: #D4B043; box-shadow: 0 4px 14px rgba(184,150,46,0.40); }
+    .btn-outline {
+      display: inline-block; border: 2px solid #B8962E; color: #B8962E; background: transparent;
+      font-family: 'Inter', sans-serif; font-weight: 600; letter-spacing: 0.02em;
+      padding: 0.65rem 1.6rem; border-radius: 0.375rem;
+      transition: background 0.18s, color 0.18s; cursor: pointer;
+    }
+    .btn-outline:hover { background: #B8962E; color: #ffffff; }
+    .btn-navy {
+      display: inline-block; border: 2px solid #fff; color: #fff; background: transparent;
+      font-family: 'Inter', sans-serif; font-weight: 600; letter-spacing: 0.02em;
+      padding: 0.65rem 1.6rem; border-radius: 0.375rem;
+      transition: background 0.18s, color 0.18s; cursor: pointer;
+    }
+    .btn-navy:hover { background: #fff; color: #003F7F; }
+
+    /* Modals */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0; z-index: 3000;
+      background: rgba(15,30,46,0.92); backdrop-filter: blur(4px);
+      align-items: flex-start; justify-content: center; overflow-y: auto; padding: 4vh 1rem;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-card { background: #fff; width: 100%; max-width: 560px; border-radius: 0.75rem; }
+    .modal-card.login { max-width: 420px; }
+    .modal-success {
+      display: none; background: #FAF7F2; border: 1px solid #B8962E; border-left: 4px solid #B8962E;
+      color: #1A1A1A; border-radius: 0.5rem; padding: 1rem 1.15rem;
+    }
+    .modal-success.show { display: block; }
+  </style>
+</head>
+<body class="bg-white">
+
+<!-- ═══════════════════════ SPLASH ═══════════════════════ -->
+<div id="splash" role="status" aria-live="polite" aria-label="Loading MALGOA website">
+  <img src="images/logo.jpg" alt="MALGOA Logo" class="w-20 h-20 rounded-full border-4 border-bronze mb-6 object-cover" />
+  <p class="text-bronze font-heading font-bold text-lg tracking-widest mb-8">MALGOA</p>
+  <div class="splash-spinner" aria-hidden="true"></div>
+</div>
+
+<!-- ═══════════════════════ NAVIGATION ═══════════════════ -->
+<nav id="main-nav" class="fixed top-0 left-0 right-0 z-50 bg-ambedkar-blue" aria-label="Main navigation">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+
+      <!-- Logo -->
+      <button onclick="router('home')" class="flex items-center gap-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-bronze rounded">
+        <img src="images/logo.jpg" alt="MALGOA" class="w-9 h-9 rounded-full border-2 border-bronze object-cover" />
+        <span class="font-heading font-bold text-white text-lg tracking-wide hidden sm:block">MALGOA</span>
+      </button>
+
+      <!-- Desktop nav -->
+      <div class="hidden xl:flex items-center gap-5" role="menubar">
+        <button class="nav-link" data-page="home"             role="menuitem">Home</button>
+        <button class="nav-link" data-page="heritage"         role="menuitem">Heritage</button>
+        <button class="nav-link" data-page="leadership"       role="menuitem">Leadership</button>
+        <button class="nav-link" data-page="objectives"       role="menuitem">Objectives</button>
+        <button class="nav-link" data-page="patrons"          role="menuitem">Patrons</button>
+        <button class="nav-link" data-page="theory-of-change" role="menuitem">Theory of Change</button>
+        <button class="nav-link" data-page="mandate"          role="menuitem">Mandate</button>
+        <button class="nav-link" data-page="media"            role="menuitem">Media</button>
+        <button class="nav-link" data-page="contact"          role="menuitem">Contact</button>
+        <span class="w-px h-5 bg-white/20" aria-hidden="true"></span>
+        <button onclick="openLogin()" class="flex items-center gap-1.5 text-slate-300 hover:text-bronze-light text-sm transition-colors" aria-label="Member login">
+          <i data-lucide="log-in" class="w-4 h-4"></i> Member Login
+        </button>
+        <button onclick="openJoin()" class="btn-cta" style="padding:.5rem 1.2rem; font-size:.875rem;">Join Us</button>
+      </div>
+
+      <!-- Hamburger -->
+      <button id="menu-toggle" class="xl:hidden text-white p-2 rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-bronze"
+              aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-menu">
+        <i data-lucide="menu" class="w-6 h-6"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile menu -->
+  <div id="mobile-menu" class="xl:hidden bg-navy-deep border-t border-white/10" aria-hidden="true" role="menu">
+    <div class="px-4 py-3 flex flex-col gap-1">
+      <button class="nav-link text-left py-2.5 px-3 rounded hover:bg-white/5" data-page="home"             role="menuitem">Home</button>
+      <button class="nav-link text-left py-2.5 px-3 rounded hover:bg-white/5" data-page="heritage"         role="menuitem">Heritage &amp; Origin</button>
+      <button class="nav-link text-left py-2.5 px-3 rounded hover:bg-white/5" data-page="leadership"       role="menuitem">Leadership</button>
+      <button class="nav-link text-left py-2.5 px-3 rounded hover:bg-white/5" data-page="objectives"       role="menuitem">Objectives</button>
+      <button class="nav-link text-left py-2.5 px-3 rounded hover:bg-white/5" data-page="patrons"          role="menuitem">Patrons &amp; Well-Wishers</button>
+      <button class="nav-link text-left py-2.5 px-3 rounded hover:bg-white/5" data-page="theory-of-change" role="menuitem">Theory of Change</button>
+      <button class="nav-link text-left py-2.5 px-3 rounded hover:bg-white/5" data-page="mandate"          role="menuitem">Strategic Mandate</button>
+      <button class="nav-link text-left py-2.5 px-3 rounded hover:bg-white/5" data-page="media"            role="menuitem">Media &amp; Milestones</button>
+      <button class="nav-link text-left py-2.5 px-3 rounded hover:bg-white/5" data-page="contact"          role="menuitem">Contact</button>
+      <div class="border-t border-white/10 my-2"></div>
+      <button onclick="openLogin()" class="nav-link text-left py-2.5 px-3 rounded hover:bg-white/5 flex items-center gap-2" role="menuitem">
+        <i data-lucide="log-in" class="w-4 h-4"></i> Member Login
+      </button>
+      <button onclick="openJoin()" class="btn-cta text-center mt-1">Join Us</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════════════════════ MAIN ═══════════════════════════ -->
+<main id="main-content" class="pt-16">
+
+  <!-- ──────────────── HOME ──────────────── -->
+  <section id="home" class="page-section" aria-label="Home">
+
+    <!-- Launch announcement strip -->
+    <div class="announce-strip">
+      <div class="max-w-7xl mx-auto px-6 sm:px-8 py-2.5 text-center text-sm leading-snug">
+        <i data-lucide="megaphone" class="inline-block w-4 h-4 align-text-bottom mr-1"></i>
+        <strong>Official Website Launch - 7 June 2026, Tadepalli, Guntur.</strong>
+        Celebrating the first anniversary of the historic Karakatta General Body Meeting.
+      </div>
+    </div>
+
+    <!-- Hero -->
+    <div class="hero-bg">
+      <div class="max-w-7xl mx-auto px-6 sm:px-8 w-full py-20">
+        <div class="max-w-3xl">
+          <p class="heritage-eyebrow mb-5" style="color:#D4B043;">Mala Gazetted Officers Association of Andhra Pradesh</p>
+          <h1 class="text-white mb-6 tracking-tight whitespace-nowrap" style="line-height:1.1; font-size:clamp(1.65rem, 7vw, 4.5rem);">
+            Unity &nbsp;Dignity &nbsp;Equity
+          </h1>
+          <p class="text-slate-200 text-lg leading-relaxed mb-9" style="max-width:64ch;">
+            Founded on the constitutional ideals of Dr. B.R. Ambedkar. An inclusive hub for Government Officers, MPs, MLAs, Academicians, Government Consultants, Senior Contract Officials and associated professionals of Andhra's 2nd largest community.
+          </p>
+          <div class="flex flex-wrap gap-4">
+            <button onclick="openJoin()" class="btn-cta">Apply for Membership</button>
+            <button onclick="router('heritage')" class="btn-navy">Read Our Heritage</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Constitutional anchor strip -->
+    <div class="bg-parchment py-12 border-b border-divider">
+      <div class="max-w-5xl mx-auto px-6 sm:px-8 grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
+        <div>
+          <i data-lucide="flag" class="w-7 h-7 text-bronze mx-auto mb-3"></i>
+          <p class="font-heading text-ambedkar-blue text-xl">Founded 24 Jan 2025</p>
+          <p class="text-text-muted text-sm mt-1">Born of principle, in Visakhapatnam</p>
+        </div>
+        <div>
+          <i data-lucide="users" class="w-7 h-7 text-bronze mx-auto mb-3"></i>
+          <p class="font-heading text-ambedkar-blue text-xl">460+ Officers United</p>
+          <p class="text-text-muted text-sm mt-1">State General Body, Karakatta</p>
+        </div>
+        <div>
+          <i data-lucide="badge-check" class="w-7 h-7 text-bronze mx-auto mb-3"></i>
+          <p class="font-heading text-ambedkar-blue text-xl">Reg. No. 185/2025</p>
+          <p class="text-text-muted text-sm mt-1">A formally registered body</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Purpose / mission -->
+    <div class="bg-white py-20">
+      <div class="max-w-3xl mx-auto px-6 sm:px-8 text-center">
+        <p class="heritage-eyebrow mb-4">Our Purpose</p>
+        <h2 class="text-ambedkar-blue text-3xl sm:text-4xl mb-6">A Collective Strategic Voice</h2>
+        <p class="text-text-muted text-lg leading-relaxed">
+          A collective strategic voice for Mala Governmental Officials and Public Representatives - uniting administrative service, legislative leadership, academic scholarship and senior professional expertise into a single institutional platform of the Mala (SC &amp; BC-C) community of Andhra Pradesh.
+        </p>
+        <div class="flex flex-wrap justify-center gap-3 mt-8">
+          <span class="inline-flex items-center gap-1.5 border border-divider rounded-full px-4 py-1.5 text-sm text-ambedkar-blue font-medium"><i data-lucide="target" class="w-4 h-4 text-bronze"></i>Realise</span>
+          <span class="inline-flex items-center gap-1.5 border border-divider rounded-full px-4 py-1.5 text-sm text-ambedkar-blue font-medium"><i data-lucide="sparkles" class="w-4 h-4 text-bronze"></i>Re-innovate</span>
+        </div>
+        <div class="mt-9">
+          <button onclick="router('mandate')" class="btn-outline">Our Strategic Mandate</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Launch event card -->
+    <div class="bg-navy-deep py-16">
+      <div class="max-w-3xl mx-auto px-6 sm:px-8 text-center text-white">
+        <i data-lucide="calendar-check" class="w-8 h-8 text-bronze mx-auto mb-4"></i>
+        <p class="heritage-eyebrow mb-3" style="color:#D4B043;">Inaugural Launch</p>
+        <h2 class="text-white text-3xl sm:text-4xl mb-3">7 June 2026 &nbsp;·&nbsp; Tadepalli, Guntur</h2>
+        <p class="text-slate-300 leading-relaxed max-w-xl mx-auto mb-8">
+          The renewed digital home of MALGOA will be formally unveiled by an esteemed guest, marking the first anniversary of the historic State General Body Meeting at Karakatta.
+        </p>
+        <button onclick="openJoin()" class="btn-cta">Apply for Membership</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ──────────────── HERITAGE & ORIGIN ──────────────── -->
+  <section id="heritage" class="page-section" aria-label="Heritage and Origin">
+    <div class="bg-parchment">
+      <div class="max-w-3xl mx-auto px-6 sm:px-8 py-20">
+        <p class="heritage-eyebrow">The Historical Record</p>
+        <h2 class="text-ambedkar-blue text-4xl mt-2">Heritage &amp; Origin</h2>
+        <div class="ornament"><i data-lucide="scroll-text" class="w-5 h-5"></i></div>
+
+        <div class="heritage-prose text-text-primary text-lg">
+
+          <div class="heritage-illustration" aria-hidden="true">
+            <svg viewBox="0 0 160 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <line x1="80" y1="12" x2="80" y2="80" stroke="#003F7F" stroke-width="2"/>
+              <circle cx="80" cy="10" r="4" fill="#B8962E"/>
+              <line x1="30" y1="30" x2="130" y2="42" stroke="#003F7F" stroke-width="2"/>
+              <line x1="30" y1="30" x2="20" y2="60" stroke="#B8962E" stroke-width="1.5"/>
+              <line x1="30" y1="30" x2="40" y2="60" stroke="#B8962E" stroke-width="1.5"/>
+              <path d="M15 60 Q30 70 45 60" stroke="#B8962E" stroke-width="1.5" fill="none"/>
+              <line x1="130" y1="42" x2="115" y2="68" stroke="#B8962E" stroke-width="1.5"/>
+              <line x1="130" y1="42" x2="145" y2="68" stroke="#B8962E" stroke-width="1.5"/>
+              <path d="M110 68 Q130 80 150 68" stroke="#B8962E" stroke-width="1.5" fill="none"/>
+              <rect x="70" y="80" width="20" height="6" fill="#003F7F"/>
+            </svg>
+          </div>
+          <h3>The Catalyst</h3>
+          <blockquote class="verbatim">
+            <p>"In the state of Andhra Pradesh after general elections during May, 2024 the new Government was formed with TDP and its alliance of parties. When the governance of Andhra Pradesh was going with normal standards, the Honourable Apex Court of India delivered the verdict on classification of SC castes in the month of August, 2024."</p>
+            <p>"This discovered the hidden agenda of our brethren all these decades, as all of us have gathered and proceeded all these decades together without having any sort of difference. Having boosted with the judgement, the thought of discrimination has been uncovered and started humiliating the Mala officers even in open forums."</p>
+          </blockquote>
+          <!-- ARCHIVAL PHOTO SLOT - Replace this block when historical photographs are available. Filename convention: images/heritage-catalyst.jpg, heritage-flashpoint.jpg, heritage-ideology.jpg, heritage-imperative.jpg. Recommended dimensions: 1200×675px. -->
+          <figure class="my-10 hidden" data-photo-slot="catalyst">
+            <img src="images/heritage-catalyst.jpg" alt="Historical context illustration" class="w-full rounded-md border border-divider" />
+            <figcaption class="text-sm text-text-muted italic text-center mt-3">[Caption to be added]</figcaption>
+          </figure>
+
+          <div class="heritage-illustration" aria-hidden="true">
+            <svg viewBox="0 0 160 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <ellipse cx="80" cy="60" rx="50" ry="10" stroke="#003F7F" stroke-width="2" fill="none"/>
+              <circle cx="40" cy="55" r="4" fill="#003F7F"/>
+              <circle cx="80" cy="50" r="4" fill="#003F7F"/>
+              <circle cx="120" cy="55" r="4" fill="#003F7F"/>
+              <circle cx="60" cy="68" r="4" fill="#003F7F"/>
+              <circle cx="100" cy="68" r="4" fill="#003F7F"/>
+              <g stroke="#B8962E" stroke-width="2" stroke-linecap="round">
+                <line x1="80" y1="18" x2="80" y2="34"/>
+                <line x1="68" y1="22" x2="74" y2="32"/>
+                <line x1="92" y1="22" x2="86" y2="32"/>
+                <line x1="64" y1="30" x2="74" y2="34"/>
+                <line x1="96" y1="30" x2="86" y2="34"/>
+              </g>
+              <circle cx="80" cy="26" r="3" fill="#B8962E"/>
+            </svg>
+          </div>
+          <h3>The Flashpoint in Visakhapatnam</h3>
+          <blockquote class="verbatim">
+            <p>"An event, in routine manner, was to be conducted to inaugurate Dairy of SC/ST Gazetted Officers on 24.01.2025 at Visakhapatnam. During the meeting, a lot of humiliation was shown by discriminating the Officers belonging to MALA Caste only."</p>
+            <p>"This indecent incident was noticed and discussed with Dr. Y. Praveen Kumar, DMHO (Retired) former President and one of the founders of SC/ST Gazetted Officers Association, Kurnool. During the discussions, an idea has been proposed by Sri Polakati Ramakrishna, DAO(W) to form a separate group with MALA Gazetted Officers to avoid humiliation, disrespect etc."</p>
+            <p>"Since the intention of idea was good for the MALA Caste, the other delegates including Sri B. Rathna Prasad, AE and Sri H.D. Eranna, Dy.EE. have immediately gathered in the chambers of Smt. Nirmala, Joint Director, Treasury Department. After deliberate discussions with regard to humiliation, discrimination etc., an unanimous decision was taken to form a Group with only MALA GAZETTED OFFICERS."</p>
+          </blockquote>
+          <!-- ARCHIVAL PHOTO SLOT - Replace this block when historical photographs are available. -->
+          <figure class="my-10 hidden" data-photo-slot="flashpoint">
+            <img src="images/heritage-flashpoint.jpg" alt="Historical context illustration" class="w-full rounded-md border border-divider" />
+            <figcaption class="text-sm text-text-muted italic text-center mt-3">[Caption to be added]</figcaption>
+          </figure>
+
+          <div class="heritage-illustration" aria-hidden="true">
+            <svg viewBox="0 0 160 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M40 70 L80 60 L120 70 L120 84 L80 74 L40 84 Z" stroke="#003F7F" stroke-width="2" fill="none"/>
+              <line x1="80" y1="60" x2="80" y2="74" stroke="#003F7F" stroke-width="2"/>
+              <line x1="55" y1="68" x2="55" y2="78" stroke="#003F7F" stroke-width="1"/>
+              <line x1="105" y1="68" x2="105" y2="78" stroke="#003F7F" stroke-width="1"/>
+              <rect x="76" y="38" width="8" height="22" fill="#B8962E"/>
+              <path d="M80 38 Q72 28 76 16 Q80 24 80 16 Q80 28 84 16 Q88 28 80 38 Z" fill="#B8962E"/>
+            </svg>
+          </div>
+          <h3>The Ideological Foundation</h3>
+          <div class="creed">
+            <p class="q">"Our God Dr. B.R. Ambedkar has mentioned in 'Buddha and Karl Marx,' 1956: 'An ideology is a system of ideas concerning life and society. It is the sum total of one's social philosophy.'"</p>
+            <p class="mt-4" style="color:#FAF7F2;">"Since Dr. B.R. Ambedkar saw ideology as not just a set of abstract beliefs, but as a practical guide for organizing society, rooted in morality, equality, and reason."</p>
+          </div>
+          <!-- ARCHIVAL PHOTO SLOT - Replace this block when historical photographs are available. -->
+          <figure class="my-10 hidden" data-photo-slot="ideology">
+            <img src="images/heritage-ideology.jpg" alt="Historical context illustration" class="w-full rounded-md border border-divider" />
+            <figcaption class="text-sm text-text-muted italic text-center mt-3">[Caption to be added]</figcaption>
+          </figure>
+
+          <div class="heritage-illustration" aria-hidden="true">
+            <svg viewBox="0 0 160 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="30" y="30" width="10" height="50" stroke="#003F7F" stroke-width="2" fill="none"/>
+              <rect x="120" y="30" width="10" height="50" stroke="#003F7F" stroke-width="2" fill="none"/>
+              <rect x="22" y="78" width="26" height="4" fill="#003F7F"/>
+              <rect x="112" y="78" width="26" height="4" fill="#003F7F"/>
+              <rect x="22" y="26" width="26" height="4" fill="#003F7F"/>
+              <rect x="112" y="26" width="26" height="4" fill="#003F7F"/>
+              <line x1="80" y1="80" x2="80" y2="30" stroke="#B8962E" stroke-width="3"/>
+              <path d="M70 40 L80 28 L90 40" stroke="#B8962E" stroke-width="3" stroke-linejoin="round" fill="none"/>
+            </svg>
+          </div>
+          <h3>The Imperative Need</h3>
+          <blockquote class="verbatim">
+            <p>"Keeping the above in view, trusting the value of democracy (collective responsibility) and with due respect to follow the footprints or OUR GOD Dr. BR Ambedkar, the issues concerning the MALA Caste officers across the state that have been brought to the notice of the STATE BODY have been discussed by the State Body of MALGOA…"</p>
+            <p>"…it was felt that there IS AN IMPERATIVE NEED TO REALIZE, RENOVATE, REVAMP AND REFURBISH."</p>
+          </blockquote>
+          <!-- ARCHIVAL PHOTO SLOT - Replace this block when historical photographs are available. -->
+          <figure class="my-10 hidden" data-photo-slot="imperative">
+            <img src="images/heritage-imperative.jpg" alt="Historical context illustration" class="w-full rounded-md border border-divider" />
+            <figcaption class="text-sm text-text-muted italic text-center mt-3">[Caption to be added]</figcaption>
+          </figure>
+
+          <p class="pull-quote">Realise and Re-innovate - the strategic mandate born of that imperative.</p>
+
+          <div class="mt-10">
+            <button onclick="router('mandate')" class="btn-outline">Read the Strategic Mandate</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ──────────────── LEADERSHIP ──────────────── -->
+  <section id="leadership" class="page-section" aria-label="Leadership">
+    <div class="max-w-7xl mx-auto px-6 sm:px-8 py-20">
+      <p class="heritage-eyebrow">The State Body</p>
+      <h2 class="text-ambedkar-blue text-4xl mt-2">Leadership</h2>
+      <div class="section-rule"></div>
+      <p class="text-text-muted text-lg leading-relaxed max-w-3xl mx-auto text-center mb-12">
+        The State Body of MALGOA brings together a distinguished core committee of senior officers and elected representatives entrusted with steering the association's constitutional mandate, professional advocacy and intergenerational vision across Andhra Pradesh.
+      </p>
+
+      <!-- Office bearers grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7">
+
+        <div class="card top-bronze p-8 text-center">
+          <img src="images/leadership/president-vijayanandam.jpg" alt="Sri Jangam Vijayanandam - President, MALGOA" class="leader-photo mx-auto mb-4" loading="lazy" />
+          <h4 class="font-heading font-bold text-ambedkar-blue text-lg">Sri Jangam Vijayanandam</h4>
+          <p class="text-text-muted italic text-sm mt-1">President</p>
+        </div>
+
+        <div class="card top-bronze p-8 text-center">
+          <img src="images/leadership/assoc-president-ramesh.jpg" alt="Sri Ullaji Ramesh - Associate President, MALGOA" class="leader-photo mx-auto mb-4" loading="lazy" />
+          <h4 class="font-heading font-bold text-ambedkar-blue text-lg">Sri Ullaji Ramesh</h4>
+          <p class="text-text-muted italic text-sm mt-1">Associate President</p>
+        </div>
+
+        <div class="card top-bronze p-8 text-center">
+          <!-- TODO: candidate photo images/suresh_kumar.jpeg - confirm this is Sri Beera Suresh before using -->
+          <div class="leader-placeholder mx-auto mb-4"><i data-lucide="user-round" class="w-10 h-10 text-bronze"></i></div>
+          <h4 class="font-heading font-bold text-ambedkar-blue text-lg">Sri Beera Suresh</h4>
+          <p class="text-text-muted italic text-sm mt-1">Vice-President</p>
+        </div>
+
+        <div class="card top-bronze p-8 text-center">
+          <img src="images/leadership/gen-secretary-ramakrishna.jpg" alt="Sri Polakati Ramakrishna - General Secretary, MALGOA" class="leader-photo mx-auto mb-4" loading="lazy" />
+          <h4 class="font-heading font-bold text-ambedkar-blue text-lg">Sri Polakati Ramakrishna</h4>
+          <p class="text-text-muted italic text-sm mt-1">General Secretary</p>
+        </div>
+
+        <div class="card top-bronze p-8 text-center">
+          <div class="leader-placeholder mx-auto mb-4"><i data-lucide="user-round" class="w-10 h-10 text-bronze"></i></div>
+          <h4 class="font-heading font-bold text-ambedkar-blue text-lg">Smt. Gummadi Surekha</h4>
+          <p class="text-text-muted italic text-sm mt-1">Women Secretary</p>
+        </div>
+
+        <div class="card top-bronze p-8 text-center">
+          <div class="leader-placeholder mx-auto mb-4"><i data-lucide="user-round" class="w-10 h-10 text-bronze"></i></div>
+          <h4 class="font-heading font-bold text-ambedkar-blue text-lg">Sri S.E. Aravind</h4>
+          <p class="text-text-muted italic text-sm mt-1">Joint Secretary</p>
+        </div>
+
+        <div class="card top-bronze p-8 text-center">
+          <div class="leader-placeholder mx-auto mb-4"><i data-lucide="user-round" class="w-10 h-10 text-bronze"></i></div>
+          <h4 class="font-heading font-bold text-ambedkar-blue text-lg">Sri Pakanati Venkateswarlu</h4>
+          <p class="text-text-muted italic text-sm mt-1">Treasurer</p>
+        </div>
+      </div>
+
+      <!-- Working President & Advisor (additional confirmed office bearers from the souvenir record) -->
+      <h3 class="font-heading text-ambedkar-blue text-2xl mt-16 mb-6">Working President &amp; Advisor</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7 max-w-3xl">
+        <div class="card top-bronze p-8 text-center">
+          <img src="images/leadership/working-president-ratna-prasad.jpg" alt="Sri B. Ratna Prasad - Working President, MALGOA" class="leader-photo mx-auto mb-4" loading="lazy" />
+          <h4 class="font-heading font-bold text-ambedkar-blue text-lg">Sri B. Ratna Prasad</h4>
+          <p class="text-text-muted italic text-sm mt-1">Working President</p>
+        </div>
+        <div class="card top-bronze p-8 text-center">
+          <img src="images/leadership/advisor-gnanaveni.jpg" alt="Smt. K. Gnanaveni - Advisor, MALGOA" class="leader-photo mx-auto mb-4" loading="lazy" />
+          <h4 class="font-heading font-bold text-ambedkar-blue text-lg">Smt. K. Gnanaveni</h4>
+          <p class="text-text-muted italic text-sm mt-1">Advisor</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ──────────────── OBJECTIVES ──────────────── -->
+  <section id="objectives" class="page-section" aria-label="Objectives">
+    <div class="bg-white">
+      <div class="max-w-6xl mx-auto px-6 sm:px-8 py-20">
+        <div class="text-center mb-14">
+          <p class="heritage-eyebrow">Operational Charter</p>
+          <h2 class="text-ambedkar-blue text-4xl mt-2">Our Objectives</h2>
+          <p class="text-text-muted text-lg leading-relaxed max-w-3xl mx-auto mt-5">
+            The strategic mandate of MALGOA - to Realise and Re-innovate - translates into a defined set of operational objectives that guide every initiative, deliberation and intervention undertaken by the State Body and its members across Andhra Pradesh.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+          <div class="bg-parchment border-l-4 border-bronze rounded-md p-7">
+            <i data-lucide="scale" class="w-7 h-7 text-bronze mb-4"></i>
+            <h3 class="font-heading text-ambedkar-blue text-xl mb-3">Constitutional Advocacy</h3>
+            <p class="text-text-muted text-base leading-relaxed">
+              To uphold the constitutional rights, statutory entitlements and equitable representation of Mala officers across every department, board and forum of the Government of Andhra Pradesh.
+            </p>
+          </div>
+
+          <div class="bg-parchment border-l-4 border-bronze rounded-md p-7">
+            <i data-lucide="shield-alert" class="w-7 h-7 text-bronze mb-4"></i>
+            <h3 class="font-heading text-ambedkar-blue text-xl mb-3">Grievance Redressal</h3>
+            <p class="text-text-muted text-base leading-relaxed">
+              To establish a structured, confidential and time-bound mechanism for receiving, examining and addressing service-related grievances, vigilance matters and instances of discrimination faced by members.
+            </p>
+          </div>
+
+          <div class="bg-parchment border-l-4 border-bronze rounded-md p-7">
+            <i data-lucide="graduation-cap" class="w-7 h-7 text-bronze mb-4"></i>
+            <h3 class="font-heading text-ambedkar-blue text-xl mb-3">Professional Development</h3>
+            <p class="text-text-muted text-base leading-relaxed">
+              To curate workshops, policy roundtables, leadership symposia and continuing-education programmes that sharpen administrative competence and accelerate professional progression for members at every grade.
+            </p>
+          </div>
+
+          <div class="bg-parchment border-l-4 border-bronze rounded-md p-7">
+            <i data-lucide="link" class="w-7 h-7 text-bronze mb-4"></i>
+            <h3 class="font-heading text-ambedkar-blue text-xl mb-3">Intergenerational Mentorship</h3>
+            <p class="text-text-muted text-base leading-relaxed">
+              To formalise structured mentorship between senior retired officers, mid-career professionals and emerging entrants - ensuring institutional wisdom is transferred deliberately, not lost to time.
+            </p>
+          </div>
+
+          <div class="bg-parchment border-l-4 border-bronze rounded-md p-7">
+            <i data-lucide="landmark" class="w-7 h-7 text-bronze mb-4"></i>
+            <h3 class="font-heading text-ambedkar-blue text-xl mb-3">Policy Engagement</h3>
+            <p class="text-text-muted text-base leading-relaxed">
+              To engage substantively with State-level policy formulation, legislative deliberations and administrative reforms - ensuring the lived realities and considered perspectives of the Mala community shape decisions that affect it.
+            </p>
+          </div>
+
+          <div class="bg-parchment border-l-4 border-bronze rounded-md p-7">
+            <i data-lucide="users-round" class="w-7 h-7 text-bronze mb-4"></i>
+            <h3 class="font-heading text-ambedkar-blue text-xl mb-3">Network &amp; Solidarity</h3>
+            <p class="text-text-muted text-base leading-relaxed">
+              To build an enduring inter-district, inter-departmental network of Mala officials, public representatives, academicians and consultants - converting individual standing into collective institutional strength.
+            </p>
+          </div>
+
+          <div class="bg-parchment border-l-4 border-bronze rounded-md p-7">
+            <i data-lucide="archive" class="w-7 h-7 text-bronze mb-4"></i>
+            <h3 class="font-heading text-ambedkar-blue text-xl mb-3">Documentation &amp; Archive</h3>
+            <p class="text-text-muted text-base leading-relaxed">
+              To compile, preserve and publish the historical record of the Mala community in Andhra Pradesh - service histories, policy contributions, scholarly works and oral testimonies - as a permanent institutional archive.
+            </p>
+          </div>
+
+          <div class="bg-parchment border-l-4 border-bronze rounded-md p-7">
+            <i data-lucide="heart-handshake" class="w-7 h-7 text-bronze mb-4"></i>
+            <h3 class="font-heading text-ambedkar-blue text-xl mb-3">Community Outreach</h3>
+            <p class="text-text-muted text-base leading-relaxed">
+              To extend the institutional standing of MALGOA's members in service of the broader Mala community - through scholarship support, civic awareness initiatives and direct engagement with grassroots concerns.
+            </p>
+          </div>
+
+          <div class="bg-parchment border-l-4 border-bronze rounded-md p-7">
+            <i data-lucide="award" class="w-7 h-7 text-bronze mb-4"></i>
+            <h3 class="font-heading text-ambedkar-blue text-xl mb-3">Recognition &amp; Dignity</h3>
+            <p class="text-text-muted text-base leading-relaxed">
+              To publicly recognise distinguished service, scholarship and leadership within the community - restoring and reinforcing professional dignity that has too often been overlooked in mainstream forums.
+            </p>
+          </div>
+
+        </div>
+
+        <div class="text-center mt-14">
+          <button onclick="router('mandate')" class="btn-outline">Read Our Strategic Mandate</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ──────────────── PATRONS & WELL-WISHERS ──────────────── -->
+  <section id="patrons" class="page-section" aria-label="Patrons and Well-Wishers">
+    <div class="bg-parchment">
+      <div class="max-w-7xl mx-auto px-6 sm:px-8 py-20">
+        <p class="heritage-eyebrow">In Solidarity</p>
+        <h2 class="text-ambedkar-blue text-4xl mt-2">Patrons &amp; Well-Wishers</h2>
+        <p class="text-text-muted text-lg leading-relaxed max-w-3xl mx-auto text-center">
+          MALGOA draws moral, intellectual and institutional support from a distinguished circle of patrons, statutory office bearers and public-policy leaders whose lifetimes of service inform and strengthen the association's constitutional mission.
+        </p>
+        <div class="section-rule mx-auto mt-6 mb-12"></div>
+
+        <!-- Members of Parliament -->
+        <h3 class="font-heading text-ambedkar-blue text-2xl mb-6">Members of Parliament</h3>
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 mb-14">
+          <div class="card p-6 text-center">
+            <img src="images/patrons/mp-harish-balayogi.jpg" alt="Sri G.M. Harish Balayogi - Member of Parliament, Amalapuram" class="patron-photo mx-auto mb-3" loading="lazy" />
+            <h4 class="font-heading font-semibold text-ambedkar-blue text-sm">Sri G.M. Harish Balayogi</h4>
+            <p class="text-text-muted italic text-xs mt-1">Hon'ble MP, Amalapuram</p>
+          </div>
+          <div class="card p-6 text-center">
+            <img src="images/patrons/mp-maddila-gurumoorthy.jpg" alt="Dr. Maddila Gurumoorthy - Member of Parliament, Tirupati" class="patron-photo mx-auto mb-3" loading="lazy" />
+            <h4 class="font-heading font-semibold text-ambedkar-blue text-sm">Dr. Maddila Gurumoorthy</h4>
+            <p class="text-text-muted italic text-xs mt-1">Hon'ble MP, Tirupati</p>
+          </div>
+          <div class="card p-6 text-center">
+            <img src="images/patrons/mp-prasada-rao.jpg" alt="Sri D. Prasada Rao - Member of Parliament, Chittoor" class="patron-photo mx-auto mb-3" loading="lazy" />
+            <h4 class="font-heading font-semibold text-ambedkar-blue text-sm">Sri D. Prasada Rao</h4>
+            <p class="text-text-muted italic text-xs mt-1">Hon'ble MP, Chittoor</p>
+          </div>
+        </div>
+
+        <!-- Members of the Legislative Assembly -->
+        <h3 class="font-heading text-ambedkar-blue text-2xl mb-6">Members of the Legislative Assembly</h3>
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 mb-14">
+          <div class="card p-6 text-center"><img src="images/patrons/mla-ananda-rao.jpg" alt="Sri A. Ananda Rao - MLA, Amalapuram" class="patron-photo mx-auto mb-3" loading="lazy" /><h4 class="font-heading font-semibold text-ambedkar-blue text-sm">Sri A. Ananda Rao</h4><p class="text-text-muted italic text-xs mt-1">Hon'ble MLA, Amalapuram</p></div>
+          <div class="card p-6 text-center"><img src="images/patrons/mla-tenali-sravan-kumar.jpg" alt="Sri Tenali Sravan Kumar - MLA, Tadikonda" class="patron-photo mx-auto mb-3" loading="lazy" /><h4 class="font-heading font-semibold text-ambedkar-blue text-sm">Sri Tenali Sravan Kumar</h4><p class="text-text-muted italic text-xs mt-1">Hon'ble MLA, Tadikonda</p></div>
+          <div class="card p-6 text-center"><img src="images/patrons/mla-kondru-murali-mohan.jpg" alt="Sri Kondru Murali Mohan - MLA, Rajam" class="patron-photo mx-auto mb-3" loading="lazy" /><h4 class="font-heading font-semibold text-ambedkar-blue text-sm">Sri Kondru Murali Mohan</h4><p class="text-text-muted italic text-xs mt-1">Hon'ble MLA, Rajam</p></div>
+          <div class="card p-6 text-center"><img src="images/patrons/mla-nakka-ananda-babu.jpg" alt="Sri Nakka Ananda Babu - MLA, Vemuru" class="patron-photo mx-auto mb-3" loading="lazy" /><h4 class="font-heading font-semibold text-ambedkar-blue text-sm">Sri Nakka Ananda Babu</h4><p class="text-text-muted italic text-xs mt-1">Hon'ble MLA, Vemuru</p></div>
+          <div class="card p-6 text-center"><img src="images/patrons/mla-satya-narayana.jpg" alt="Sri G. Satya Narayana - MLA, P. Gannavaram, Konaseema" class="patron-photo mx-auto mb-3" loading="lazy" /><h4 class="font-heading font-semibold text-ambedkar-blue text-sm">Sri G. Satya Narayana</h4><p class="text-text-muted italic text-xs mt-1">Hon'ble MLA, P. Gannavaram</p></div>
+          <div class="card p-6 text-center"><img src="images/patrons/mla-deva-varaprasad.jpg" alt="Sri Deva Varaprasad - MLA, Razole" class="patron-photo mx-auto mb-3" loading="lazy" /><h4 class="font-heading font-semibold text-ambedkar-blue text-sm">Sri Deva Varaprasad</h4><p class="text-text-muted italic text-xs mt-1">Hon'ble MLA, Razole</p></div>
+          <div class="card p-6 text-center"><img src="images/patrons/mla-bn-vijay-kumar.jpg" alt="Sri B.N. Vijay Kumar - MLA, Santhanuthalapadu" class="patron-photo mx-auto mb-3" loading="lazy" /><h4 class="font-heading font-semibold text-ambedkar-blue text-sm">Sri B.N. Vijay Kumar</h4><p class="text-text-muted italic text-xs mt-1">Hon'ble MLA, Santhanuthalapadu</p></div>
+          <div class="card p-6 text-center"><img src="images/patrons/mla-nelavala-vijayasree.jpg" alt="Dr. Nelavala Vijayasree - MLA, Sullurupeta" class="patron-photo mx-auto mb-3" loading="lazy" /><h4 class="font-heading font-semibold text-ambedkar-blue text-sm">Dr. Nelavala Vijayasree</h4><p class="text-text-muted italic text-xs mt-1">Hon'ble MLA, Sullurupeta</p></div>
+          <div class="card p-6 text-center"><img src="images/patrons/mla-pasam-sunil-kumar.jpg" alt="Sri Pasam Sunil Kumar - MLA, Gudur" class="patron-photo mx-auto mb-3" loading="lazy" /><h4 class="font-heading font-semibold text-ambedkar-blue text-sm">Sri Pasam Sunil Kumar</h4><p class="text-text-muted italic text-xs mt-1">Hon'ble MLA, Gudur</p></div>
+          <div class="card p-6 text-center"><img src="images/patrons/mla-vm-thomas.jpg" alt="Dr. V.M. Thomas - MLA, Gangadhara Nellore" class="patron-photo mx-auto mb-3" loading="lazy" /><h4 class="font-heading font-semibold text-ambedkar-blue text-sm">Dr. V.M. Thomas</h4><p class="text-text-muted italic text-xs mt-1">Hon'ble MLA, Gangadhara Nellore</p></div>
+          <div class="card p-6 text-center"><img src="images/patrons/mla-d-sudha.jpg" alt="Dr. D. Sudha - MLA, Badvel" class="patron-photo mx-auto mb-3" loading="lazy" /><h4 class="font-heading font-semibold text-ambedkar-blue text-sm">Dr. D. Sudha</h4><p class="text-text-muted italic text-xs mt-1">Hon'ble MLA, Badvel</p></div>
+          <div class="card p-6 text-center"><img src="images/patrons/mla-k-adimulam.jpg" alt="Sri K. Adimulam - MLA, Satyavedu" class="patron-photo mx-auto mb-3" loading="lazy" /><h4 class="font-heading font-semibold text-ambedkar-blue text-sm">Sri K. Adimulam</h4><p class="text-text-muted italic text-xs mt-1">Hon'ble MLA, Satyavedu</p></div>
+          <div class="card p-6 text-center"><img src="images/patrons/mla-k-murali-mohan.jpg" alt="Sri K. Murali Mohan - MLA, Puthalapattu" class="patron-photo mx-auto mb-3" loading="lazy" /><h4 class="font-heading font-semibold text-ambedkar-blue text-sm">Sri K. Murali Mohan</h4><p class="text-text-muted italic text-xs mt-1">Hon'ble MLA, Puthalapattu</p></div>
+        </div>
+
+        <!-- Statutory Office Bearers -->
+        <h3 class="font-heading text-ambedkar-blue text-2xl mb-6">Statutory Office Bearers</h3>
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div class="card p-6 text-center"><img src="images/patrons/chair-greeshma-prasad.jpg" alt="Smt. Kavali Greeshma Prasad - Chairperson, Women's Co-operative Finance Corporation" class="patron-photo mx-auto mb-3" loading="lazy" /><h4 class="font-heading font-semibold text-ambedkar-blue text-sm">Smt. Kavali Greeshma Prasad</h4><p class="text-text-muted italic text-xs mt-1">Chairperson, Women's Co-op Finance Corp.</p></div>
+          <div class="card p-6 text-center"><img src="images/patrons/chair-mala-welfare-vijay-kumar.jpg" alt="Dr. P. Vijay Kumar - Chairman, Mala Welfare Co-operative Finance Corporation Ltd." class="patron-photo mx-auto mb-3" loading="lazy" /><h4 class="font-heading font-semibold text-ambedkar-blue text-sm">Dr. P. Vijay Kumar</h4><p class="text-text-muted italic text-xs mt-1">Chairman, Mala Welfare Co-op Finance Corp.</p></div>
+          <div class="card p-6 text-center"><img src="images/patrons/sc-gowtham.jpg" alt="Dr. P. Gowtham - Member, SC Commission, Vijayawada" class="patron-photo mx-auto mb-3" loading="lazy" /><h4 class="font-heading font-semibold text-ambedkar-blue text-sm">Dr. P. Gowtham</h4><p class="text-text-muted italic text-xs mt-1">Member, SC Commission · Vijayawada</p></div>
+          <div class="card p-6 text-center"><img src="images/patrons/sc-babu-sripathi.jpg" alt="Sri Babu Sripathi - Member, SC Commission, Sullurupeta" class="patron-photo mx-auto mb-3" loading="lazy" /><h4 class="font-heading font-semibold text-ambedkar-blue text-sm">Sri Babu Sripathi</h4><p class="text-text-muted italic text-xs mt-1">Member, SC Commission · Sullurupeta</p></div>
+          <div class="card p-6 text-center"><img src="images/patrons/sc-seetharam.jpg" alt="Sri R. Seetharam - Member, SC Commission, Palakonda" class="patron-photo mx-auto mb-3" loading="lazy" /><h4 class="font-heading font-semibold text-ambedkar-blue text-sm">Sri R. Seetharam</h4><p class="text-text-muted italic text-xs mt-1">Member, SC Commission · Palakonda</p></div>
+        </div>
+
+        <!-- Public Policy & Sustainability -->
+        <div class="mt-16">
+          <h3 class="font-heading text-ambedkar-blue text-2xl mb-6 text-center">Public Policy &amp; Sustainability</h3>
+          <p class="text-text-muted text-base leading-relaxed max-w-3xl mx-auto text-center mb-10">
+            Distinguished voices in policy, governance and sustainable development whose counsel guides MALGOA's long-horizon institutional thinking.
+          </p>
+
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
+
+            <div class="text-center">
+              <div class="w-32 h-32 mx-auto rounded-full bg-parchment border-4 border-bronze flex items-center justify-center mb-4">
+                <i data-lucide="user-round" class="w-12 h-12 text-ambedkar-blue/30"></i>
+              </div>
+              <p class="font-heading text-ambedkar-blue text-lg">[Name to be added]</p>
+              <p class="text-text-muted text-sm italic mt-1">[Designation]</p>
+            </div>
+
+            <div class="text-center">
+              <div class="w-32 h-32 mx-auto rounded-full bg-parchment border-4 border-bronze flex items-center justify-center mb-4">
+                <i data-lucide="user-round" class="w-12 h-12 text-ambedkar-blue/30"></i>
+              </div>
+              <p class="font-heading text-ambedkar-blue text-lg">[Name to be added]</p>
+              <p class="text-text-muted text-sm italic mt-1">[Designation]</p>
+            </div>
+
+            <div class="text-center">
+              <div class="w-32 h-32 mx-auto rounded-full bg-parchment border-4 border-bronze flex items-center justify-center mb-4">
+                <i data-lucide="user-round" class="w-12 h-12 text-ambedkar-blue/30"></i>
+              </div>
+              <p class="font-heading text-ambedkar-blue text-lg">[Name to be added]</p>
+              <p class="text-text-muted text-sm italic mt-1">[Designation]</p>
+            </div>
+
+            <div class="text-center">
+              <div class="w-32 h-32 mx-auto rounded-full bg-parchment border-4 border-bronze flex items-center justify-center mb-4">
+                <i data-lucide="user-round" class="w-12 h-12 text-ambedkar-blue/30"></i>
+              </div>
+              <p class="font-heading text-ambedkar-blue text-lg">[Name to be added]</p>
+              <p class="text-text-muted text-sm italic mt-1">[Designation]</p>
+            </div>
+
+          </div>
+
+          <!-- IMAGE INSTRUCTION FOR CLIENT:
+               To add real headshots, replace each <div class="w-32 h-32 ... flex items-center justify-center">...</div> block with:
+               <img src="images/policy-1.jpg" alt="[Person Name]" class="w-32 h-32 mx-auto rounded-full border-4 border-bronze object-cover mb-4" />
+               Recommended image specs: square crop, minimum 400×400px, professional portrait. Filenames: policy-1.jpg through policy-4.jpg.
+          -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ──────────────── THEORY OF CHANGE ──────────────── -->
+  <section id="theory-of-change" class="page-section" aria-label="Theory of Change">
+    <div class="max-w-7xl mx-auto px-6 sm:px-8 py-20">
+      <p class="heritage-eyebrow">Intergenerational Synergy</p>
+      <h2 class="text-ambedkar-blue text-4xl mt-2">Our Theory of Change</h2>
+      <div class="section-rule"></div>
+      <p class="text-text-muted mb-12 max-w-2xl">Connecting three generations for a common, equitable, and greater future for all.</p>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-7 mb-12">
+
+        <div class="card top-bronze p-8 reveal d1">
+          <div class="w-14 h-14 rounded-xl bg-ambedkar-blue flex items-center justify-center mb-5"><i data-lucide="landmark" class="w-7 h-7 text-bronze-light"></i></div>
+          <p class="heritage-eyebrow">The Veterans</p>
+          <h3 class="font-heading font-bold text-ambedkar-blue text-xl mt-1 mb-3">Wisdom &amp; Heritage</h3>
+          <p class="text-text-muted leading-relaxed">Our senior officers provide the foundational bedrock of MALGOA. They bring decades of administrative experience, institutional memory, and the steady resilience required to navigate complex challenges. Their guidance ensures that our organizational roots remain deeply grounded in our core principles and historical legacy.</p>
+        </div>
+
+        <div class="card top-bronze p-8 reveal d2">
+          <div class="w-14 h-14 rounded-xl bg-ambedkar-blue flex items-center justify-center mb-5"><i data-lucide="git-merge" class="w-7 h-7 text-bronze-light"></i></div>
+          <p class="heritage-eyebrow">The Core</p>
+          <h3 class="font-heading font-bold text-ambedkar-blue text-xl mt-1 mb-3">Strategy &amp; Execution</h3>
+          <p class="text-text-muted leading-relaxed">Serving as the vital bridge between heritage and innovation, this generation translates vision into actionable strategy. With a deep understanding of both traditional governance and modern operational frameworks, they drive the day-to-day execution of MALGOA's objectives, ensuring our mandate is realised efficiently and effectively.</p>
+        </div>
+
+        <div class="card top-bronze p-8 reveal d3">
+          <div class="w-14 h-14 rounded-xl bg-ambedkar-blue flex items-center justify-center mb-5"><i data-lucide="compass" class="w-7 h-7 text-bronze-light"></i></div>
+          <p class="heritage-eyebrow">The Vanguard</p>
+          <h3 class="font-heading font-bold text-ambedkar-blue text-xl mt-1 mb-3">Innovation &amp; Continuity</h3>
+          <p class="text-text-muted leading-relaxed">Our newest officers represent the future and sustainability of the association. As digital natives equipped with fresh perspectives and contemporary technological fluency, they bring the disruptive energy necessary to evolve our advocacy. Their integration ensures MALGOA remains a dynamic, forward-looking force for decades to come.</p>
+        </div>
+      </div>
+
+      <!-- Unified outcome -->
+      <div class="creed">
+        <h3 class="font-heading font-bold text-bronze-light text-2xl mb-3">The Unified Outcome</h3>
+        <p class="text-bronze-light text-lg font-medium mb-4">Experience + Execution + Innovation = Systemic Equality.</p>
+        <p class="leading-relaxed" style="color:#FAF7F2;">When the steadfast guidance of our elders merges with the strategic drive of millennials and the dynamic energy of Gen Z, MALGOA transforms from a protective collective into a proactive engine for systemic change. This is how we secure a common, greater future - leaving no officer behind, regardless of age or tenure.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ──────────────── STRATEGIC MANDATE (Realise & Re-innovate) ──────────────── -->
+  <section id="mandate" class="page-section" aria-label="Strategic Mandate">
+    <div class="bg-parchment">
+      <div class="max-w-7xl mx-auto px-6 sm:px-8 py-20">
+        <div class="text-center">
+          <p class="heritage-eyebrow">Our Mandate</p>
+          <h2 class="text-ambedkar-blue text-4xl mt-2">Realise &amp; Re-innovate</h2>
+          <div class="section-rule mx-auto mt-3"></div>
+          <p class="text-text-muted text-lg leading-relaxed max-w-3xl mx-auto text-center mb-12 mt-5">
+            Our strategic mandate is deliberately spare. Two verbs, taken seriously, anchor everything MALGOA undertakes - from grievance redressal to policy engagement, from intergenerational mentorship to community outreach.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+
+          <div class="bg-white border-t-4 border-bronze rounded-md p-10 shadow-sm reveal d1">
+            <i data-lucide="target" class="w-10 h-10 text-bronze mb-5"></i>
+            <h3 class="font-heading font-bold text-ambedkar-blue text-2xl mb-4">Realise</h3>
+            <p class="text-text-muted text-base leading-relaxed mb-4">
+              To realise, with clarity and conviction, the foundational mandate for which MALGOA was created - recognising the lived challenges faced by Mala officers in service, vigilance, representation and dignity, and acknowledging them not as isolated incidents but as a structural reality that demands a structural response.
+            </p>
+            <p class="text-text-muted text-base leading-relaxed">
+              Realisation is the first act of institutional courage: to see clearly, to name accurately, and to commit publicly. MALGOA realises the constitutional vision of Dr. B.R. Ambedkar - that dignity is not negotiable, equality is not partial, and representation is not optional.
+            </p>
+          </div>
+
+          <div class="bg-white border-t-4 border-bronze rounded-md p-10 shadow-sm reveal d2">
+            <i data-lucide="sparkles" class="w-10 h-10 text-bronze mb-5"></i>
+            <h3 class="font-heading font-bold text-ambedkar-blue text-2xl mb-4">Re-innovate</h3>
+            <p class="text-text-muted text-base leading-relaxed mb-4">
+              To re-innovate the instruments of collective advocacy - modernising how the Mala community organises, communicates and influences in an era of digital governance, evolving administrative frameworks and changing constitutional jurisprudence on sub-classification.
+            </p>
+            <p class="text-text-muted text-base leading-relaxed">
+              Re-innovation is the discipline of reimagining without abandoning: honouring the moral foundation laid by our forebears while equipping the next generation with new tools, new platforms and new strategies fit for the decades ahead.
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ──────────────── MEDIA & MILESTONES ──────────────── -->
+  <section id="media" class="page-section" aria-label="Media and Milestones">
+    <div class="max-w-7xl mx-auto px-6 sm:px-8 py-20">
+      <p class="heritage-eyebrow">Archive</p>
+      <h2 class="text-ambedkar-blue text-4xl mt-2">Media &amp; Milestones</h2>
+      <div class="section-rule"></div>
+      <p class="text-text-muted mb-8 max-w-xl">A visual record of MALGOA's gatherings, formation meetings, and milestone events.</p>
+
+      <!-- Tab switcher -->
+      <div class="flex gap-3 mb-8" role="tablist" aria-label="Gallery tabs">
+        <button class="tab-btn active" id="tab-uttandhra" onclick="switchTab('uttandhra')"
+                role="tab" aria-selected="true" aria-controls="uttandhra-gallery">
+          Uttarandhra Meet 2025
+        </button>
+        <button class="tab-btn" id="tab-formation" onclick="switchTab('formation')"
+                role="tab" aria-selected="false" aria-controls="formation-gallery">
+          Formation Gallery
+        </button>
+      </div>
+
+      <!-- Galleries -->
+      <div id="uttandhra-gallery" class="gallery-grid tab-active" role="tabpanel" aria-labelledby="tab-uttandhra"></div>
+      <div id="formation-gallery"  class="gallery-grid"            role="tabpanel" aria-labelledby="tab-formation" hidden></div>
+    </div>
+  </section>
+
+  <!-- ──────────────── CONTACT ──────────────── -->
+  <section id="contact" class="page-section" aria-label="Contact Us">
+    <div class="max-w-7xl mx-auto px-6 sm:px-8 py-20">
+      <p class="heritage-eyebrow">Get in Touch</p>
+      <h2 class="text-ambedkar-blue text-4xl mt-2">Contact Us</h2>
+      <div class="section-rule"></div>
+      <p class="text-text-muted mb-10 max-w-xl">Reach out to MALGOA for membership enquiries, event information, or any other questions.</p>
+
+      <div class="grid grid-cols-1 lg:grid-cols-5 gap-10">
+
+        <!-- Contact info -->
+        <div class="lg:col-span-2 space-y-6">
+          <div class="card p-6">
+            <h3 class="font-heading font-semibold text-ambedkar-blue mb-5 text-base">Get in Touch</h3>
+            <div class="space-y-4">
+              <div class="flex items-start gap-3">
+                <div class="w-9 h-9 bg-ambedkar-blue/10 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
+                  <i data-lucide="map-pin" class="w-4 h-4 text-ambedkar-blue"></i>
+                </div>
+                <div>
+                  <p class="font-semibold text-ambedkar-blue text-sm">Address</p>
+                  <!-- TODO: Replace with actual MALGOA registered address -->
+                  <p class="text-text-muted text-sm mt-0.5">Tadepalli, Guntur District,<br />Andhra Pradesh - 522 501</p>
+                </div>
+              </div>
+              <div class="flex items-start gap-3">
+                <div class="w-9 h-9 bg-ambedkar-blue/10 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
+                  <i data-lucide="phone" class="w-4 h-4 text-ambedkar-blue"></i>
+                </div>
+                <div>
+                  <p class="font-semibold text-ambedkar-blue text-sm">Phone</p>
+                  <!-- TODO: Replace with actual contact number -->
+                  <p class="text-text-muted text-sm mt-0.5">+91 00000 00000</p>
+                </div>
+              </div>
+              <div class="flex items-start gap-3">
+                <div class="w-9 h-9 bg-ambedkar-blue/10 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
+                  <i data-lucide="mail" class="w-4 h-4 text-ambedkar-blue"></i>
+                </div>
+                <div>
+                  <p class="font-semibold text-ambedkar-blue text-sm">Email</p>
+                  <!-- TODO: Replace with actual email address -->
+                  <p class="text-text-muted text-sm mt-0.5">info@malgoa.org</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Social media -->
+          <div class="card p-6">
+            <h3 class="font-heading font-semibold text-ambedkar-blue mb-4 text-base">Follow Us</h3>
+            <div class="flex gap-4">
+              <!-- TODO: Replace placeholder URLs with actual MALGOA social media profile links -->
+              <a href="https://facebook.com/" target="_blank" rel="noopener noreferrer"
+                 class="w-10 h-10 bg-[#1877F2] rounded-lg flex items-center justify-center text-white hover:opacity-80 transition-opacity"
+                 aria-label="MALGOA on Facebook">
+                <i data-lucide="facebook" class="w-5 h-5"></i>
+              </a>
+              <a href="https://instagram.com/" target="_blank" rel="noopener noreferrer"
+                 class="w-10 h-10 bg-[#E1306C] rounded-lg flex items-center justify-center text-white hover:opacity-80 transition-opacity"
+                 aria-label="MALGOA on Instagram">
+                <i data-lucide="instagram" class="w-5 h-5"></i>
+              </a>
+              <a href="https://x.com/" target="_blank" rel="noopener noreferrer"
+                 class="w-10 h-10 bg-[#14171A] rounded-lg flex items-center justify-center text-white hover:opacity-80 transition-opacity"
+                 aria-label="MALGOA on X (Twitter)">
+                <i data-lucide="twitter" class="w-5 h-5"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Map placeholder -->
+          <div class="card overflow-hidden">
+            <div class="bg-ambedkar-blue/5 border border-ambedkar-blue/10 rounded-b h-40 flex items-center justify-center">
+              <!-- TODO: Replace with actual Google Maps embed for Tadepalli / MALGOA venue -->
+              <div class="text-center">
+                <i data-lucide="map" class="w-8 h-8 text-ambedkar-blue/30 mx-auto mb-2"></i>
+                <p class="text-text-muted text-xs">Map - Tadepalli, Guntur</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contact form -->
+        <div class="lg:col-span-3">
+          <div class="card p-8">
+            <h3 class="font-heading font-semibold text-ambedkar-blue mb-6 text-base">Send a Message</h3>
+            <form id="contact-form" novalidate>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
+                <div>
+                  <label for="cf-name" class="block text-sm font-semibold text-ambedkar-blue mb-1.5">Full Name <span class="text-red-500">*</span></label>
+                  <input type="text" id="cf-name" name="name" class="field" placeholder="Your full name" autocomplete="name" />
+                  <p class="error-msg" id="err-name">Please enter your full name.</p>
+                </div>
+                <div>
+                  <label for="cf-email" class="block text-sm font-semibold text-ambedkar-blue mb-1.5">Email Address <span class="text-red-500">*</span></label>
+                  <input type="email" id="cf-email" name="email" class="field" placeholder="you@example.com" autocomplete="email" />
+                  <p class="error-msg" id="err-email">Please enter a valid email address.</p>
+                </div>
+              </div>
+              <div class="mb-5">
+                <label for="cf-subject" class="block text-sm font-semibold text-ambedkar-blue mb-1.5">Subject <span class="text-red-500">*</span></label>
+                <input type="text" id="cf-subject" name="subject" class="field" placeholder="What is this regarding?" />
+                <p class="error-msg" id="err-subject">Please enter a subject.</p>
+              </div>
+              <div class="mb-6">
+                <label for="cf-message" class="block text-sm font-semibold text-ambedkar-blue mb-1.5">Message <span class="text-red-500">*</span></label>
+                <textarea id="cf-message" name="message" rows="5" class="field resize-none" placeholder="Your message…"></textarea>
+                <p class="error-msg" id="err-message">Please enter a message (at least 10 characters).</p>
+              </div>
+              <div id="form-result" class="mb-5" role="alert" aria-live="polite"></div>
+              <button type="submit" id="cf-submit" class="btn-primary w-full text-center">
+                Send Message
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ═══════════════════════ FOOTER ═══════════════════════ -->
+<footer class="text-slate-300" style="background:#0F1E2E;">
+  <div class="max-w-7xl mx-auto px-6 sm:px-8 py-12">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-10">
+
+      <!-- Brand -->
+      <div class="lg:col-span-2">
+        <div class="flex items-center gap-3 mb-4">
+          <img src="images/logo.jpg" alt="MALGOA" class="w-10 h-10 rounded-full border-2 border-bronze object-cover" />
+          <div>
+            <p class="font-heading font-bold text-white text-lg">MALGOA</p>
+            <p class="text-bronze text-xs tracking-wide">Mala Gazetted Officers Association</p>
+          </div>
+        </div>
+        <p class="text-sm leading-relaxed text-slate-400 max-w-xs">
+          A premier body of Gazetted Officers, elected representatives and senior professionals of the Mala community of Andhra Pradesh. Registered under Reg. No. 185/2025.
+        </p>
+        <div class="flex gap-3 mt-5">
+          <!-- TODO: Replace placeholder URLs with actual MALGOA social media profile links -->
+          <a href="https://facebook.com/" target="_blank" rel="noopener noreferrer"
+             class="w-8 h-8 bg-white/10 rounded flex items-center justify-center text-slate-300 hover:text-bronze hover:bg-white/20 transition-colors"
+             aria-label="Facebook">
+            <i data-lucide="facebook" class="w-4 h-4"></i>
+          </a>
+          <a href="https://instagram.com/" target="_blank" rel="noopener noreferrer"
+             class="w-8 h-8 bg-white/10 rounded flex items-center justify-center text-slate-300 hover:text-bronze hover:bg-white/20 transition-colors"
+             aria-label="Instagram">
+            <i data-lucide="instagram" class="w-4 h-4"></i>
+          </a>
+          <a href="https://x.com/" target="_blank" rel="noopener noreferrer"
+             class="w-8 h-8 bg-white/10 rounded flex items-center justify-center text-slate-300 hover:text-bronze hover:bg-white/20 transition-colors"
+             aria-label="X (Twitter)">
+            <i data-lucide="twitter" class="w-4 h-4"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Quick links -->
+      <div>
+        <h4 class="font-heading font-semibold text-white text-sm mb-4 tracking-wide uppercase">Navigate</h4>
+        <ul class="space-y-2 text-sm">
+          <li><button onclick="router('home')"             class="text-slate-400 hover:text-bronze transition-colors">Home</button></li>
+          <li><button onclick="router('heritage')"         class="text-slate-400 hover:text-bronze transition-colors">Heritage &amp; Origin</button></li>
+          <li><button onclick="router('leadership')"       class="text-slate-400 hover:text-bronze transition-colors">Leadership</button></li>
+          <li><button onclick="router('objectives')"       class="text-slate-400 hover:text-bronze transition-colors">Objectives</button></li>
+          <li><button onclick="router('patrons')"          class="text-slate-400 hover:text-bronze transition-colors">Patrons &amp; Well-Wishers</button></li>
+          <li><button onclick="router('theory-of-change')" class="text-slate-400 hover:text-bronze transition-colors">Theory of Change</button></li>
+          <li><button onclick="router('mandate')"          class="text-slate-400 hover:text-bronze transition-colors">Strategic Mandate</button></li>
+          <li><button onclick="router('media')"            class="text-slate-400 hover:text-bronze transition-colors">Media &amp; Milestones</button></li>
+          <li><button onclick="router('contact')"          class="text-slate-400 hover:text-bronze transition-colors">Contact</button></li>
+        </ul>
+      </div>
+
+      <!-- Event card -->
+      <div>
+        <h4 class="font-heading font-semibold text-white text-sm mb-4 tracking-wide uppercase">Inaugural Launch</h4>
+        <div class="bg-white/5 border border-white/10 rounded-lg p-4">
+          <div class="flex items-center gap-2 text-bronze mb-2">
+            <i data-lucide="calendar-check" class="w-4 h-4"></i>
+            <span class="font-heading font-semibold text-sm">7 June 2026</span>
+          </div>
+          <p class="text-white text-sm font-semibold mb-1">Website Launch &amp; First Anniversary</p>
+          <p class="text-slate-400 text-xs">Tadepalli, Guntur, AP</p>
+          <button onclick="openJoin()" class="btn-cta text-xs px-4 py-2 mt-4 block w-full text-center">
+            Apply for Membership
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
+      <p>&copy; 2026 MALGOA - Mala Gazetted Officers Association of Andhra Pradesh. Reg. No. 185/2025. All rights reserved.</p>
+      <p>Rooted in the constitutional ideals of Dr. B.R. Ambedkar.</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══════════════════════ JOIN US MODAL ═══════════════════════ -->
+<div id="join-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="join-title" aria-hidden="true">
+  <div class="modal-card p-8 sm:p-10">
+    <div class="flex items-start justify-between mb-2">
+      <h2 id="join-title" class="font-heading font-bold text-ambedkar-blue text-2xl">Apply for Membership</h2>
+      <button onclick="closeJoin()" class="text-text-muted hover:text-ambedkar-blue p-1 -mr-1" aria-label="Close membership form">
+        <i data-lucide="x" class="w-6 h-6"></i>
+      </button>
+    </div>
+    <p class="text-text-muted text-sm leading-relaxed mt-2 mb-6">
+      This portal encourages senior-level Government Officials and their associated professionals from the <strong class="text-ambedkar-blue">MALA (SC &amp; BC-C) community</strong> of Andhra Pradesh. All applications are manually verified by the State Body before activation.
+    </p>
+
+    <div id="join-success" class="modal-success" role="alert" aria-live="polite">
+      Your application has been received. A Board Member of MALGOA will manually verify your designation and activate your account within 3–5 working days. You will be notified via email.
+    </div>
+
+    <form id="join-form" novalidate>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+        <div>
+          <label for="jf-name" class="block text-sm font-semibold text-ambedkar-blue mb-1.5">Full Name <span class="text-red-500">*</span></label>
+          <input type="text" id="jf-name" name="name" class="field" placeholder="Your full name" autocomplete="name" />
+          <p class="error-msg" id="jerr-name">Please enter your full name.</p>
+        </div>
+        <div>
+          <label for="jf-email" class="block text-sm font-semibold text-ambedkar-blue mb-1.5">Email Address <span class="text-red-500">*</span></label>
+          <input type="email" id="jf-email" name="email" class="field" placeholder="you@example.com" autocomplete="email" />
+          <p class="error-msg" id="jerr-email">Please enter a valid email address.</p>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+        <div>
+          <label for="jf-mobile" class="block text-sm font-semibold text-ambedkar-blue mb-1.5">Mobile Number <span class="text-red-500">*</span></label>
+          <input type="tel" id="jf-mobile" name="mobile" class="field" placeholder="10-digit mobile" inputmode="numeric" autocomplete="tel" maxlength="10" />
+          <p class="error-msg" id="jerr-mobile">Please enter a valid 10-digit mobile number.</p>
+        </div>
+        <div>
+          <label for="jf-district" class="block text-sm font-semibold text-ambedkar-blue mb-1.5">District <span class="text-red-500">*</span></label>
+          <select id="jf-district" name="district" class="field">
+            <option value="">Select district…</option>
+            <option>Alluri Sitharama Raju</option>
+            <option>Anakapalli</option>
+            <option>Anantapur</option>
+            <option>Annamayya</option>
+            <option>Bapatla</option>
+            <option>Chittoor</option>
+            <option>Dr. B.R. Ambedkar Konaseema</option>
+            <option>East Godavari</option>
+            <option>Eluru</option>
+            <option>Guntur</option>
+            <option>Kakinada</option>
+            <option>Krishna</option>
+            <option>Kurnool</option>
+            <option>Markapuram</option>
+            <option>Nandyal</option>
+            <option>NTR</option>
+            <option>Palnadu</option>
+            <option>Parvathipuram Manyam</option>
+            <option>Polavaram</option>
+            <option>Prakasam</option>
+            <option>Sri Potti Sriramulu Nellore</option>
+            <option>Sri Sathya Sai</option>
+            <option>Srikakulam</option>
+            <option>Tirupati</option>
+            <option>Visakhapatnam</option>
+            <option>Vizianagaram</option>
+            <option>West Godavari</option>
+            <option>YSR Kadapa</option>
+          </select>
+          <p class="error-msg" id="jerr-district">Please select your district.</p>
+        </div>
+      </div>
+      <div class="mb-4">
+        <label for="jf-category" class="block text-sm font-semibold text-ambedkar-blue mb-1.5">Category / Designation <span class="text-red-500">*</span></label>
+        <select id="jf-category" name="category" class="field">
+          <option value="">Select category…</option>
+          <option>Gazetted Officer - Grade I</option>
+          <option>Gazetted Officer - Grade II</option>
+          <option>MLA / MP / Elected Representative</option>
+          <option>University Professor / Academic</option>
+          <option>Senior Government Advisor</option>
+          <option>Government Bank Official</option>
+          <option>Government Contract Officer</option>
+          <option>Other (please specify in message)</option>
+        </select>
+        <p class="error-msg" id="jerr-category">Please select your category or designation.</p>
+      </div>
+      <div class="mb-6">
+        <label for="jf-purpose" class="block text-sm font-semibold text-ambedkar-blue mb-1.5">Statement of Purpose <span class="text-text-muted font-normal">(optional)</span></label>
+        <textarea id="jf-purpose" name="purpose" rows="3" class="field resize-none" placeholder="A brief note on why you wish to join…"></textarea>
+      </div>
+      <button type="submit" id="jf-submit" class="btn-cta w-full text-center">Submit Application</button>
+    </form>
+  </div>
+</div>
+
+<!-- ═══════════════════════ MEMBER LOGIN MODAL ═══════════════════════ -->
+<div id="login-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="login-title" aria-hidden="true">
+  <div class="modal-card login p-8 sm:p-10">
+    <div class="flex items-start justify-between mb-2">
+      <h2 id="login-title" class="font-heading font-bold text-ambedkar-blue text-2xl">Member Login</h2>
+      <button onclick="closeLogin()" class="text-text-muted hover:text-ambedkar-blue p-1 -mr-1" aria-label="Close login form">
+        <i data-lucide="x" class="w-6 h-6"></i>
+      </button>
+    </div>
+    <p class="text-text-muted text-sm leading-relaxed mb-6">For approved officials. Sign in to access the members-only area.</p>
+    <form id="login-form" novalidate>
+      <div class="mb-4">
+        <label for="lf-email" class="block text-sm font-semibold text-ambedkar-blue mb-1.5">Email Address <span class="text-red-500">*</span></label>
+        <input type="email" id="lf-email" name="email" class="field" placeholder="you@example.com" autocomplete="email" />
+        <p class="error-msg" id="lerr-email">Please enter a valid email address.</p>
+      </div>
+      <div class="mb-2">
+        <label for="lf-password" class="block text-sm font-semibold text-ambedkar-blue mb-1.5">Password <span class="text-red-500">*</span></label>
+        <input type="password" id="lf-password" name="password" class="field" placeholder="Your password" autocomplete="current-password" />
+        <p class="error-msg" id="lerr-password">Please enter your password.</p>
+      </div>
+      <div class="text-right mb-6">
+        <a href="#" onclick="event.preventDefault();" class="text-sm text-bronze hover:text-ambedkar-blue">Forgot Password?</a>
+      </div>
+      <button type="submit" id="lf-submit" class="btn-primary w-full text-center">Sign In</button>
+    </form>
+  </div>
+</div>
+
+<!-- ═══════════════════════ LIGHTBOX ═══════════════════════ -->
+<div id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">
+  <button id="lightbox-close" onclick="closeLightbox()"
+          class="absolute top-4 right-4 text-white bg-white/10 hover:bg-white/20 rounded-full w-10 h-10 flex items-center justify-center transition-colors z-10"
+          aria-label="Close image viewer">
+    <i data-lucide="x" class="w-5 h-5"></i>
+  </button>
+  <button id="lightbox-prev" onclick="prevImage()"
+          class="absolute left-4 top-1/2 -translate-y-1/2 text-white bg-white/10 hover:bg-white/20 rounded-full w-10 h-10 flex items-center justify-center transition-colors z-10"
+          aria-label="Previous image">
+    <i data-lucide="chevron-left" class="w-5 h-5"></i>
+  </button>
+  <img id="lightbox-img" src="" alt="" class="select-none" />
+  <button id="lightbox-next" onclick="nextImage()"
+          class="absolute right-4 top-1/2 -translate-y-1/2 text-white bg-white/10 hover:bg-white/20 rounded-full w-10 h-10 flex items-center justify-center transition-colors z-10"
+          aria-label="Next image">
+    <i data-lucide="chevron-right" class="w-5 h-5"></i>
+  </button>
+  <p id="lightbox-counter" class="absolute bottom-4 left-1/2 -translate-x-1/2 text-white/60 text-sm font-heading" aria-live="polite"></p>
+</div>
+
+<script src="main.js"></script>
+</body>
+</html>
