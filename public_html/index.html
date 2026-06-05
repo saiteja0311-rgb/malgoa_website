@@ -6,6 +6,11 @@
   <meta name="description" content="MALGOA - the Mala Gazetted Officers Association of Andhra Pradesh (Reg. No. 185/2025). A premier body of Gazetted Officers, elected representatives and senior professionals of the Mala community, founded on the constitutional ideals of Dr. B.R. Ambedkar." />
   <title>MALGOA - Mala Gazetted Officers Association</title>
 
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="images/logo.PNG" />
+  <link rel="icon" type="image/png" sizes="16x16" href="images/logo.PNG" />
+  <link rel="apple-touch-icon" href="images/logo.PNG" />
+
   <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -14,7 +19,7 @@
         extend: {
           colors: {
             /* ── Constitutional & Historic palette (locked - Part 2.1) ── */
-            'ambedkar-blue': '#003F7F',
+            'ambedkar-blue': '#1565C0',
             'navy-deep':     '#0F1E2E',
             bronze:          '#B8962E',
             'bronze-light':  '#D4B043',
@@ -30,8 +35,9 @@
             muted:  '#6b7280',
           },
           fontFamily: {
-            heading: ['Playfair Display', 'serif'],
-            body:    ['Inter', 'sans-serif'],
+            heading: ['Urbanist', 'sans-serif'],
+            body:    ['Figtree', 'system-ui', 'sans-serif'],
+            display: ['Urbanist', 'sans-serif'],
           },
         }
       }
@@ -41,24 +47,32 @@
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800&family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest" defer></script>
 
   <style>
     body {
-      font-family: 'Inter', sans-serif;
+      font-family: 'Figtree', system-ui, sans-serif;
       background: #ffffff;
       color: #1A1A1A;
       font-size: 16px;
-      line-height: 1.85;          /* document-grade readability */
-      letter-spacing: 0.01em;
+      line-height: 1.75;
+      letter-spacing: 0;
     }
     h1,h2,h3,h4,h5,h6 {
-      font-family: 'Playfair Display', serif;
+      font-family: 'Urbanist', sans-serif;
       line-height: 1.2;
-      letter-spacing: normal;
+      letter-spacing: -0.01em;
+      font-weight: 600;
+    }
+    h1 { font-weight: 700; }
+    h2 { font-weight: 600; }
+    .font-display {
+      font-family: 'Urbanist', sans-serif;
+      font-style: normal;
+      font-weight: 600;
     }
 
     /* Page routing */
@@ -83,12 +97,22 @@
     @keyframes spin { to { transform: rotate(360deg); } }
 
     /* Nav */
-    #main-nav { transition: box-shadow 0.2s; }
-    #main-nav.scrolled { box-shadow: 0 2px 14px rgba(0,63,127,0.28); }
+    #main-nav {
+      background: rgba(15, 30, 46, 0.85);
+      backdrop-filter: blur(12px) saturate(150%);
+      -webkit-backdrop-filter: blur(12px) saturate(150%);
+      transition: all 0.3s ease;
+      border-bottom: 1px solid transparent;
+    }
+    #main-nav.scrolled {
+      background: rgba(15, 30, 46, 0.95);
+      border-bottom-color: rgba(184,150,46,0.2);
+      box-shadow: 0 4px 24px rgba(21,101,192,0.12);
+    }
     .nav-link {
       position: relative; font-weight: 500; font-size: 0.875rem;
       color: #cdd9e6; transition: color 0.2s;
-      font-family: 'Inter', sans-serif; background: transparent; cursor: pointer;
+      font-family: 'Figtree', system-ui, sans-serif; background: transparent; cursor: pointer;
     }
     .nav-link:hover { color: #D4B043; }
     .nav-link::after {
@@ -108,8 +132,8 @@
       min-height: 100vh;
       background:
         radial-gradient(ellipse at top right, rgba(184,150,46,0.10) 0%, transparent 55%),
-        radial-gradient(ellipse at bottom left, rgba(0,63,127,0.55) 0%, transparent 60%),
-        linear-gradient(135deg, #0F1E2E 0%, #003F7F 55%, #0F1E2E 100%);
+        radial-gradient(ellipse at bottom left, rgba(21,101,192,0.55) 0%, transparent 60%),
+        linear-gradient(135deg, #0F1E2E 0%, #1565C0 55%, #0F1E2E 100%);
       display: flex; align-items: center;
       position: relative;
       overflow: hidden;
@@ -124,17 +148,74 @@
       pointer-events: none;
       opacity: 0.6;
     }
+    .hero-bg::after {
+      content: '';
+      position: absolute; top: 0; right: 0; bottom: 0;
+      width: 56%;
+      background: url('images/ambedkar-bg.jpg') no-repeat right center;
+      background-size: contain;
+      opacity: 0.12;
+      mix-blend-mode: luminosity;
+      pointer-events: none;
+      -webkit-mask-image: linear-gradient(to left, rgba(0,0,0,1) 35%, transparent 100%);
+      mask-image: linear-gradient(to left, rgba(0,0,0,1) 35%, transparent 100%);
+      animation: ambedkarDrift 22s ease-in-out infinite;
+    }
+    @keyframes ambedkarDrift {
+      0%, 100% { transform: translateY(0) scale(1);     opacity: 0.11; }
+      50%      { transform: translateY(-16px) scale(1.04); opacity: 0.18; }
+    }
     .hero-bg > * { position: relative; z-index: 1; }
+
+    /* Background video slideshow (home hero) */
+    .hero-video-layer {
+      position: absolute; inset: 0;
+      z-index: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .hero-video-layer video {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 1.2s ease-in-out;
+    }
+    .hero-video-layer video.is-active { opacity: 1; }
+    /* Readability scrim so hero text stays legible over footage */
+    .hero-video-scrim {
+      position: absolute; inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(135deg, rgba(15,30,46,0.86) 0%, rgba(21,101,192,0.62) 55%, rgba(15,30,46,0.88) 100%);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .hero-video-layer video { transition: none; }
+    }
+
+    /* Ambedkar / heritage portrait watermark for dark sections */
+    .ambedkar-watermark {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: min(640px, 82%);
+      opacity: 0.06;
+      filter: grayscale(1) brightness(1.7) contrast(1.1);
+      mix-blend-mode: screen;
+      pointer-events: none;
+      z-index: 0;
+      animation: ambedkarDrift 26s ease-in-out infinite;
+    }
 
     /* Cards */
     .card {
       background: #fff;
       border: 1px solid #E8E3D7;
       border-radius: 0.5rem;
-      box-shadow: 0 1px 5px rgba(0,63,127,0.05);
+      box-shadow: 0 1px 5px rgba(21,101,192,0.05);
       transition: box-shadow 0.2s, transform 0.2s;
     }
-    .card:hover { box-shadow: 0 8px 24px rgba(0,63,127,0.12); transform: translateY(-2px); }
+    .card:hover { box-shadow: 0 8px 24px rgba(21,101,192,0.12); transform: translateY(-2px); }
     .top-bronze { border-top: 4px solid #B8962E; }
 
     /* Avatars */
@@ -155,7 +236,7 @@
     /* Heritage scholarly layout */
     .heritage-prose { max-width: 72ch; }
     .heritage-prose p { margin-bottom: 1.4rem; }
-    .heritage-prose h3 { color: #003F7F; font-size: 1.5rem; margin: 2.75rem 0 0.75rem; }
+    .heritage-prose h3 { color: #1565C0; font-size: 1.5rem; margin: 2.75rem 0 0.75rem; }
     .heritage-eyebrow { color: #B8962E; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; font-size: .78rem; }
     .ornament { display: flex; align-items: center; gap: .75rem; margin: 0.9rem 0 2.25rem; }
     .ornament::before, .ornament::after { content: ''; height: 1px; flex: 1; }
@@ -164,18 +245,53 @@
     .ornament i { color: #B8962E; }
     .pull-quote {
       border-left: 3px solid #B8962E; padding: .35rem 0 .35rem 1.5rem; margin: 1.75rem 0;
-      font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.3rem;
-      color: #003F7F; line-height: 1.6;
+      font-family: 'Urbanist', sans-serif; font-style: normal; font-size: 1.3rem;
+      color: #1565C0; line-height: 1.6;
     }
     blockquote.verbatim { border-left: 3px solid #E8E3D7; padding-left: 1.5rem; margin: 1.25rem 0; color: #3a3a3a; }
+    blockquote.verbatim::before { content: 'In their own words'; display: block; font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; color: #B8962E; font-weight: 600; margin-bottom: .6rem; }
+    .lead-narrative { font-family: 'Urbanist', sans-serif; font-size: 1.42rem; line-height: 1.55; color: #0F1E2E; margin-bottom: 1.6rem; }
+    .heritage-step { color: #B8962E; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; font-size: .72rem; margin: 0 0 -0.4rem; }
     .heritage-illustration { width: 100%; display: flex; justify-content: center; margin: 2.5rem 0 2rem; }
     .heritage-illustration svg { height: 96px; width: auto; opacity: 0.95; }
     .heritage-illustration svg .accent { stroke: #B8962E; }
-    .heritage-illustration svg .primary { stroke: #003F7F; }
+    .heritage-illustration svg .primary { stroke: #1565C0; }
     .heritage-illustration svg .fill-accent { fill: #B8962E; }
-    .heritage-illustration svg .fill-primary { fill: #003F7F; }
-    .creed { background: #003F7F; color: #FAF7F2; border-radius: .6rem; padding: 2.25rem; margin: 2.75rem 0; }
-    .creed .q { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.3rem; line-height: 1.62; color: #D4B043; }
+    .heritage-illustration svg .fill-primary { fill: #1565C0; }
+    .creed { background: #1565C0; color: #FAF7F2; border-radius: .6rem; padding: 2.25rem; margin: 2.75rem 0; }
+    .creed .q { font-family: 'Urbanist', sans-serif; font-style: normal; font-size: 1.3rem; line-height: 1.62; color: #D4B043; }
+
+    /* Theory of Change - interactive cards */
+    .toc-card { cursor: pointer; transition: transform .35s cubic-bezier(.22,.61,.36,1), box-shadow .35s ease, border-color .35s ease; outline: none; }
+    .toc-card:hover, .toc-card:focus-visible { transform: translateY(-6px); box-shadow: 0 18px 40px -18px rgba(15,30,46,.35); }
+    .toc-card.is-active { border-color: #B8962E; box-shadow: 0 18px 44px -16px rgba(184,150,46,.45); }
+    .toc-card.is-active .toc-card-icon { background: #B8962E; }
+    .toc-card-icon { transition: background .35s ease; }
+
+    /* Theory of Change - convergence infographic */
+    .toc-infographic { background: linear-gradient(135deg,#FFFFFF, #FAF7F2); border: 1px solid #E8E3D7; border-radius: .75rem; padding: 2.5rem 2rem; margin-bottom: 2.5rem; }
+    .toc-streams { display: grid; grid-template-columns: 1fr; gap: 1.4rem; }
+    @media (min-width: 768px) { .toc-streams { grid-template-columns: repeat(3,1fr); gap: 2rem; } }
+    .toc-stream { transition: transform .3s ease, opacity .3s ease; }
+    .toc-stream-head { display: flex; align-items: center; gap: .55rem; margin-bottom: .65rem; color: #1565C0; font-weight: 700; font-family: 'Urbanist',sans-serif; }
+    .toc-stream-head i { width: 20px; height: 20px; color: #B8962E; }
+    .toc-meter { height: 12px; border-radius: 999px; background: #EAE4D6; overflow: hidden; }
+    .toc-meter-fill { display: block; height: 100%; width: 0; border-radius: 999px; background: linear-gradient(90deg,#1565C0,#3b86d6); }
+    .reveal.in-view .toc-meter-fill { animation: tocFill 1.3s cubic-bezier(.22,.61,.36,1) forwards; }
+    .reveal.in-view .toc-meter-fill.f2 { animation-delay: .2s; }
+    .reveal.in-view .toc-meter-fill.f3 { animation-delay: .4s; }
+    @keyframes tocFill { from { width: 0; } to { width: 100%; } }
+    .toc-stream-val { margin-top: .5rem; font-size: .85rem; color: #6b6b6b; letter-spacing: .02em; }
+    .toc-stream.dim { opacity: .4; }
+    .toc-stream.pop { transform: scale(1.04); }
+    .toc-converge { display: flex; justify-content: center; margin: 1.5rem 0 1.25rem; }
+    .toc-converge i { width: 28px; height: 28px; color: #B8962E; }
+    .reveal.in-view .toc-converge i { animation: tocBob 1.6s ease-in-out infinite; animation-delay: .7s; }
+    @keyframes tocBob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
+    .toc-result { display: flex; align-items: center; justify-content: center; gap: .75rem; background: #1565C0; color: #FAF7F2; border-radius: .6rem; padding: 1.1rem 1.5rem; font-family: 'Urbanist',sans-serif; font-weight: 700; font-size: 1.25rem; }
+    .toc-result i { width: 26px; height: 26px; color: #D4B043; }
+    .reveal.in-view .toc-result { animation: tocPop .6s cubic-bezier(.22,.61,.36,1) backwards; animation-delay: .9s; }
+    @keyframes tocPop { from { opacity: 0; transform: scale(.92); } to { opacity: 1; transform: scale(1); } }
 
     /* Reveal-on-scroll */
     @keyframes fadeSlideUp { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
@@ -194,11 +310,11 @@
     .gallery-thumb:hover img { transform: scale(1.06); }
     .tab-btn {
       padding: 0.5rem 1.25rem; border-radius: 0.375rem;
-      font-family: 'Inter', sans-serif; font-weight: 600; font-size: 0.875rem;
-      border: 2px solid #003F7F; color: #003F7F;
+      font-family: 'Figtree', system-ui, sans-serif; font-weight: 600; font-size: 0.875rem;
+      border: 2px solid #1565C0; color: #1565C0;
       transition: background 0.18s, color 0.18s; cursor: pointer; background: #fff;
     }
-    .tab-btn.active { background: #003F7F; color: #fff; }
+    .tab-btn.active { background: #1565C0; color: #fff; }
     .tab-btn:hover:not(.active) { background: #eef3f8; }
 
     /* Lightbox */
@@ -214,10 +330,10 @@
     .field {
       width: 100%; padding: 0.72rem 1rem;
       border: 1.5px solid #d8d2c4; border-radius: 0.375rem;
-      outline: none; font-family: 'Inter', sans-serif;
+      outline: none; font-family: 'Figtree', system-ui, sans-serif;
       transition: border-color 0.18s, box-shadow 0.18s; background: #fff; color: #1A1A1A;
     }
-    .field:focus { border-color: #003F7F; box-shadow: 0 0 0 3px rgba(0,63,127,0.10); }
+    .field:focus { border-color: #1565C0; box-shadow: 0 0 0 3px rgba(21,101,192,0.10); }
     .field.field-error { border-color: #dc2626; }
     select.field {
       appearance: none;
@@ -233,42 +349,38 @@
     /* Section rule */
     .section-rule { width: 3rem; height: 3px; background: #B8962E; border-radius: 2px; margin: 0.75rem 0 1.5rem; }
 
-    /* Announcement strip */
-    .announce-strip { background: #003F7F; color: #FAF7F2; }
-    .announce-strip strong { color: #D4B043; }
-
     /* Focus visible */
     *:focus-visible { outline: 2px solid #B8962E; outline-offset: 2px; }
 
     /* Buttons */
     .btn-primary {
-      display: inline-block; background: #003F7F; color: #ffffff;
-      font-family: 'Inter', sans-serif; font-weight: 600; letter-spacing: 0.02em;
+      display: inline-block; background: #1565C0; color: #ffffff;
+      font-family: 'Figtree', system-ui, sans-serif; font-weight: 600; letter-spacing: 0.02em;
       padding: 0.72rem 1.75rem; border-radius: 0.375rem;
       transition: background 0.18s, box-shadow 0.18s; cursor: pointer; border: none;
     }
     .btn-primary:hover { background: #B8962E; box-shadow: 0 4px 14px rgba(184,150,46,0.35); }
     .btn-cta {
       display: inline-block; background: #B8962E; color: #0F1E2E;
-      font-family: 'Inter', sans-serif; font-weight: 600; letter-spacing: 0.02em;
+      font-family: 'Figtree', system-ui, sans-serif; font-weight: 600; letter-spacing: 0.02em;
       padding: 0.72rem 1.75rem; border-radius: 0.375rem;
       transition: background 0.18s, box-shadow 0.18s; cursor: pointer; border: none;
     }
     .btn-cta:hover { background: #D4B043; box-shadow: 0 4px 14px rgba(184,150,46,0.40); }
     .btn-outline {
       display: inline-block; border: 2px solid #B8962E; color: #B8962E; background: transparent;
-      font-family: 'Inter', sans-serif; font-weight: 600; letter-spacing: 0.02em;
+      font-family: 'Figtree', system-ui, sans-serif; font-weight: 600; letter-spacing: 0.02em;
       padding: 0.65rem 1.6rem; border-radius: 0.375rem;
       transition: background 0.18s, color 0.18s; cursor: pointer;
     }
     .btn-outline:hover { background: #B8962E; color: #ffffff; }
     .btn-navy {
       display: inline-block; border: 2px solid #fff; color: #fff; background: transparent;
-      font-family: 'Inter', sans-serif; font-weight: 600; letter-spacing: 0.02em;
+      font-family: 'Figtree', system-ui, sans-serif; font-weight: 600; letter-spacing: 0.02em;
       padding: 0.65rem 1.6rem; border-radius: 0.375rem;
       transition: background 0.18s, color 0.18s; cursor: pointer;
     }
-    .btn-navy:hover { background: #fff; color: #003F7F; }
+    .btn-navy:hover { background: #fff; color: #1565C0; }
 
     /* Modals */
     .modal-overlay {
@@ -284,15 +396,308 @@
       color: #1A1A1A; border-radius: 0.5rem; padding: 1rem 1.15rem;
     }
     .modal-success.show { display: block; }
+
+    /* Subtle weight/optical-size animation on hero headlines */
+    @keyframes heroSettle {
+      from { opacity: 0; letter-spacing: 0.05em; transform: translateY(10px); }
+      to   { opacity: 1; letter-spacing: -0.01em; transform: translateY(0); }
+    }
+    .hero-headline { animation: heroSettle 1.1s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+    /* Section headings settle in as they scroll into view */
+    .fraunces-reveal {
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .fraunces-reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── Launch overlay ───────────────────────────────────────────── */
+    #launch-overlay {
+      position: fixed; inset: 0; z-index: 10000;
+      background: radial-gradient(ellipse at center, #0d1b2e 0%, #020b14 100%);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 1.5rem; text-align: center; padding: 2rem;
+      transition: opacity 0.8s ease, visibility 0.8s ease;
+    }
+    #launch-overlay.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+    .launch-ring {
+      width: 180px; height: 180px; border-radius: 50%;
+      border: 4px solid rgba(184,150,46,0.25);
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+    }
+    .launch-ring svg.ring-progress {
+      position: absolute; inset: -6px; width: calc(100% + 12px); height: calc(100% + 12px);
+      transform: rotate(-90deg);
+    }
+    .launch-ring svg.ring-progress circle {
+      fill: none; stroke: #B8962E; stroke-width: 4;
+      stroke-linecap: round;
+      transition: stroke-dashoffset 0.95s linear;
+    }
+    #launch-count {
+      font-family: 'Urbanist', sans-serif; font-size: 5rem; font-weight: 800;
+      color: #fff; line-height: 1;
+    }
+    #launch-label {
+      font-family: 'Figtree', system-ui, sans-serif; font-size: 0.85rem;
+      color: #B8962E; letter-spacing: 0.2em; text-transform: uppercase;
+    }
+    #launch-title {
+      font-family: 'Urbanist', sans-serif; font-size: clamp(1.4rem, 4vw, 2.5rem);
+      font-weight: 700; color: #fff; max-width: 560px;
+    }
+    #launch-sub {
+      font-family: 'Figtree', system-ui, sans-serif; font-size: 1rem;
+      color: rgba(255,255,255,0.55); max-width: 440px; line-height: 1.6;
+    }
+    /* Phase containers */
+    #lo-phase-btn, #lo-phase-count, #lo-phase-logo { display: none; flex-direction: column; align-items: center; gap: 1.2rem; }
+    #lo-phase-btn.lo-active, #lo-phase-count.lo-active, #lo-phase-logo.lo-active { display: flex; }
+
+    /* Phase 1 - Launch button */
+    #launch-btn {
+      margin-top: 0.5rem; background: linear-gradient(135deg, #B8962E 0%, #D4B043 100%);
+      border: none; color: #0F1E2E; font-family: 'Urbanist', sans-serif;
+      font-size: 1.15rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+      padding: 0.9rem 2.8rem; border-radius: 0.5rem; cursor: pointer;
+      box-shadow: 0 0 0 0 rgba(212,176,67,0.6);
+      animation: loBtnPulse 2s ease-in-out infinite;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    #launch-btn:hover { transform: scale(1.04); box-shadow: 0 0 28px rgba(212,176,67,0.5); animation: none; }
+    @keyframes loBtnPulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(212,176,67,0.6); }
+      50%       { box-shadow: 0 0 0 14px rgba(212,176,67,0); }
+    }
+
+    /* Phase 3 - Logo animation */
+    .lo-logo-pre { opacity: 0; transform: scale(0.5); }
+    .lo-logo-animate { animation: loLogoIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+    .lo-brandname { opacity: 0; animation: loFadeUp 0.5s ease 0.6s forwards; font-family: 'Urbanist', sans-serif; font-size: clamp(2rem, 6vw, 3.5rem); font-weight: 800; letter-spacing: 0.12em; color: #fff; }
+    .lo-brandtag  { opacity: 0; animation: loFadeUp 0.5s ease 0.9s forwards; font-family: 'Figtree', system-ui, sans-serif; font-size: 0.9rem; color: rgba(255,255,255,0.5); letter-spacing: 0.18em; text-transform: uppercase; }
+    @keyframes loLogoIn {
+      0%   { opacity: 0; transform: scale(0.4) rotate(-8deg); }
+      60%  { opacity: 1; transform: scale(1.12) rotate(2deg); }
+      100% { opacity: 1; transform: scale(1) rotate(0deg); }
+    }
+    @keyframes loFadeUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Skip link */
+    .lo-skip {
+      margin-top: 0.25rem; background: transparent; border: 1px solid rgba(255,255,255,0.2);
+      color: rgba(255,255,255,0.45); font-family: 'Figtree', system-ui, sans-serif;
+      font-size: 0.8rem; padding: 0.45rem 1.25rem; border-radius: 0.3rem; cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .lo-skip:hover { border-color: rgba(255,255,255,0.5); color: rgba(255,255,255,0.8); }
+
+    /* ── Leaders carousel ─────────────────────────────────────────── */
+    .carousel-track {
+      display: flex;
+      width: max-content;
+      animation: carouselScroll 32s linear infinite;
+    }
+    .carousel-track:hover { animation-play-state: paused; }
+    @keyframes carouselScroll {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ── Background textures and section dividers ─────────────────── */
+    .bg-grain { position: relative; }
+    .bg-grain::after {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.05 0 0 0 0 0.05 0 0 0 0 0.05 0 0 0 0.08 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+      opacity: 0.4;
+      pointer-events: none;
+      mix-blend-mode: multiply;
+    }
+
+    .bg-dot-grid {
+      background-image: radial-gradient(rgba(184,150,46,0.18) 1px, transparent 1px);
+      background-size: 32px 32px;
+      background-position: 0 0;
+    }
+
+    .bg-topo {
+      background-image:
+        repeating-linear-gradient(
+          120deg,
+          transparent 0,
+          transparent 18px,
+          rgba(184,150,46,0.06) 18px,
+          rgba(184,150,46,0.06) 19px
+        );
+    }
+
+    .divider-angled { position: relative; height: 64px; overflow: hidden; }
+    .divider-angled::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(105deg,
+        transparent 0%, transparent 49%,
+        rgba(184,150,46,0.3) 49.5%, rgba(184,150,46,0.3) 50.5%,
+        transparent 51%, transparent 100%);
+    }
+
+    .accent-blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.5;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .accent-blob-bronze { background: radial-gradient(circle, #B8962E 0%, transparent 70%); }
+    .accent-blob-blue   { background: radial-gradient(circle, #1565C0 0%, transparent 70%); }
+
+    /* ── Animated stat counter ────────────────────────────────────── */
+    .stat-counter {
+      display: inline-block;
+      font-family: 'Urbanist', sans-serif;
+      font-weight: 700;
+    }
+
+    /* ── Card hover micro-interactions ────────────────────────────── */
+    .card-lift {
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                  box-shadow 0.35s ease,
+                  border-color 0.35s ease;
+      will-change: transform;
+    }
+    .card-lift:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 24px 48px -16px rgba(21,101,192,0.18);
+      border-color: rgba(184,150,46,0.4);
+    }
+    .card-lift:hover .card-icon { transform: scale(1.08) rotate(-2deg); color: #B8962E; }
+    .card-icon { transition: transform 0.35s ease, color 0.35s ease; }
+
+    /* ── Scroll-triggered section reveals ─────────────────────────── */
+    .reveal-up {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal-up.visible { opacity: 1; transform: translateY(0); }
+
+    .reveal-stagger > * { opacity: 0; transform: translateY(20px); }
+    .reveal-stagger.visible > * { animation: staggerIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    .reveal-stagger.visible > *:nth-child(1) { animation-delay: 0.05s; }
+    .reveal-stagger.visible > *:nth-child(2) { animation-delay: 0.15s; }
+    .reveal-stagger.visible > *:nth-child(3) { animation-delay: 0.25s; }
+    .reveal-stagger.visible > *:nth-child(4) { animation-delay: 0.35s; }
+    .reveal-stagger.visible > *:nth-child(5) { animation-delay: 0.45s; }
+    .reveal-stagger.visible > *:nth-child(6) { animation-delay: 0.55s; }
+    .reveal-stagger.visible > *:nth-child(7) { animation-delay: 0.65s; }
+    .reveal-stagger.visible > *:nth-child(8) { animation-delay: 0.75s; }
+    .reveal-stagger.visible > *:nth-child(9) { animation-delay: 0.85s; }
+    @keyframes staggerIn { to { opacity: 1; transform: translateY(0); } }
+
+    /* ── Cinematic page transition (fires whenever a page-section becomes active) ── */
+    .page-section.active { animation: pageIn 0.85s cubic-bezier(0.16, 1, 0.3, 1) both; }
+    @keyframes pageIn {
+      0%   { opacity: 0; transform: translateY(34px) scale(0.985); filter: blur(6px); }
+      60%  { opacity: 1; filter: blur(0); }
+      100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+    }
+    /* First child block of a freshly-activated page drops in just behind the section */
+    .page-section.active > *:first-child {
+      animation: pageLeadIn 0.95s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    @keyframes pageLeadIn {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Living background accents: slow drift on the bronze/blue blobs ── */
+    @keyframes blobFloat {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50%      { transform: translate(24px, -32px) scale(1.06); }
+    }
+    .accent-blob { animation: blobFloat 16s ease-in-out infinite; }
+    .accent-blob-blue { animation-duration: 21s; animation-direction: reverse; }
+
+    /* ── Image zoom-on-hover (editorial / tourism feel) ── */
+    .card { overflow: hidden; }
+    .card img { transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+    .card:hover img { transform: scale(1.06); }
+
+    /* ── Smoother CTA + nav-link motion ── */
+    .btn-cta, .btn-primary, .btn-outline, .btn-navy {
+      transition: background 0.25s ease, color 0.25s ease, box-shadow 0.25s ease, transform 0.25s cubic-bezier(0.16,1,0.3,1);
+    }
+    .btn-cta:hover, .btn-primary:hover { transform: translateY(-2px); }
+
+    /* ── Respect reduced-motion preference ── */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+        scroll-behavior: auto !important;
+      }
+      .reveal-up, .reveal-stagger > *, .fraunces-reveal { opacity: 1 !important; transform: none !important; }
+      /* Keep the leaders slideshow moving even under reduced motion (continuous, non-jarring) */
+      .carousel-track {
+        animation: carouselScroll 60s linear infinite !important;
+        animation-iteration-count: infinite !important;
+      }
+    }
   </style>
 </head>
 <body class="bg-white">
 
 <!-- ═══════════════════════ SPLASH ═══════════════════════ -->
 <div id="splash" role="status" aria-live="polite" aria-label="Loading MALGOA website">
-  <img src="images/logo.jpg" alt="MALGOA Logo" class="w-20 h-20 rounded-full border-4 border-bronze mb-6 object-cover" />
+  <img src="images/logo.PNG" alt="MALGOA - Mala Gazetted Officers Association" class="h-40 w-auto object-contain mb-6" />
   <p class="text-bronze font-heading font-bold text-lg tracking-widest mb-8">MALGOA</p>
   <div class="splash-spinner" aria-hidden="true"></div>
+</div>
+
+<!-- ═══════════════════ LAUNCH OVERLAY ══════════════════ -->
+<div id="launch-overlay" class="hidden" role="dialog" aria-modal="true" aria-label="Official website launch">
+
+  <!-- Phase 1: Button -->
+  <div id="lo-phase-btn" class="lo-active">
+    <p id="launch-title">MALGOA - Official Launch</p>
+    <p id="launch-sub">Mala Gazetted Officers Association of Andhra Pradesh</p>
+    <button id="launch-btn" onclick="window.MALGOA_LAUNCH.beginCountdown()">Launch</button>
+    <button class="lo-skip" onclick="window.MALGOA_LAUNCH.dismiss()">Skip</button>
+  </div>
+
+  <!-- Phase 2: Countdown ring -->
+  <div id="lo-phase-count">
+    <p id="launch-title-2">MALGOA - Official Launch</p>
+    <div class="launch-ring">
+      <svg class="ring-progress" viewBox="0 0 192 192" aria-hidden="true">
+        <circle id="launch-ring-circle" cx="96" cy="96" r="88" />
+      </svg>
+      <div>
+        <div id="launch-count">10</div>
+        <div id="launch-label">seconds</div>
+      </div>
+    </div>
+    <button class="lo-skip" onclick="window.MALGOA_LAUNCH.dismiss()">Skip</button>
+  </div>
+
+  <!-- Phase 3: Logo reveal -->
+  <div id="lo-phase-logo">
+    <img src="images/logo.PNG" alt="MALGOA" class="h-36 w-auto object-contain lo-logo-pre" id="lo-logo-img" />
+    <p class="lo-brandname">MALGOA</p>
+    <p class="lo-brandtag">Mala Gazetted Officers Association · AP</p>
+  </div>
+
 </div>
 
 <!-- ═══════════════════════ NAVIGATION ═══════════════════ -->
@@ -302,13 +707,14 @@
 
       <!-- Logo -->
       <button onclick="router('home')" class="flex items-center gap-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-bronze rounded">
-        <img src="images/logo.jpg" alt="MALGOA" class="w-9 h-9 rounded-full border-2 border-bronze object-cover" />
+        <img src="images/logo.PNG" alt="MALGOA - Mala Gazetted Officers Association" class="h-12 w-auto object-contain" />
         <span class="font-heading font-bold text-white text-lg tracking-wide hidden sm:block">MALGOA</span>
       </button>
 
       <!-- Desktop nav -->
       <div class="hidden xl:flex items-center gap-5" role="menubar">
         <button class="nav-link" data-page="home"             role="menuitem">Home</button>
+        <button class="nav-link" data-page="legacy"           role="menuitem">Our Legacy</button>
         <button class="nav-link" data-page="heritage"         role="menuitem">Heritage</button>
         <button class="nav-link" data-page="leadership"       role="menuitem">Leadership</button>
         <button class="nav-link" data-page="objectives"       role="menuitem">Objectives</button>
@@ -318,9 +724,6 @@
         <button class="nav-link" data-page="media"            role="menuitem">Media</button>
         <button class="nav-link" data-page="contact"          role="menuitem">Contact</button>
         <span class="w-px h-5 bg-white/20" aria-hidden="true"></span>
-        <button onclick="openLogin()" class="flex items-center gap-1.5 text-slate-300 hover:text-bronze-light text-sm transition-colors" aria-label="Member login">
-          <i data-lucide="log-in" class="w-4 h-4"></i> Member Login
-        </button>
         <button onclick="openJoin()" class="btn-cta" style="padding:.5rem 1.2rem; font-size:.875rem;">Join Us</button>
       </div>
 
@@ -336,6 +739,7 @@
   <div id="mobile-menu" class="xl:hidden bg-navy-deep border-t border-white/10" aria-hidden="true" role="menu">
     <div class="px-4 py-3 flex flex-col gap-1">
       <button class="nav-link text-left py-2.5 px-3 rounded hover:bg-white/5" data-page="home"             role="menuitem">Home</button>
+      <button class="nav-link text-left py-2.5 px-3 rounded hover:bg-white/5" data-page="legacy"           role="menuitem">Our Legacy</button>
       <button class="nav-link text-left py-2.5 px-3 rounded hover:bg-white/5" data-page="heritage"         role="menuitem">Heritage &amp; Origin</button>
       <button class="nav-link text-left py-2.5 px-3 rounded hover:bg-white/5" data-page="leadership"       role="menuitem">Leadership</button>
       <button class="nav-link text-left py-2.5 px-3 rounded hover:bg-white/5" data-page="objectives"       role="menuitem">Objectives</button>
@@ -345,9 +749,6 @@
       <button class="nav-link text-left py-2.5 px-3 rounded hover:bg-white/5" data-page="media"            role="menuitem">Media &amp; Milestones</button>
       <button class="nav-link text-left py-2.5 px-3 rounded hover:bg-white/5" data-page="contact"          role="menuitem">Contact</button>
       <div class="border-t border-white/10 my-2"></div>
-      <button onclick="openLogin()" class="nav-link text-left py-2.5 px-3 rounded hover:bg-white/5 flex items-center gap-2" role="menuitem">
-        <i data-lucide="log-in" class="w-4 h-4"></i> Member Login
-      </button>
       <button onclick="openJoin()" class="btn-cta text-center mt-1">Join Us</button>
     </div>
   </div>
@@ -359,28 +760,30 @@
   <!-- ──────────────── HOME ──────────────── -->
   <section id="home" class="page-section" aria-label="Home">
 
-    <!-- Launch announcement strip -->
-    <div class="announce-strip">
-      <div class="max-w-7xl mx-auto px-6 sm:px-8 py-2.5 text-center text-sm leading-snug">
-        <i data-lucide="megaphone" class="inline-block w-4 h-4 align-text-bottom mr-1"></i>
-        <strong>Official Website Launch - 7 June 2026, Tadepalli, Guntur.</strong>
-        Celebrating the first anniversary of the historic Karakatta General Body Meeting.
-      </div>
-    </div>
-
     <!-- Hero -->
     <div class="hero-bg">
+      <!-- Background video slideshow (cycles short clips; muted, autoplay, loops to next) -->
+      <div class="hero-video-layer" id="heroVideoLayer" aria-hidden="true">
+        <video data-hero-video src="videos/hero-clip-1.mp4" muted playsinline preload="auto" class="is-active"></video>
+        <video data-hero-video src="videos/hero-clip-2.mp4" muted playsinline preload="none"></video>
+        <video data-hero-video src="videos/hero-clip-3.mp4" muted playsinline preload="none"></video>
+        <video data-hero-video src="videos/hero-clip-4.mp4" muted playsinline preload="none"></video>
+        <video data-hero-video src="videos/hero-clip-5.mp4" muted playsinline preload="none"></video>
+      </div>
+      <div class="hero-video-scrim" aria-hidden="true"></div>
+      <div class="accent-blob accent-blob-bronze" style="position:absolute; top:-100px; right:-120px; width:380px; height:380px; z-index:0;"></div>
+      <div class="accent-blob accent-blob-blue" style="position:absolute; bottom:-80px; left:-100px; width:320px; height:320px; z-index:0;"></div>
       <div class="max-w-7xl mx-auto px-6 sm:px-8 w-full py-20">
         <div class="max-w-3xl">
           <p class="heritage-eyebrow mb-5" style="color:#D4B043;">Mala Gazetted Officers Association of Andhra Pradesh</p>
-          <h1 class="text-white mb-6 tracking-tight whitespace-nowrap" style="line-height:1.1; font-size:clamp(1.65rem, 7vw, 4.5rem);">
-            Unity &nbsp;Dignity &nbsp;Equity
+          <h1 class="text-white mb-6 tracking-tight whitespace-nowrap hero-headline" style="line-height:1.1; font-size:clamp(1.65rem, 7vw, 4.5rem);">
+            Unity. &nbsp;Dignity. &nbsp;Equity
           </h1>
           <p class="text-slate-200 text-lg leading-relaxed mb-9" style="max-width:64ch;">
             Founded on the constitutional ideals of Dr. B.R. Ambedkar. An inclusive hub for Government Officers, MPs, MLAs, Academicians, Government Consultants, Senior Contract Officials and associated professionals of Andhra's 2nd largest community.
           </p>
           <div class="flex flex-wrap gap-4">
-            <button onclick="openJoin()" class="btn-cta">Apply for Membership</button>
+            <button onclick="openJoin()" class="btn-cta">Enroll with Us</button>
             <button onclick="router('heritage')" class="btn-navy">Read Our Heritage</button>
           </div>
         </div>
@@ -397,7 +800,7 @@
         </div>
         <div>
           <i data-lucide="users" class="w-7 h-7 text-bronze mx-auto mb-3"></i>
-          <p class="font-heading text-ambedkar-blue text-xl">460+ Officers United</p>
+          <p class="font-heading text-ambedkar-blue text-xl"><span class="stat-counter" data-target="460">460</span>+ Officers United</p>
           <p class="text-text-muted text-sm mt-1">State General Body, Karakatta</p>
         </div>
         <div>
@@ -409,12 +812,12 @@
     </div>
 
     <!-- Purpose / mission -->
-    <div class="bg-white py-20">
+    <div class="bg-white bg-grain py-20">
       <div class="max-w-3xl mx-auto px-6 sm:px-8 text-center">
         <p class="heritage-eyebrow mb-4">Our Purpose</p>
         <h2 class="text-ambedkar-blue text-3xl sm:text-4xl mb-6">A Collective Strategic Voice</h2>
         <p class="text-text-muted text-lg leading-relaxed">
-          A collective strategic voice for Mala Governmental Officials and Public Representatives - uniting administrative service, legislative leadership, academic scholarship and senior professional expertise into a single institutional platform of the Mala (SC &amp; BC-C) community of Andhra Pradesh.
+          A collective strategic voice for Mala Governmental Officials and Public Representatives - uniting administrative service, legislative leadership, academic scholarship and senior professional expertise into a single institutional platform of the Mala (SC &amp; BC-C) community of Andhra Pradesh
         </p>
         <div class="flex flex-wrap justify-center gap-3 mt-8">
           <span class="inline-flex items-center gap-1.5 border border-divider rounded-full px-4 py-1.5 text-sm text-ambedkar-blue font-medium"><i data-lucide="target" class="w-4 h-4 text-bronze"></i>Realise</span>
@@ -426,18 +829,629 @@
       </div>
     </div>
 
-    <!-- Launch event card -->
-    <div class="bg-navy-deep py-16">
-      <div class="max-w-3xl mx-auto px-6 sm:px-8 text-center text-white">
-        <i data-lucide="calendar-check" class="w-8 h-8 text-bronze mx-auto mb-4"></i>
-        <p class="heritage-eyebrow mb-3" style="color:#D4B043;">Inaugural Launch</p>
-        <h2 class="text-white text-3xl sm:text-4xl mb-3">7 June 2026 &nbsp;·&nbsp; Tadepalli, Guntur</h2>
-        <p class="text-slate-300 leading-relaxed max-w-xl mx-auto mb-8">
-          The renewed digital home of MALGOA will be formally unveiled by an esteemed guest, marking the first anniversary of the historic State General Body Meeting at Karakatta.
-        </p>
-        <button onclick="openJoin()" class="btn-cta">Apply for Membership</button>
+    <!-- Prominent Leaders carousel -->
+    <div class="bg-navy-deep py-14 overflow-hidden relative">
+      <!-- Dr. B.R. Ambedkar heritage watermark -->
+      <img src="images/ambedkar-bg.jpg" alt="" aria-hidden="true" class="ambedkar-watermark" loading="lazy" />
+      <div class="max-w-7xl mx-auto px-6 sm:px-8 mb-8 text-center reveal-up relative z-10">
+        <p class="heritage-eyebrow" style="color:#D4B043;">Prominent Mala Leaders</p>
+        <h2 class="text-white text-2xl sm:text-3xl mt-1">Voices That Shaped the People</h2>
+      </div>
+      <!-- Fade edges -->
+      <div class="pointer-events-none absolute inset-y-0 left-0 w-24 z-10" style="background:linear-gradient(to right,#0F1E2E,transparent);"></div>
+      <div class="pointer-events-none absolute inset-y-0 right-0 w-24 z-10" style="background:linear-gradient(to left,#0F1E2E,transparent);"></div>
+
+      <div class="overflow-hidden relative z-10">
+        <div class="carousel-track">
+          <!-- Set 1 -->
+          <div class="flex-shrink-0 w-56 mx-4 bg-white/5 border border-white/10 rounded-xl p-6 text-center">
+            <img src="images/legacy-bhagya-reddy-varma.jpg" alt="Bhagya Reddy Varma" class="w-20 h-20 mx-auto mb-4 rounded-full object-cover object-top border-2 border-bronze/40" loading="lazy" />
+            <p class="text-white font-semibold text-sm leading-snug">Bhagya Reddy Varma</p>
+            <p class="text-bronze-light text-xs mt-1">Dalit Reformer </p>
+          </div>
+          <div class="flex-shrink-0 w-56 mx-4 bg-white/5 border border-white/10 rounded-xl p-6 text-center">
+            <img src="images/legacy-g-venkat-swamy.jpg" alt="G. Venkat Swamy" class="w-20 h-20 mx-auto mb-4 rounded-full object-cover object-top border-2 border-bronze/40" loading="lazy" />
+            <p class="text-white font-semibold text-sm leading-snug">G. Venkat Swamy "Kaka"</p>
+            <p class="text-bronze-light text-xs mt-1">MP & Union Minister </p>
+          </div>
+          <div class="flex-shrink-0 w-56 mx-4 bg-white/5 border border-white/10 rounded-xl p-6 text-center">
+            <img src="images/leader-mala-kannamadasu-card.jpg" alt="Mala Kannamadasu" class="w-20 h-20 mx-auto mb-4 rounded-full object-cover object-center border-2 border-bronze/40" loading="lazy" />
+            <p class="text-white font-semibold text-sm leading-snug">Mala Kannamadasu</p>
+            <p class="text-bronze-light text-xs mt-1">Warrior · 12th Century</p>
+          </div>
+          <div class="flex-shrink-0 w-56 mx-4 bg-white/5 border border-white/10 rounded-xl p-6 text-center">
+            <img src="images/leader-damodaram-sanjivayya-card.jpg" alt="Damodaram Sanjivayya" class="w-20 h-20 mx-auto mb-4 rounded-full object-cover object-center border-2 border-bronze/40" loading="lazy" />
+            <p class="text-white font-semibold text-sm leading-snug">Damodaram Sanjivayya</p>
+            <p class="text-bronze-light text-xs mt-1">First Dalit CM of AP </p>
+          </div>
+          <div class="flex-shrink-0 w-56 mx-4 bg-white/5 border border-white/10 rounded-xl p-6 text-center">
+            <img src="images/leader-bojja-tharakam-card.jpg" alt="Bojja Tharakam" class="w-20 h-20 mx-auto mb-4 rounded-full object-cover object-center border-2 border-bronze/40" loading="lazy" />
+            <p class="text-white font-semibold text-sm leading-snug">Bojja Tharakam</p>
+            <p class="text-bronze-light text-xs mt-1">Poet & Rights Advocate </p>
+          </div>
+          <div class="flex-shrink-0 w-56 mx-4 bg-white/5 border border-white/10 rounded-xl p-6 text-center">
+            <img src="images/leader-katti-padma-rao-card.jpg" alt="Katti Padma Rao" class="w-20 h-20 mx-auto mb-4 rounded-full object-cover object-center border-2 border-bronze/40" loading="lazy" />
+            <p class="text-white font-semibold text-sm leading-snug">Katti Padma Rao</p>
+            <p class="text-bronze-light text-xs mt-1">Dalit Scholar & Activist </p>
+          </div>
+          <div class="flex-shrink-0 w-56 mx-4 bg-white/5 border border-white/10 rounded-xl p-6 text-center">
+            <img src="images/leader-kc-chennaiah-card.jpg" alt="K. C. Chennaiah" class="w-20 h-20 mx-auto mb-4 rounded-full object-cover object-center border-2 border-bronze/40" loading="lazy" />
+            <p class="text-white font-semibold text-sm leading-snug">K. C. Chennaiah</p>
+            <p class="text-bronze-light text-xs mt-1">President, Mala Mahanadu</p>
+          </div>
+          <div class="flex-shrink-0 w-56 mx-4 bg-white/5 border border-white/10 rounded-xl p-6 text-center">
+            <img src="images/leader-pv-rao-card.jpg" alt="P. V. Rao" class="w-20 h-20 mx-auto mb-4 rounded-full object-cover object-center border-2 border-bronze/40" loading="lazy" />
+            <p class="text-white font-semibold text-sm leading-snug">P. V. Rao</p>
+            <p class="text-bronze-light text-xs mt-1">Founder, Mala Mahanadu </p>
+          </div>
+          <!-- Set 2 - duplicate for seamless loop -->
+          <div class="flex-shrink-0 w-56 mx-4 bg-white/5 border border-white/10 rounded-xl p-6 text-center" aria-hidden="true">
+            <img src="images/legacy-bhagya-reddy-varma.jpg" alt="" class="w-20 h-20 mx-auto mb-4 rounded-full object-cover object-top border-2 border-bronze/40" loading="lazy" />
+            <p class="text-white font-semibold text-sm leading-snug">Bhagya Reddy Varma</p>
+            <p class="text-bronze-light text-xs mt-1">Dalit Reformer </p>
+          </div>
+          <div class="flex-shrink-0 w-56 mx-4 bg-white/5 border border-white/10 rounded-xl p-6 text-center" aria-hidden="true">
+            <img src="images/legacy-g-venkat-swamy.jpg" alt="" class="w-20 h-20 mx-auto mb-4 rounded-full object-cover object-top border-2 border-bronze/40" loading="lazy" />
+            <p class="text-white font-semibold text-sm leading-snug">G. Venkat Swamy "Kaka"</p>
+            <p class="text-bronze-light text-xs mt-1">MP & Union Minister </p>
+          </div>
+          <div class="flex-shrink-0 w-56 mx-4 bg-white/5 border border-white/10 rounded-xl p-6 text-center" aria-hidden="true">
+            <img src="images/leader-mala-kannamadasu-card.jpg" alt="" class="w-20 h-20 mx-auto mb-4 rounded-full object-cover object-center border-2 border-bronze/40" loading="lazy" />
+            <p class="text-white font-semibold text-sm leading-snug">Mala Kannamadasu</p>
+            <p class="text-bronze-light text-xs mt-1">Warrior · 12th Century</p>
+          </div>
+          <div class="flex-shrink-0 w-56 mx-4 bg-white/5 border border-white/10 rounded-xl p-6 text-center" aria-hidden="true">
+            <img src="images/leader-damodaram-sanjivayya-card.jpg" alt="" class="w-20 h-20 mx-auto mb-4 rounded-full object-cover object-center border-2 border-bronze/40" loading="lazy" />
+            <p class="text-white font-semibold text-sm leading-snug">Damodaram Sanjivayya</p>
+            <p class="text-bronze-light text-xs mt-1">First Dalit CM of AP </p>
+          </div>
+          <div class="flex-shrink-0 w-56 mx-4 bg-white/5 border border-white/10 rounded-xl p-6 text-center" aria-hidden="true">
+            <img src="images/leader-bojja-tharakam-card.jpg" alt="" class="w-20 h-20 mx-auto mb-4 rounded-full object-cover object-center border-2 border-bronze/40" loading="lazy" />
+            <p class="text-white font-semibold text-sm leading-snug">Bojja Tharakam</p>
+            <p class="text-bronze-light text-xs mt-1">Poet & Rights Advocate </p>
+          </div>
+          <div class="flex-shrink-0 w-56 mx-4 bg-white/5 border border-white/10 rounded-xl p-6 text-center" aria-hidden="true">
+            <img src="images/leader-katti-padma-rao-card.jpg" alt="" class="w-20 h-20 mx-auto mb-4 rounded-full object-cover object-center border-2 border-bronze/40" loading="lazy" />
+            <p class="text-white font-semibold text-sm leading-snug">Katti Padma Rao</p>
+            <p class="text-bronze-light text-xs mt-1">Dalit Scholar & Activist </p>
+          </div>
+          <div class="flex-shrink-0 w-56 mx-4 bg-white/5 border border-white/10 rounded-xl p-6 text-center" aria-hidden="true">
+            <img src="images/leader-kc-chennaiah-card.jpg" alt="" class="w-20 h-20 mx-auto mb-4 rounded-full object-cover object-center border-2 border-bronze/40" loading="lazy" />
+            <p class="text-white font-semibold text-sm leading-snug">K. C. Chennaiah</p>
+            <p class="text-bronze-light text-xs mt-1">President, Mala Mahanadu</p>
+          </div>
+          <div class="flex-shrink-0 w-56 mx-4 bg-white/5 border border-white/10 rounded-xl p-6 text-center" aria-hidden="true">
+            <img src="images/leader-pv-rao-card.jpg" alt="" class="w-20 h-20 mx-auto mb-4 rounded-full object-cover object-center border-2 border-bronze/40" loading="lazy" />
+            <p class="text-white font-semibold text-sm leading-snug">P. V. Rao</p>
+            <p class="text-bronze-light text-xs mt-1">Founder, Mala Mahanadu </p>
+          </div>
+        </div>
       </div>
     </div>
+
+    <!-- Video placeholder -->
+    <div class="bg-white bg-grain py-16">
+      <div class="max-w-3xl mx-auto px-6 sm:px-8 text-center reveal-up">
+        <p class="heritage-eyebrow mb-4">Community Video</p>
+        <h2 class="text-ambedkar-blue text-2xl sm:text-3xl mb-6">Our Story in Motion</h2>
+        <div class="relative rounded-xl overflow-hidden border border-divider bg-navy-deep aspect-video flex flex-col items-center justify-center gap-4">
+          <div class="w-16 h-16 rounded-full bg-white/10 border border-white/20 flex items-center justify-center">
+            <i data-lucide="play" class="w-8 h-8 text-bronze ml-1"></i>
+          </div>
+          <p class="text-slate-300 text-sm font-medium">Video - under development</p>
+          <p class="text-slate-500 text-xs">Coming soon</p>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ──────────────── OUR LEGACY (COMMUNITY HERITAGE) ──────────────── -->
+  <section id="legacy" class="page-section" aria-label="Our Legacy">
+
+    <!-- Hero -->
+    <div class="relative overflow-hidden bg-navy-deep bg-dot-grid py-24 lg:py-32">
+      <div class="accent-blob accent-blob-bronze" style="top:-120px; right:-140px; width:420px; height:420px;"></div>
+      <div class="accent-blob accent-blob-blue" style="bottom:-100px; left:-120px; width:360px; height:360px;"></div>
+
+      <div class="relative max-w-5xl mx-auto px-6 sm:px-8 text-center">
+        <p class="text-bronze-light text-xs uppercase tracking-[0.18em] font-medium mb-5">Community Heritage</p>
+        <h1 class="text-white text-5xl sm:text-6xl lg:text-7xl mb-7 hero-headline" style="line-height:1.05;">
+          <span class="font-display italic">People</span><br />of the Deccan
+        </h1>
+        <p class="text-slate-200 text-lg sm:text-xl leading-relaxed max-w-3xl mx-auto reveal-up">
+          The Mala are a major Telugu-speaking community of the Deccan - the people whose journey runs from pre-modern warrior and tribal identities, through centuries of agrarian struggle, into a defining role in modern Dalit politics and the reservations movement
+        </p>
+      </div>
+    </div>
+
+    <!-- Quick stats band -->
+    <div class="bg-parchment py-12 border-y border-divider">
+      <div class="max-w-6xl mx-auto px-6 sm:px-8 grid grid-cols-1 sm:grid-cols-3 gap-10 text-center reveal-stagger">
+
+        <div>
+          <p class="text-ambedkar-blue text-5xl sm:text-6xl font-display">
+            <span class="stat-counter" data-target="45">0</span><span class="text-bronze">%</span>
+          </p>
+          <p class="text-text-muted text-sm mt-2 leading-snug">of the Scheduled Caste population<br />of current Andhra Pradesh (2011 census)</p>
+        </div>
+
+        <div>
+          <p class="text-ambedkar-blue text-5xl sm:text-6xl font-display">2<span class="text-bronze align-top text-3xl">nd</span></p>
+          <p class="text-text-muted text-sm mt-2 leading-snug">largest community<br />in present-day Andhra Pradesh</p>
+        </div>
+
+        <div>
+          <p class="text-ambedkar-blue text-5xl sm:text-6xl font-display">
+            <span class="stat-counter" data-target="1000">0</span><span class="text-bronze">+</span>
+          </p>
+          <p class="text-text-muted text-sm mt-2 leading-snug">years of layered history<br />from pre-modern to current day</p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Section: Geography of the Community (population-density map) -->
+    <div class="bg-white py-24">
+      <div class="max-w-6xl mx-auto px-6 sm:px-8">
+        <div class="text-center mb-14 reveal-up">
+          <p class="text-bronze text-xs uppercase tracking-[0.18em] font-medium mb-3">Geography</p>
+          <h2 class="text-ambedkar-blue text-4xl sm:text-5xl">Where the Community Lives</h2>
+          <p class="text-text-muted text-lg mt-5 max-w-2xl mx-auto">
+            For all its national story, the Mala community is overwhelmingly rooted in the southeast of India - across the Telugu-speaking regions of Andhra Pradesh, with the densest settlement along the fertile coastal belt
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+
+          <!-- Map -->
+          <div class="lg:col-span-7 reveal-up">
+            <div class="relative bg-parchment rounded-xl border border-divider p-5 sm:p-7 shadow-sm">
+
+              <!-- Main density map: Andhra Pradesh (real district boundaries) -->
+              <svg viewBox="0 0 240 205.8" xmlns="http://www.w3.org/2000/svg" class="w-full h-auto" role="img" aria-label="Political map of Andhra Pradesh by district, shaded by region to show the relative concentration of the Mala community. Coastal Andhra (deepest) is the heartland; North-coastal Uttarandhra is high; the Rayalaseema interior, where Madigas predominate, is lighter. Labelled cities: Visakhapatnam, Vijayawada, Guntur, Kurnool, Nellore, Tirupati.">
+<defs><filter id="apShadow" x="-8%" y="-8%" width="116%" height="116%"><feDropShadow dx="0" dy="1.2" stdDeviation="1.4" flood-color="#0F1E2E" flood-opacity="0.18"/></filter></defs>
+<g filter="url(#apShadow)" stroke="#FFFFFF" stroke-width="0.5" stroke-linejoin="round">
+<g fill="#E6D8A6">
+<path d="M33.4 118.0L32.0 118.1L31.4 119.4L32.5 120.0L32.3 122.1L30.2 124.0L27.8 122.8L25.6 123.3L23.2 122.8L22.8 124.2L21.8 124.2L21.1 125.5L18.5 124.7L16.8 125.2L17.6 124.2L16.4 122.3L17.6 121.6L16.2 120.7L16.0 119.5L14.6 119.7L13.6 116.3L12.1 114.8L13.6 114.5L13.8 110.5L15.3 109.9L16.3 110.8L16.5 109.8L14.2 107.5L14.7 104.9L13.6 104.6L14.7 102.6L19.9 100.9L35.7 103.5L38.1 102.5L41.5 103.8L42.3 102.5L43.7 104.5L46.1 104.1L45.8 105.5L47.1 106.0L46.0 107.0L47.4 108.8L49.1 108.6L49.0 110.3L47.5 111.0L47.5 111.9L46.8 111.8L46.6 113.2L45.3 113.7L45.3 112.2L43.7 112.5L43.4 113.7L42.8 113.3L42.3 115.8L39.6 117.0L38.7 115.5L36.1 114.9L35.0 117.4L34.2 116.9L33.4 118.0Z"/>
+<path d="M76.7 141.6L78.1 144.4L77.9 145.7L76.7 146.0L74.5 148.4L73.2 148.0L74.2 149.3L73.9 150.2L72.5 150.0L71.8 150.7L69.5 151.0L68.0 151.0L66.5 149.4L66.1 150.2L64.5 150.4L63.2 149.6L62.2 150.3L60.3 150.2L60.5 151.6L58.3 150.8L59.1 152.8L56.4 154.4L52.9 153.0L53.2 150.7L49.4 150.4L44.4 147.4L39.7 142.1L40.3 141.6L41.0 143.0L42.4 143.2L43.8 140.4L44.8 140.5L45.1 138.4L43.1 137.8L43.5 136.8L42.6 136.1L43.5 134.5L44.2 134.8L44.5 133.8L43.8 133.6L44.5 131.4L45.8 130.5L47.5 130.7L48.0 129.3L49.4 128.5L49.4 127.3L51.7 127.8L52.2 127.3L52.7 128.0L51.1 129.3L52.4 130.3L53.0 130.2L53.3 128.5L55.1 128.3L54.8 127.5L55.7 127.4L56.0 129.5L55.0 132.3L56.6 130.5L57.0 131.4L58.4 130.8L59.2 131.6L60.1 131.5L61.7 130.3L61.7 129.4L63.0 127.8L62.9 123.9L67.5 123.9L67.7 122.6L69.2 124.5L72.1 124.2L72.4 131.4L75.1 137.9L75.2 140.7L76.7 141.6Z"/>
+<path d="M43.1 142.1L42.4 142.3L42.5 143.2L41.0 143.0L41.0 140.8L37.6 139.6L37.1 141.2L35.7 140.8L33.8 141.4L32.6 143.1L31.4 143.2L32.1 144.1L31.7 144.6L29.0 145.5L27.6 144.5L26.7 145.0L26.2 142.2L23.9 142.6L23.0 143.0L23.5 144.2L21.9 147.0L21.9 149.7L22.8 149.9L23.0 150.8L20.8 150.6L21.0 149.0L19.5 149.6L17.4 148.8L16.1 150.4L16.1 152.4L15.1 152.7L14.3 151.7L11.3 151.9L10.7 150.9L11.5 150.3L10.0 149.4L9.5 147.6L10.4 146.6L11.2 147.2L11.2 145.6L12.1 144.7L9.0 145.0L6.1 141.2L7.2 137.0L6.6 135.8L8.6 135.1L8.4 132.6L9.1 131.3L9.0 130.3L6.1 130.1L6.8 128.9L6.5 127.1L7.1 126.6L8.1 127.1L9.3 128.5L12.4 129.0L14.2 128.4L14.1 129.1L14.7 129.3L16.0 128.4L17.3 125.1L18.5 124.7L21.1 125.5L21.8 124.2L22.8 124.2L23.2 122.8L25.6 123.3L27.8 122.8L30.2 124.0L31.7 122.5L35.3 126.2L36.0 125.2L37.7 125.4L38.0 124.1L39.0 124.3L38.6 125.8L40.2 126.2L40.6 125.3L41.1 125.5L41.7 126.1L41.2 127.5L41.6 128.5L45.1 130.6L44.0 132.8L44.2 134.8L43.5 134.5L42.6 136.1L43.5 136.8L43.1 137.8L45.1 138.6L44.8 140.5L43.8 140.4L43.1 142.1Z"/>
+<path d="M88.2 180.1L87.8 180.7L86.8 180.2L86.5 181.0L85.2 180.6L85.1 178.7L86.3 177.8L88.3 178.2L88.6 176.8L90.2 175.7L91.5 179.3L90.7 180.4L92.4 181.9L91.4 182.6L90.8 181.7L90.2 182.3L90.1 181.3L89.3 181.3L89.3 180.0L88.2 180.1Z"/>
+<path d="M49.7 192.9L50.8 192.4L50.5 191.6L51.4 190.5L52.4 191.4L54.0 191.3L54.6 192.6L54.6 191.5L53.0 190.3L53.7 189.2L54.6 189.5L54.5 187.4L56.0 186.8L55.8 186.0L56.6 185.5L56.0 184.8L57.8 183.7L57.0 182.8L57.8 182.4L58.0 180.6L57.4 179.4L56.4 180.7L55.0 179.7L56.3 176.7L55.9 175.4L54.9 175.2L55.5 174.3L56.8 174.3L58.0 172.6L58.1 173.3L60.2 173.9L60.3 175.1L62.2 173.3L62.6 171.2L64.2 171.3L64.0 170.5L65.4 169.6L65.6 168.6L66.4 169.1L66.2 171.0L68.5 171.3L68.9 170.1L69.7 169.8L69.2 167.4L70.8 166.5L70.8 165.8L72.3 165.5L72.5 167.1L71.2 170.3L74.7 170.7L74.9 172.4L72.2 173.4L70.9 172.2L69.3 173.5L71.3 175.5L74.4 176.8L76.3 176.7L75.7 176.1L77.2 176.1L76.0 175.7L77.5 174.5L79.4 174.1L79.6 174.9L83.7 173.5L84.6 174.0L83.4 174.6L84.9 175.3L83.5 176.4L83.5 177.2L85.0 176.7L85.2 177.2L84.3 178.8L82.3 178.3L80.8 179.4L80.9 179.9L82.5 179.8L81.5 180.8L82.7 182.2L82.3 183.1L80.5 183.1L80.0 185.1L79.6 184.6L78.3 185.5L78.7 184.9L78.0 185.0L77.2 184.0L76.8 184.6L76.6 183.6L75.8 184.3L76.5 185.6L75.0 186.2L75.3 187.4L74.5 188.1L72.1 187.9L69.5 186.0L67.7 186.3L67.1 187.4L68.0 187.7L66.8 187.7L66.4 185.7L62.7 187.0L61.7 186.6L61.4 188.2L60.1 187.8L59.0 189.0L60.0 190.7L59.4 190.7L58.2 195.1L57.2 195.9L57.3 197.3L56.6 197.8L56.7 197.2L55.4 196.2L56.1 197.1L55.5 198.3L54.7 198.3L54.6 199.8L51.9 199.7L48.9 197.4L47.0 197.8L48.2 196.6L48.5 192.9L49.7 192.9Z"/>
+<path d="M81.8 165.9L81.7 165.4L83.1 165.0L82.2 162.8L82.8 160.6L82.0 153.5L84.9 153.9L87.8 155.8L88.5 154.5L88.8 155.4L90.0 155.8L91.2 154.1L92.6 153.5L91.9 152.3L92.6 151.2L94.2 153.8L96.2 154.5L102.2 151.4L102.4 157.5L105.5 165.5L104.9 169.2L105.9 172.0L105.2 174.7L102.2 173.7L100.5 174.2L100.6 172.4L98.4 172.5L98.3 173.1L99.6 173.5L99.6 174.1L97.5 174.8L97.5 175.9L96.4 176.3L97.2 176.9L96.6 178.0L92.2 179.9L90.7 178.3L89.8 175.6L88.3 178.2L86.3 177.8L84.4 178.6L85.3 176.9L83.5 177.2L83.5 176.4L84.9 175.4L83.4 174.9L84.6 174.0L83.8 173.5L79.6 174.9L79.4 174.1L77.5 174.5L76.0 175.7L77.2 176.1L75.9 176.0L76.3 176.7L74.9 176.8L71.3 175.5L69.3 174.1L70.9 172.2L72.2 173.4L74.9 172.4L74.7 170.7L71.2 170.3L72.5 167.1L72.4 165.6L70.5 165.7L71.1 164.4L70.2 163.6L71.2 163.1L70.5 162.2L72.3 162.6L72.7 163.5L73.9 163.0L75.8 164.5L75.2 165.1L76.1 166.2L78.2 166.3L78.5 167.2L81.8 165.9Z"/>
+<path d="M69.5 151.0L71.8 150.7L72.5 150.0L73.9 150.2L74.2 149.3L73.2 148.0L74.5 148.4L76.7 146.0L77.9 145.8L78.1 144.7L78.8 144.9L82.2 151.8L81.8 152.9L82.7 156.0L82.2 158.4L82.8 160.6L82.1 162.7L83.1 165.0L78.5 167.2L78.2 166.3L76.1 166.2L75.2 165.1L75.8 164.5L73.9 163.0L72.7 163.5L72.3 162.6L70.5 162.2L71.2 163.1L70.2 163.6L71.1 164.4L70.3 165.4L70.9 166.4L69.2 167.4L69.7 169.8L68.9 170.1L69.0 171.0L67.3 171.5L66.2 171.0L66.4 169.1L65.6 168.6L65.4 169.6L64.0 170.5L64.2 171.3L62.6 171.2L62.2 173.3L60.3 175.1L60.2 173.9L58.1 173.3L58.0 172.6L56.8 174.3L55.5 174.3L54.9 175.2L55.9 175.4L56.3 176.7L55.4 178.9L52.7 179.3L52.1 178.7L52.9 178.4L51.7 178.0L52.7 171.2L48.0 170.9L46.8 171.9L47.1 170.0L45.8 169.2L43.8 169.6L43.2 168.6L43.4 168.0L44.6 168.2L44.2 166.2L45.0 165.4L48.7 165.2L48.2 163.6L49.1 162.1L54.6 159.3L53.8 158.5L54.4 155.8L53.4 154.9L53.5 153.5L57.2 154.3L59.2 152.7L58.2 150.9L59.8 150.9L60.4 151.7L60.2 150.2L62.2 150.3L63.2 149.6L64.6 150.4L66.9 149.5L67.9 150.9L69.5 151.0Z"/>
+<path d="M21.9 147.8L22.0 146.1L23.5 144.2L23.0 143.0L23.9 142.6L26.2 142.2L26.7 145.0L27.6 144.5L29.0 145.5L31.7 144.6L32.1 144.1L31.4 143.2L32.6 143.1L33.8 141.4L35.7 140.8L37.0 141.3L37.6 139.6L40.1 140.2L41.0 140.8L41.0 142.1L40.3 141.6L39.7 142.1L44.4 147.4L49.4 150.4L53.2 150.7L52.9 153.0L53.5 153.3L53.3 154.6L54.4 155.8L53.8 158.4L54.6 159.3L49.1 162.1L48.2 163.6L48.8 165.1L48.0 165.6L45.0 165.4L44.7 163.1L42.8 162.1L42.6 163.2L41.4 162.8L40.0 164.2L39.9 162.4L41.0 161.9L40.5 160.2L39.2 161.9L38.4 160.8L36.4 160.7L36.0 161.6L36.7 162.9L35.1 163.7L35.1 164.4L33.3 165.0L33.2 166.6L32.8 165.9L32.0 166.1L32.2 165.4L30.5 165.9L31.1 166.5L30.7 166.9L29.9 166.4L28.8 167.2L27.9 166.3L27.8 168.2L26.6 167.5L26.8 168.2L25.8 168.4L26.1 164.8L24.7 164.8L25.1 163.7L23.1 163.4L22.1 164.0L21.7 163.0L20.2 163.6L19.8 161.9L18.5 163.1L18.0 162.9L18.1 161.3L17.4 161.8L17.6 163.0L16.5 163.3L17.6 164.1L17.7 166.1L15.4 165.9L15.0 166.6L13.5 165.6L13.3 166.7L12.8 166.6L12.2 164.1L13.5 161.9L14.1 161.8L14.0 161.0L10.9 158.1L10.9 157.5L12.2 157.0L11.2 155.5L9.6 155.0L9.8 154.1L11.2 153.9L11.3 153.1L13.5 153.8L13.7 157.3L16.5 157.7L17.1 159.0L22.0 158.1L23.1 159.3L23.0 161.9L24.2 162.3L25.2 161.6L24.6 160.6L25.2 160.6L25.2 159.6L23.7 159.8L23.9 158.5L22.3 158.1L24.2 155.5L22.8 156.0L22.8 155.2L24.0 153.9L27.1 154.4L27.1 151.1L26.4 150.4L25.6 150.7L25.5 149.6L24.0 149.0L23.5 150.0L24.7 152.7L24.0 153.1L23.0 152.1L22.8 149.9L21.9 149.8L21.9 147.8Z"/>
+<path d="M41.7 126.1L40.6 125.3L40.2 126.2L38.6 125.8L39.1 124.9L38.5 124.1L37.7 125.4L36.1 125.2L35.3 126.2L34.1 125.5L32.1 122.9L32.5 120.0L31.4 119.4L32.2 117.8L33.2 118.1L34.2 116.9L35.0 117.4L36.2 114.9L38.7 115.5L39.6 117.0L41.0 116.7L41.3 115.9L42.8 115.2L42.8 113.3L43.4 113.7L43.7 112.5L45.3 112.2L45.3 113.7L46.7 113.2L46.8 111.8L47.5 111.9L47.5 111.0L49.0 110.3L49.1 108.6L47.4 108.8L45.9 106.9L47.1 106.0L45.7 105.2L46.3 104.8L46.5 102.5L48.5 101.6L48.7 99.0L50.2 99.4L52.9 97.5L57.1 98.5L59.0 97.2L62.4 99.5L65.1 97.7L65.1 95.5L66.2 95.5L66.6 97.3L67.6 96.0L67.3 100.7L64.4 103.7L63.3 109.7L63.3 116.9L62.3 119.7L63.0 127.6L61.7 129.4L61.7 130.3L59.2 131.6L58.5 130.8L56.9 131.4L56.6 130.5L55.0 132.3L56.0 129.5L55.7 127.4L54.8 127.5L55.1 128.3L53.3 128.5L53.0 130.2L52.4 130.3L51.1 129.3L52.7 128.0L52.2 127.3L51.6 127.8L49.7 127.2L47.5 130.7L45.2 130.9L41.6 128.5L41.2 127.5L41.7 126.1Z"/>
+</g>
+<g fill="#B8962E">
+<path d="M207.4 28.9L205.9 22.8L206.4 22.6L206.1 23.0L208.1 24.7L208.8 24.1L209.6 24.7L210.1 23.4L207.7 20.3L207.7 19.1L208.4 18.5L209.2 18.9L207.5 17.4L209.6 16.1L210.7 16.7L213.2 16.5L214.8 18.2L218.6 17.0L221.3 17.2L222.6 15.7L222.0 14.6L222.8 15.0L222.4 14.1L223.3 14.5L222.8 13.7L223.8 14.0L224.7 13.2L224.5 11.9L225.1 11.6L224.2 10.3L225.8 11.2L226.9 9.5L228.8 8.7L229.3 10.2L229.9 9.0L231.3 8.7L230.1 8.4L229.2 7.0L231.2 7.1L231.4 6.0L232.5 6.2L232.2 7.4L234.0 8.6L233.7 9.1L222.3 24.1L216.6 29.4L215.8 31.2L202.6 38.3L201.0 36.3L200.9 34.6L202.4 34.4L202.9 32.3L204.0 31.8L201.0 30.9L200.5 29.8L201.0 29.0L203.8 29.1L204.1 27.2L205.7 29.4L207.4 28.9Z"/>
+<path d="M191.1 32.4L189.7 32.1L190.0 30.7L188.6 31.3L188.0 30.8L189.4 29.1L188.9 29.0L189.7 28.1L189.4 26.5L190.0 26.7L190.2 25.3L191.2 24.8L191.4 23.6L190.7 23.1L191.7 22.0L193.4 21.4L194.0 22.9L195.5 22.1L196.0 22.5L196.6 21.3L197.7 22.5L197.2 23.7L198.4 25.1L200.0 23.1L199.4 22.9L199.3 19.5L202.2 23.0L203.8 23.6L205.2 23.2L206.0 24.5L206.6 24.3L206.2 25.4L207.0 26.4L207.4 29.1L205.7 29.4L204.1 27.2L203.8 29.1L201.0 29.0L200.5 30.0L201.0 30.9L204.0 31.8L202.9 32.3L202.4 34.4L200.9 34.6L201.0 36.3L202.6 38.3L199.9 40.3L198.8 42.0L197.0 41.6L196.2 42.1L196.5 42.8L195.3 41.6L195.8 40.5L194.9 40.0L195.2 38.9L193.9 38.6L190.2 42.1L191.1 43.0L190.3 44.3L189.7 44.1L189.6 45.0L188.3 45.2L186.9 42.4L184.0 41.2L184.0 39.5L187.4 37.6L186.7 37.3L187.3 37.1L186.7 36.6L186.7 35.0L187.6 35.4L188.7 33.8L189.7 34.9L190.0 33.9L190.7 34.5L190.4 33.6L191.3 34.1L191.1 32.4Z"/>
+<path d="M188.1 48.4L188.4 45.0L189.6 45.0L189.7 44.1L190.3 44.3L191.1 43.0L190.2 42.1L193.9 38.6L195.2 38.9L194.9 40.0L195.8 40.5L195.3 41.6L196.3 42.8L197.0 41.6L198.7 42.1L196.8 43.4L192.5 49.8L191.2 49.1L192.2 49.8L190.5 52.0L187.0 54.0L188.1 50.4L186.9 49.6L188.1 48.4Z"/>
+<path d="M209.2 16.4L207.5 17.6L209.2 18.9L208.4 18.5L207.6 19.8L210.1 23.4L209.5 24.7L208.8 24.1L208.0 24.7L206.3 22.6L205.7 23.6L202.6 23.3L199.2 19.5L199.4 22.9L200.0 23.1L198.9 23.8L199.1 24.9L198.4 25.1L197.2 23.7L197.8 22.5L196.6 21.3L196.0 22.5L195.5 22.1L194.0 22.9L193.0 21.5L190.7 23.1L191.3 24.5L190.2 25.3L190.0 26.7L189.4 26.5L189.7 28.1L188.9 29.0L189.4 29.1L188.1 30.4L186.0 30.3L186.7 28.3L185.6 28.4L185.6 27.8L185.0 28.0L184.4 27.1L186.4 24.4L185.0 24.4L184.6 23.5L185.3 22.8L184.4 23.1L183.8 22.2L185.3 20.8L186.9 17.8L187.6 17.3L188.7 17.7L189.7 18.9L190.1 17.6L191.5 17.9L191.9 16.9L195.2 15.7L195.5 14.7L193.9 13.0L194.2 12.1L193.3 13.2L192.6 11.0L193.6 10.4L195.1 10.6L196.9 12.3L196.6 10.7L197.5 10.6L197.1 8.2L198.3 8.8L198.0 10.3L199.0 10.6L199.3 8.6L200.4 9.2L201.6 6.1L203.7 10.2L204.5 10.3L204.0 10.9L205.9 13.6L205.0 11.3L206.4 10.4L207.8 14.7L209.2 16.4Z"/>
+<path d="M188.2 34.9L186.7 35.0L186.7 36.6L187.3 37.1L186.7 37.3L187.4 37.6L185.5 38.4L184.2 37.9L182.2 40.8L180.5 39.7L178.5 40.7L179.6 41.5L178.7 42.6L175.6 41.8L175.9 42.5L175.3 43.7L174.2 43.5L175.7 44.4L172.9 45.2L173.6 46.6L171.3 47.3L170.1 49.4L168.3 48.2L166.6 49.9L165.2 50.0L165.2 51.1L166.8 50.3L166.5 50.9L167.5 50.8L168.5 51.9L165.7 53.1L166.1 52.4L165.0 52.7L164.8 55.0L163.5 55.9L163.3 57.0L159.7 59.6L159.5 60.8L160.7 60.6L159.7 61.3L158.9 60.9L159.3 59.9L158.1 60.5L158.7 58.8L157.5 58.2L156.7 59.1L156.7 60.8L157.9 61.6L156.7 61.8L155.5 60.8L153.1 61.8L153.1 60.9L151.9 60.8L151.5 61.6L150.4 61.0L150.3 62.5L149.6 62.9L146.2 63.3L146.3 62.2L145.5 62.0L146.1 61.2L144.3 60.4L144.2 58.1L141.8 57.1L141.2 56.1L139.4 56.5L137.1 55.4L135.4 55.6L134.3 53.5L130.5 52.9L129.8 51.7L127.1 52.5L126.9 51.0L123.9 51.2L124.2 50.1L123.5 49.9L123.9 47.9L125.8 47.1L128.8 49.5L129.3 46.1L131.3 44.9L134.0 46.1L138.0 46.6L138.1 45.9L140.2 45.4L140.8 46.2L143.2 45.4L144.4 45.8L145.7 44.0L146.8 43.5L147.4 44.2L149.9 42.0L154.2 40.6L156.2 38.5L160.1 39.0L160.4 40.0L162.9 40.7L163.0 38.9L165.0 38.9L164.9 36.2L165.8 36.2L164.1 34.5L164.8 33.9L165.1 32.2L166.4 31.7L166.3 30.8L164.9 30.9L166.2 29.7L165.7 28.0L169.1 24.3L169.1 24.9L170.4 25.4L170.0 26.7L171.2 27.3L170.7 28.7L172.9 29.9L171.8 31.2L172.0 32.4L173.4 33.5L173.5 31.6L177.3 30.5L178.0 28.5L177.6 27.8L178.5 27.2L179.5 28.1L180.8 28.0L181.3 29.6L182.8 29.9L186.6 28.3L186.0 30.3L187.6 30.2L188.6 31.3L190.0 30.7L189.7 32.1L191.2 32.4L191.3 34.1L190.4 33.6L190.7 34.5L190.0 33.9L189.7 34.9L188.7 33.8L188.2 34.9Z"/>
+<path d="M170.9 58.9L172.5 56.5L171.2 55.6L171.0 54.5L169.2 55.3L168.5 54.3L168.1 55.9L166.9 56.3L165.9 55.9L166.0 55.1L164.7 55.3L165.0 52.7L166.1 52.4L165.7 53.1L168.5 51.8L167.5 50.8L166.5 50.9L166.8 50.3L165.2 51.1L165.2 50.0L166.6 49.9L168.3 48.2L170.1 49.4L171.3 47.3L173.6 46.6L172.9 45.2L175.7 44.4L174.2 43.5L175.3 43.7L175.9 42.5L175.6 41.8L178.7 42.6L179.6 41.5L178.6 40.5L180.5 39.7L182.2 40.8L184.6 37.7L185.2 38.6L184.0 39.5L184.0 41.2L186.9 42.4L188.3 45.2L188.2 48.2L186.9 49.6L188.1 50.4L187.0 54.0L170.7 62.8L170.0 61.3L171.3 60.0L170.9 58.9Z"/>
+</g>
+<g fill="#9c7d22">
+<path d="M144.4 64.9L145.6 65.0L145.0 63.5L145.5 62.0L146.3 62.2L146.2 63.3L147.2 63.6L150.3 62.5L150.4 61.0L151.5 61.6L151.9 60.8L153.1 60.9L153.1 61.8L154.5 60.8L156.0 60.9L156.4 61.6L154.3 62.4L152.5 65.1L153.1 67.1L155.2 66.6L156.5 67.5L156.2 69.1L157.5 69.0L156.9 69.8L157.3 73.7L155.3 72.5L154.1 75.4L153.5 71.1L152.9 70.8L152.5 71.6L151.2 72.0L151.9 73.5L151.3 74.4L149.7 74.2L149.2 72.1L147.8 71.8L148.4 76.5L149.3 77.3L149.6 79.1L148.5 79.7L148.2 78.2L147.3 78.2L147.5 77.1L146.1 77.2L144.6 76.2L145.4 74.5L144.6 73.4L143.1 73.0L142.1 71.6L140.8 71.2L140.5 72.9L138.0 74.1L137.8 72.9L136.2 73.1L136.1 72.2L135.1 72.0L136.2 70.5L137.2 70.5L137.8 68.9L139.0 68.8L139.7 69.9L139.0 68.2L140.3 66.2L139.7 65.4L140.4 64.6L142.3 63.7L143.6 63.8L143.7 64.7L144.4 64.9Z"/>
+<path d="M136.6 82.8L136.1 79.4L136.8 79.3L136.5 80.2L140.2 79.6L142.0 79.8L142.5 80.7L142.7 79.6L143.8 78.9L142.8 77.2L142.3 77.9L139.5 78.3L139.3 77.3L140.4 77.3L140.9 75.7L139.8 74.0L140.8 71.2L143.1 73.0L144.6 73.4L145.4 74.5L144.6 76.2L146.1 77.2L147.5 77.1L147.3 78.2L148.2 78.2L148.5 79.7L149.6 79.1L150.4 79.5L151.3 81.8L150.8 85.4L148.1 87.4L147.0 86.7L147.0 90.5L142.6 89.6L142.3 88.6L140.8 88.8L139.2 88.0L137.4 86.2L137.1 84.8L136.2 84.7L136.6 82.8Z"/>
+<path d="M119.8 84.3L117.9 83.7L118.1 81.1L120.5 81.3L121.7 80.4L122.2 81.6L123.2 81.4L123.5 80.3L122.7 79.4L124.1 78.6L127.1 83.2L129.0 82.7L129.3 81.8L130.0 82.2L129.9 85.0L129.3 85.2L129.1 86.9L128.1 86.9L129.1 88.3L130.7 88.6L131.3 87.7L132.6 88.4L132.9 87.3L134.0 87.8L135.9 86.1L135.9 87.3L136.6 87.7L138.2 87.1L140.8 88.8L142.3 88.6L142.6 89.3L138.0 89.7L134.5 91.5L132.7 94.3L130.7 100.5L126.8 104.7L127.3 106.6L124.9 108.1L121.9 108.3L123.8 103.2L123.7 98.4L122.4 95.7L121.8 92.3L119.1 89.7L117.5 86.2L116.6 85.8L117.9 85.4L117.2 83.5L119.1 85.1L119.8 84.3Z"/>
+<path d="M107.5 86.0L110.4 85.6L109.8 84.2L110.5 82.7L113.1 82.9L117.5 86.2L119.1 89.7L121.8 92.6L118.8 92.6L117.3 94.3L115.1 92.8L113.7 95.7L114.6 95.3L115.3 98.4L113.5 99.9L111.4 99.5L111.2 100.3L110.4 100.3L108.5 99.0L107.5 99.2L106.9 98.1L104.8 98.7L104.7 97.2L106.5 96.9L105.8 96.1L106.7 94.7L106.1 93.6L108.4 90.5L106.1 92.2L105.2 91.7L104.9 92.5L103.4 91.5L102.6 92.2L101.8 91.0L102.8 90.8L103.5 89.2L104.6 89.7L104.6 88.1L106.8 87.1L107.5 86.0Z"/>
+<path d="M94.4 120.2L93.6 123.1L91.7 123.6L89.3 123.0L89.0 122.0L88.4 122.1L87.5 124.4L88.3 124.8L87.6 124.9L87.8 126.4L87.1 127.6L87.7 128.4L85.8 128.1L85.7 128.7L83.2 127.4L81.8 127.7L79.8 126.0L79.6 126.9L79.3 126.0L78.6 126.8L77.2 126.2L75.8 126.9L73.5 126.4L72.3 128.0L72.1 124.2L69.1 124.4L68.3 122.6L67.7 122.6L67.5 123.9L63.4 123.5L62.4 124.0L63.3 109.7L64.4 103.7L67.3 100.7L67.8 97.0L67.1 94.3L70.6 92.6L74.3 93.6L75.9 93.1L76.1 94.9L80.4 92.9L82.5 90.8L85.1 90.7L85.9 91.6L85.0 94.9L86.1 99.6L85.7 101.3L87.9 102.5L88.7 102.2L90.1 103.7L90.0 104.6L91.5 105.0L91.3 102.7L92.3 101.5L94.8 102.0L96.8 104.2L96.0 104.8L95.4 108.6L96.5 109.0L97.4 108.2L99.0 109.1L99.3 108.4L101.8 109.6L101.5 108.6L102.6 108.7L104.7 105.5L106.0 106.2L105.6 107.0L104.6 106.6L103.4 109.1L103.3 110.9L105.2 111.3L104.8 113.4L101.4 119.1L100.8 123.0L97.6 123.5L97.8 121.3L97.0 120.8L97.1 120.1L96.0 120.5L95.7 119.7L95.3 120.5L94.4 120.2Z"/>
+<path d="M86.8 155.1L84.9 153.9L82.0 153.5L82.2 151.8L79.1 145.4L76.6 141.4L75.2 140.7L75.1 137.9L72.1 130.0L72.5 127.4L73.7 126.4L75.8 126.9L77.2 126.2L78.6 126.8L79.3 126.0L79.6 126.9L79.8 126.0L81.8 127.7L83.2 127.4L85.4 128.8L85.9 128.1L87.6 128.4L87.1 127.6L87.8 126.4L87.6 124.9L88.3 124.8L87.5 124.4L88.4 122.1L89.0 122.0L89.3 123.0L91.9 123.6L93.7 123.1L94.4 120.2L95.3 120.5L95.7 119.7L96.0 120.5L97.1 120.1L97.0 120.8L97.8 121.3L97.6 123.5L100.8 123.0L99.7 126.6L99.8 129.5L101.1 136.2L103.8 141.7L102.8 149.4L102.2 151.4L101.2 151.5L101.2 152.0L98.9 153.6L97.9 153.3L96.9 154.4L94.2 153.8L92.6 151.2L91.9 152.3L92.6 153.5L91.2 154.1L90.4 155.6L88.8 155.4L88.4 154.4L87.8 155.8L86.8 155.1Z"/>
+<path d="M124.0 100.5L123.8 103.2L121.9 108.3L120.3 105.7L121.5 107.4L121.1 104.3L119.0 103.4L116.7 103.4L110.6 105.5L107.2 108.1L105.2 111.3L103.4 111.0L103.9 107.8L104.8 106.4L105.6 107.0L106.0 106.5L104.7 105.5L102.6 108.7L101.5 108.6L101.8 109.6L99.3 108.4L99.0 109.1L97.4 108.2L96.5 109.0L95.2 108.4L96.0 107.5L96.0 104.8L96.8 104.2L94.8 102.0L95.8 100.8L94.4 100.0L94.5 98.9L96.0 97.9L94.5 96.9L94.5 95.8L94.8 95.2L96.3 95.9L96.9 94.9L98.7 96.3L99.7 96.0L99.4 97.0L100.4 97.1L101.0 99.5L102.2 99.3L102.2 98.4L103.6 99.0L106.9 98.1L107.5 99.2L108.5 99.0L111.2 100.3L111.3 99.5L113.5 99.9L115.3 98.4L114.6 95.3L113.7 95.7L115.1 92.8L117.3 94.3L118.0 93.1L120.5 92.2L121.8 92.6L124.0 100.5Z"/>
+<path d="M118.8 78.5L120.1 76.4L120.3 74.6L122.6 72.9L121.8 72.2L121.8 70.3L120.5 69.4L121.0 68.3L122.3 69.0L123.3 68.1L123.0 66.4L123.3 65.3L124.6 65.5L124.4 63.7L127.6 64.5L128.3 63.5L131.6 63.3L132.2 60.6L134.6 60.8L135.9 59.1L135.7 58.1L131.0 56.4L130.4 54.6L129.5 55.3L127.2 54.8L125.9 52.5L122.7 52.4L122.7 51.5L126.7 50.9L127.0 52.4L127.8 52.5L129.8 51.7L130.5 52.9L134.5 53.6L135.4 55.6L137.1 55.4L139.4 56.5L141.0 55.9L141.8 57.1L144.2 58.1L144.3 60.4L146.1 61.3L145.0 63.5L145.6 65.0L143.8 64.8L143.6 63.8L140.9 64.2L139.7 65.4L140.3 66.2L139.0 68.2L139.7 69.9L139.0 68.8L137.8 68.9L137.2 70.5L136.2 70.5L135.1 71.9L136.1 72.2L136.2 73.1L137.8 72.9L138.0 74.1L139.9 73.1L140.9 75.7L140.4 77.3L139.3 77.3L139.5 78.3L142.3 77.9L142.8 77.2L143.9 78.8L142.7 79.6L142.5 80.7L142.0 79.8L140.2 79.6L136.5 80.2L136.8 79.3L136.1 79.4L136.1 81.4L136.9 82.1L136.2 84.7L137.3 85.0L137.4 86.2L138.2 86.8L137.8 87.6L135.9 87.3L135.7 86.1L134.0 87.8L132.9 87.3L132.6 88.4L131.3 87.7L130.8 88.6L129.3 88.4L128.1 86.9L129.1 86.9L129.3 85.2L130.1 84.6L129.6 81.8L129.0 82.7L127.1 83.2L124.1 78.6L122.7 79.4L123.5 80.3L123.2 81.4L122.2 81.6L121.7 80.4L120.5 81.3L118.1 81.1L117.8 80.0L118.8 78.5Z"/>
+<path d="M157.9 73.6L158.0 75.8L159.5 77.5L158.7 78.3L159.3 78.9L161.0 78.4L163.7 78.8L164.2 78.2L163.8 76.9L164.5 76.8L164.7 78.5L165.5 78.6L164.3 80.7L164.2 82.3L154.1 87.9L147.3 90.6L147.0 86.7L148.1 87.4L150.8 85.4L151.2 83.0L150.6 79.7L149.6 79.1L149.3 77.3L148.4 76.5L147.8 71.8L149.2 72.1L149.7 74.2L151.3 74.4L151.9 73.5L151.2 72.0L152.5 71.6L152.9 70.8L153.5 71.1L154.1 75.4L155.3 72.5L156.8 73.8L157.9 73.6Z"/>
+<path d="M157.9 73.6L156.8 73.2L157.5 69.0L156.2 69.0L156.5 67.5L155.2 66.6L153.1 67.1L152.7 66.2L152.4 65.0L153.9 62.8L155.9 61.7L157.9 61.6L156.7 60.8L157.4 58.2L158.7 58.8L158.1 60.5L159.3 59.9L158.9 60.9L159.7 61.3L160.7 60.6L159.5 60.8L159.7 59.6L163.3 57.0L164.7 55.0L165.0 55.5L166.0 55.1L165.9 55.9L166.9 56.3L168.1 55.9L168.5 54.3L169.2 55.3L171.0 54.5L171.2 55.6L172.5 56.5L170.7 59.1L171.4 59.8L171.1 60.5L170.0 61.3L170.7 62.8L164.7 68.0L162.9 71.9L162.2 71.9L163.0 73.8L165.4 74.6L164.9 77.5L165.7 77.9L165.5 78.6L164.7 78.5L164.5 76.8L163.9 76.7L163.5 78.3L161.4 78.1L161.7 77.2L160.5 78.0L160.8 78.6L159.3 78.9L158.7 78.3L159.5 77.5L158.0 75.8L157.9 73.6Z"/>
+<path d="M111.7 71.9L108.6 70.9L109.9 69.7L109.3 68.1L110.0 67.4L111.5 69.3L112.6 68.2L112.9 66.6L114.8 65.6L117.3 67.2L117.0 68.1L118.5 67.7L121.0 68.3L120.5 69.4L121.8 70.3L121.8 72.2L122.6 72.9L120.3 74.6L120.1 76.4L117.8 80.0L117.9 83.7L119.8 84.3L119.6 85.0L117.8 84.4L117.2 83.5L117.9 85.4L116.6 85.8L113.1 82.9L104.1 81.9L102.2 80.4L101.7 75.6L100.3 75.7L98.5 73.7L99.9 71.0L102.3 70.4L103.9 68.8L104.2 69.8L106.6 70.3L107.5 73.6L109.0 74.6L109.2 75.6L109.9 74.7L109.2 74.2L112.7 76.7L114.6 77.1L115.7 76.2L114.4 75.0L115.2 72.4L113.5 71.3L112.5 71.4L112.4 72.3L111.7 71.9Z"/>
+<path d="M76.4 94.8L75.9 93.1L76.5 89.9L75.8 89.2L75.8 87.1L76.4 86.2L76.0 84.7L77.1 83.0L81.7 82.6L82.5 81.4L85.2 81.1L86.8 79.8L87.9 80.2L91.9 78.1L93.0 79.3L94.8 79.1L95.6 81.0L96.8 81.0L99.8 77.8L100.3 75.6L101.1 75.4L101.9 76.0L102.4 80.6L105.2 82.4L110.5 82.7L109.8 84.2L110.4 85.6L107.3 86.1L106.8 87.1L104.6 88.1L104.6 89.7L103.5 89.2L102.8 90.8L101.8 90.9L102.6 92.2L103.4 91.5L104.9 92.5L105.2 91.7L106.1 92.2L108.4 90.5L106.1 93.6L106.7 94.7L105.8 96.1L106.5 96.9L104.7 97.2L104.8 98.8L102.2 98.4L102.2 99.3L101.0 99.5L100.4 97.1L99.4 97.0L99.7 96.0L98.7 96.3L96.9 94.9L96.3 95.9L94.8 95.2L94.5 96.9L96.0 98.1L94.5 98.9L94.4 100.0L95.1 99.9L95.7 101.0L94.6 102.3L92.3 101.5L91.1 104.0L91.7 105.0L90.0 104.6L90.1 103.7L88.7 102.2L87.9 102.5L85.7 101.3L86.1 99.6L85.0 94.9L85.9 91.6L85.1 90.7L82.5 90.8L80.4 92.9L76.4 94.8Z"/>
+</g>
+</g>
+<text fill="#4a78a0" font-family="Figtree, system-ui, sans-serif" font-size="6.5" font-style="italic" text-anchor="middle" transform="translate(233,103) rotate(90)">Bay of Bengal</text>
+<g transform="translate(190.0,49.8)">
+<path d="M0,0 C-8,-8 -8,-17 0,-17 C8,-17 8,-8 0,0Z" fill="#0F1E2E" stroke="#FAF7F2" stroke-width="1"/>
+<circle cx="0" cy="-11" r="4" fill="#B8962E"/>
+<text x="-6" y="-20" text-anchor="end" fill="#0F1E2E" font-family="Figtree, system-ui, sans-serif" font-size="6.8" font-weight="600">Visakhapatnam</text>
+</g>
+<g transform="translate(116.7,84.8)">
+<path d="M0,0 C-8,-8 -8,-17 0,-17 C8,-17 8,-8 0,0Z" fill="#0F1E2E" stroke="#FAF7F2" stroke-width="1"/>
+<circle cx="0" cy="-11" r="4" fill="#B8962E"/>
+<text x="-6" y="-20" text-anchor="end" fill="#0F1E2E" font-family="Figtree, system-ui, sans-serif" font-size="6.8" font-weight="600">Vijayawada</text>
+</g>
+<g transform="translate(110.7,90.7)">
+<path d="M0,0 C-8,-8 -8,-17 0,-17 C8,-17 8,-8 0,0Z" fill="#0F1E2E" stroke="#FAF7F2" stroke-width="1"/>
+<circle cx="0" cy="-11" r="4" fill="#B8962E"/>
+<text x="-6" y="-6" text-anchor="end" fill="#0F1E2E" font-family="Figtree, system-ui, sans-serif" font-size="6.8" font-weight="600">Guntur</text>
+</g>
+<g transform="translate(42.4,104.9)">
+<path d="M0,0 C-8,-8 -8,-17 0,-17 C8,-17 8,-8 0,0Z" fill="#0F1E2E" stroke="#FAF7F2" stroke-width="1"/>
+<circle cx="0" cy="-11" r="4" fill="#B8962E"/>
+<text x="6" y="-6" text-anchor="start" fill="#0F1E2E" font-family="Figtree, system-ui, sans-serif" font-size="6.8" font-weight="600">Kurnool</text>
+</g>
+<g transform="translate(97.9,145.9)">
+<path d="M0,0 C-8,-8 -8,-17 0,-17 C8,-17 8,-8 0,0Z" fill="#0F1E2E" stroke="#FAF7F2" stroke-width="1"/>
+<circle cx="0" cy="-11" r="4" fill="#B8962E"/>
+<text x="-6" y="-6" text-anchor="end" fill="#0F1E2E" font-family="Figtree, system-ui, sans-serif" font-size="6.8" font-weight="600">Nellore</text>
+</g>
+<g transform="translate(81.7,170.0)">
+<path d="M0,0 C-8,-8 -8,-17 0,-17 C8,-17 8,-8 0,0Z" fill="#0F1E2E" stroke="#FAF7F2" stroke-width="1"/>
+<circle cx="0" cy="-11" r="4" fill="#B8962E"/>
+<text x="6" y="-2" text-anchor="start" fill="#0F1E2E" font-family="Figtree, system-ui, sans-serif" font-size="6.8" font-weight="600">Tirupati</text>
+</g>
+</svg>
+
+              <p class="text-text-muted text-[11px] italic mt-3 leading-relaxed">
+                Real district boundaries of Andhra Pradesh, shaded by region to show where the Mala community concentrates: deepest in Coastal Andhra, high in north-coastal Uttarandhra, lighter across the Rayalaseema interior (where Madigas predominate). Regional shading reflects Scheduled-Caste census patterns (2011) - indicative, not a per-district survey.
+              </p>
+            </div>
+          </div>
+
+          <!-- Legend + commentary -->
+          <div class="lg:col-span-5 reveal-up">
+            <h3 class="font-display text-ambedkar-blue text-2xl mb-4">A Coastal Heartland</h3>
+            <p class="text-text-primary text-base leading-[1.85] mb-6">
+              The community's centre of gravity lies on the eastern seaboard. Early mission schools and the fertile Krishna–Godavari delta gave coastal Mala families comparatively earlier access to education and the professions - a head start whose legacy runs through MALGOA today.
+            </p>
+
+            <ul class="space-y-3 mb-6 reveal-stagger">
+              <li class="flex items-center gap-3 text-sm text-text-primary">
+                <span class="w-5 h-5 rounded flex-shrink-0" style="background:#9c7d22;"></span>
+                <span><strong class="text-ambedkar-blue">Coastal Andhra</strong> - highest density (Krishna, Godavari, Guntur, Prakasam, Nellore)</span>
+              </li>
+              <li class="flex items-center gap-3 text-sm text-text-primary">
+                <span class="w-5 h-5 rounded flex-shrink-0" style="background:#B8962E;"></span>
+                <span><strong class="text-ambedkar-blue">Uttarandhra</strong> - high (Srikakulam, Vizianagaram, Visakhapatnam)</span>
+              </li>
+              <li class="flex items-center gap-3 text-sm text-text-primary">
+                <span class="w-5 h-5 rounded flex-shrink-0" style="background:#E6D8A6;"></span>
+                <span><strong class="text-ambedkar-blue">Rayalaseema</strong> - lower presence (Madiga-predominant interior)</span>
+              </li>
+            </ul>
+
+            <div class="bg-parchment border-l-4 border-bronze rounded-r-md p-4">
+              <p class="text-text-muted text-sm leading-relaxed">
+                In the 2011 census of Andhra Pradesh, Malas were <strong class="text-ambedkar-blue">45%</strong> of the SC population - the single largest bloc, with the densest concentrations along the Krishna–Godavari delta and the Uttarandhra coast
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Section: Origins of the People -->
+    <div class="bg-white bg-grain py-24">
+      <div class="max-w-6xl mx-auto px-6 sm:px-8 grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+
+        <div class="lg:col-span-7 reveal-up">
+          <p class="text-bronze text-xs uppercase tracking-[0.18em] font-medium mb-3">Origins</p>
+          <h2 class="text-ambedkar-blue text-4xl sm:text-5xl mb-7" style="line-height:1.08;">Origins of the People</h2>
+
+          <p class="text-text-primary text-base leading-[1.85] mb-5">
+            Colonial ethnographers and later scholars described the Malas as the largest section of "untouchables" in the Telugu country of the old Madras Presidency, with a dense presence in rural Andhra regions
+          </p>
+
+          <p class="text-text-primary text-base leading-[1.85] mb-5">
+            There are multiple explanations of origin within scholarship and community memory. Some narratives trace the Malas (often linked with Mahars) to <strong class="text-ambedkar-blue">warrior groups or ruling clans of the Deccan</strong> who lost power and were pushed down in ritual status after military defeat or political change
+          </p>
+
+          <p class="text-text-primary text-base leading-[1.85] mb-5">
+            Other accounts tie their marginalisation to crises such as the <strong class="text-ambedkar-blue">12-year drought and famine around 1396</strong>, suggesting that famine-driven practices like eating dead cattle were later stigmatised and used to mark them as "untouchable"
+          </p>
+
+          <p class="text-text-primary text-base leading-[1.85]">
+            A different line of argument views the early Malas as an extensive pre-agricultural or primitive-agricultural <strong class="text-ambedkar-blue">hunting-and-gathering population</strong> across the Deccan, gradually incorporated into agrarian society as landless labourers when forests shrank and agriculture spread. Over time, these original groups absorbed diverse elements - defeated soldiers, immigrant nomadic horsemen like Sakas and Ahirs, and excommunicated people - who sought refuge and were admitted into the Mala fold
+          </p>
+        </div>
+
+        <!-- Layered identity diagram (inline SVG, no external file) -->
+        <div class="lg:col-span-5 sticky top-28 reveal-up">
+          <div class="relative bg-parchment rounded-md border border-divider p-8 shadow-sm">
+            <p class="text-bronze text-xs uppercase tracking-[0.15em] font-medium mb-5 text-center">Layered Identity</p>
+            <svg viewBox="0 0 280 320" xmlns="http://www.w3.org/2000/svg" class="w-full h-auto" role="img" aria-label="Diagram of Mala community's layered identity across centuries">
+              <circle cx="140" cy="160" r="130" fill="none" stroke="#1565C0" stroke-width="1.5" opacity="0.4"/>
+              <text x="140" y="40" text-anchor="middle" fill="#1565C0" font-family="Urbanist" font-size="13" font-weight="600">Modern Citizen</text>
+              <circle cx="140" cy="160" r="95" fill="none" stroke="#1565C0" stroke-width="1.5" opacity="0.6"/>
+              <text x="140" y="78" text-anchor="middle" fill="#1565C0" font-family="Urbanist" font-size="13" font-weight="600">Agrarian Labour</text>
+              <circle cx="140" cy="160" r="60" fill="#B8962E" opacity="0.12"/>
+              <circle cx="140" cy="160" r="60" fill="none" stroke="#B8962E" stroke-width="2"/>
+              <text x="140" y="148" text-anchor="middle" fill="#1565C0" font-family="Urbanist" font-size="14" font-weight="700">Warrior</text>
+              <text x="140" y="168" text-anchor="middle" fill="#1565C0" font-family="Urbanist" font-size="14" font-weight="700">&amp; Tribal</text>
+              <text x="140" y="184" text-anchor="middle" fill="#5C5C5C" font-family="Figtree" font-size="10">Pre-modern Deccan</text>
+              <path d="M140 100 L140 90" stroke="#B8962E" stroke-width="1.5" marker-end="url(#arrow)"/>
+              <path d="M140 220 L140 230" stroke="#B8962E" stroke-width="1.5" marker-end="url(#arrow)"/>
+              <defs>
+                <marker id="arrow" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+                  <path d="M0 0 L8 4 L0 8 Z" fill="#B8962E"/>
+                </marker>
+              </defs>
+            </svg>
+            <p class="text-text-muted text-xs italic text-center mt-5 leading-relaxed">
+              A community identity formed across centuries - through warrior origins, agrarian incorporation, and modern citizenship
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section: Timeline of a Movement -->
+    <div class="bg-parchment bg-topo py-24">
+      <div class="max-w-5xl mx-auto px-6 sm:px-8">
+        <div class="text-center mb-16 reveal-up">
+          <p class="text-bronze text-xs uppercase tracking-[0.18em] font-medium mb-3">Historical Arc</p>
+          <h2 class="text-ambedkar-blue text-4xl sm:text-5xl">A Millennium in Motion</h2>
+          <p class="text-text-muted text-lg mt-5 max-w-2xl mx-auto">From the Battle of Palnadu to the Supreme Court verdict of 2024 - a chronology of resistance, reform, and rising</p>
+        </div>
+
+        <div class="relative">
+          <div class="absolute left-1/2 -translate-x-px top-0 bottom-0 w-0.5 bg-gradient-to-b from-transparent via-bronze to-transparent"></div>
+
+          <div class="space-y-16 reveal-stagger">
+
+            <div class="relative grid grid-cols-2 gap-8 items-center">
+              <div class="text-right pr-10">
+                <p class="font-display text-3xl text-ambedkar-blue">12th Century</p>
+                <p class="text-bronze text-sm font-semibold mt-1">Battle of Palnadu</p>
+              </div>
+              <div class="absolute left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-bronze ring-4 ring-parchment"></div>
+              <div class="pl-10">
+                <p class="text-text-primary leading-relaxed">Mala Kannamadasu - a Mala warrior under the patronage of Brahmanaidu - fights and dies at the Battle of Palnadu. Part historical, part legendary, he endures as a symbol of courage and a non-subordinate Mala past in community song and memory</p>
+              </div>
+            </div>
+
+            <div class="relative grid grid-cols-2 gap-8 items-center">
+              <div class="text-right pr-10">
+                <p class="text-text-primary leading-relaxed">A devastating 12-year drought and famine across the Deccan. Famine-driven survival practices are later stigmatised and weaponised by upper castes to mark Malas as ritually "untouchable" - a turning point that compounded centuries of structural exclusion</p>
+              </div>
+              <div class="absolute left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-bronze ring-4 ring-parchment"></div>
+              <div class="pl-10">
+                <p class="font-display text-3xl text-ambedkar-blue">1396</p>
+                <p class="text-bronze text-sm font-semibold mt-1">The Great Drought</p>
+              </div>
+            </div>
+
+            <div class="relative grid grid-cols-2 gap-8 items-center">
+              <div class="text-right pr-10">
+                <p class="font-display text-3xl text-ambedkar-blue">1888</p>
+                <p class="text-bronze text-sm font-semibold mt-1">Bhagya Reddy Varma</p>
+              </div>
+              <div class="absolute left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-bronze ring-4 ring-parchment"></div>
+              <div class="pl-10">
+                <p class="text-text-primary leading-relaxed">Birth of Bhagya Reddy Varma (1888–1939), pioneering Dalit reformer who would mobilise Malas and Madigas against untouchability - opening schools and hostels for Dalit children and connecting Telugu Dalit struggle to wider anti-caste currents</p>
+              </div>
+            </div>
+
+            <div class="relative grid grid-cols-2 gap-8 items-center">
+              <div class="text-right pr-10">
+                <p class="text-text-primary leading-relaxed">The Adi-Andhra movement gathers force. Mala activists organise as teachers and local leaders, encouraging Dalits to register under new caste names and reject degrading practices. The foundations of modern Dalit political mobilisation are laid</p>
+              </div>
+              <div class="absolute left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-bronze ring-4 ring-parchment"></div>
+              <div class="pl-10">
+                <p class="font-display text-3xl text-ambedkar-blue">1930s</p>
+                <p class="text-bronze text-sm font-semibold mt-1">Adi-Andhra Movement</p>
+              </div>
+            </div>
+
+            <div class="relative grid grid-cols-2 gap-8 items-center">
+              <div class="text-right pr-10">
+                <p class="font-display text-3xl text-ambedkar-blue">1947</p>
+                <p class="text-bronze text-sm font-semibold mt-1">Constitutional Recognition</p>
+              </div>
+              <div class="absolute left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-bronze ring-4 ring-parchment"></div>
+              <div class="pl-10">
+                <p class="text-text-primary leading-relaxed">Independence brings Scheduled Caste status to the Malas of Andhra Pradesh and Telangana, with constitutional access to reservations in education, public employment, and legislatures - opening new pathways even as structural barriers persist</p>
+              </div>
+            </div>
+
+            <div class="relative grid grid-cols-2 gap-8 items-center">
+              <div class="text-right pr-10">
+                <p class="text-text-primary leading-relaxed">Mala Mahanadu emerges as the major organisation representing Mala interests, particularly around SC reservation distribution. Through leaders like G. Chennaiah and others, the community asserts itself in Andhra–Telangana Dalit politics through rallies, legal interventions, and policy negotiations</p>
+              </div>
+              <div class="absolute left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-bronze ring-4 ring-parchment"></div>
+              <div class="pl-10">
+                <p class="font-display text-3xl text-ambedkar-blue">1990s</p>
+                <p class="text-bronze text-sm font-semibold mt-1">Mala Mahanadu</p>
+              </div>
+            </div>
+
+            <div class="relative grid grid-cols-2 gap-8 items-center">
+              <div class="text-right pr-10">
+                <p class="font-display text-3xl text-ambedkar-blue">2001</p>
+                <p class="text-bronze text-sm font-semibold mt-1">Demographic Weight Confirmed</p>
+              </div>
+              <div class="absolute left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-bronze ring-4 ring-parchment"></div>
+              <div class="pl-10">
+                <p class="text-text-primary leading-relaxed">Census records confirm Malas as 41.6% of the SC population of undivided Andhra Pradesh - the single largest SC bloc, with significant demographic and electoral weight in regional politics</p>
+              </div>
+            </div>
+
+            <div class="relative grid grid-cols-2 gap-8 items-center">
+              <div class="text-right pr-10">
+                <p class="text-text-primary leading-relaxed">The Supreme Court of India delivers a verdict on sub-classification of Scheduled Castes. In its wake, latent discrimination against Mala officers surfaces openly in professional forums across Andhra Pradesh - setting in motion the formation of MALGOA</p>
+              </div>
+              <div class="absolute left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-bronze ring-4 ring-parchment"></div>
+              <div class="pl-10">
+                <p class="font-display text-3xl text-ambedkar-blue">2024</p>
+                <p class="text-bronze text-sm font-semibold mt-1">Apex Court Verdict</p>
+              </div>
+            </div>
+
+            <div class="relative grid grid-cols-2 gap-8 items-center">
+              <div class="text-right pr-10">
+                <p class="font-display text-3xl text-ambedkar-blue">2025</p>
+                <p class="text-bronze text-sm font-semibold mt-1">MALGOA Founded</p>
+              </div>
+              <div class="absolute left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-bronze ring-4 ring-parchment"></div>
+              <div class="pl-10">
+                <p class="text-text-primary leading-relaxed">On 24 January 2025 in Visakhapatnam, the Mala Gazetted Officers Association is founded - registered under Reg. No. 185/2025. A new institutional vehicle for the next chapter of the community through government platform</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <style>
+          @media (max-width: 768px) {
+            #legacy .relative.grid.grid-cols-2 { grid-template-columns: 1fr; }
+            #legacy .relative.grid.grid-cols-2 > *:first-child { text-align: left; padding-right: 0; padding-left: 2.5rem; }
+            #legacy .relative.grid.grid-cols-2 > .absolute { left: 0.5rem; transform: none; }
+            #legacy .absolute.left-1\/2 { left: 0.5rem !important; transform: none !important; }
+          }
+        </style>
+
+      </div>
+    </div>
+
+    <!-- Section: Religious and Cultural Life -->
+    <div class="bg-white py-24">
+      <div class="max-w-6xl mx-auto px-6 sm:px-8">
+        <div class="text-center mb-14 reveal-up">
+          <p class="text-bronze text-xs uppercase tracking-[0.18em] font-medium mb-3">Faith &amp; Ritual</p>
+          <h2 class="text-ambedkar-blue text-4xl sm:text-5xl">Religious &amp; Cultural Life</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 reveal-stagger">
+
+          <div class="card-lift bg-parchment rounded-lg p-7 border border-divider">
+            <i data-lucide="flame" class="w-8 h-8 text-bronze mb-4 card-icon"></i>
+            <h3 class="font-display text-ambedkar-blue text-xl mb-3">Hindu Tradition</h3>
+            <p class="text-text-muted text-sm leading-relaxed">Most Malas are Hindus, worshipping family deities such as Yellamma and honouring ancestral spirits. <strong>Urkondi Irrana</strong> in Andhra Pradesh remains a key sacred centre for the community</p>
+          </div>
+
+          <div class="card-lift bg-parchment rounded-lg p-7 border border-divider">
+            <i data-lucide="church" class="w-8 h-8 text-bronze mb-4 card-icon"></i>
+            <h3 class="font-display text-ambedkar-blue text-xl mb-3">Christian Heritage</h3>
+            <p class="text-text-muted text-sm leading-relaxed">Significant Christian segments, especially in the Krishna–Godavari belt, trace their identity to mission-era schools and theology. Christian Malas helped build a culture of education that became a ladder into the professions</p>
+          </div>
+
+          <div class="card-lift bg-parchment rounded-lg p-7 border border-divider">
+            <i data-lucide="music" class="w-8 h-8 text-bronze mb-4 card-icon"></i>
+            <h3 class="font-display text-ambedkar-blue text-xl mb-3">Ritual &amp; Song</h3>
+            <p class="text-text-muted text-sm leading-relaxed">Mala Dassari and Mala Jangam - specialist ritualists - perform funerary rites and sing <em>Pogatha</em>, songs in praise of the departed. Folk drumming and devotional music shape the community's public life</p>
+          </div>
+
+          <div class="card-lift bg-parchment rounded-lg p-7 border border-divider">
+            <i data-lucide="sparkles" class="w-8 h-8 text-bronze mb-4 card-icon"></i>
+            <h3 class="font-display text-ambedkar-blue text-xl mb-3">Public Assertion</h3>
+            <p class="text-text-muted text-sm leading-relaxed">Ambedkar Jayanti and other regional celebrations have become central stages for Mala pride and Dalit assertion - where memory, music, and political identity are publicly performed</p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Section: From Labour to Leadership -->
+    <div class="bg-parchment bg-grain py-24">
+      <div class="max-w-6xl mx-auto px-6 sm:px-8">
+        <div class="text-center mb-14 reveal-up">
+          <p class="text-bronze text-xs uppercase tracking-[0.18em] font-medium mb-3">Occupational Journey</p>
+          <h2 class="text-ambedkar-blue text-4xl sm:text-5xl">From Labour to Leadership</h2>
+          <p class="text-text-muted text-lg mt-5 max-w-2xl mx-auto">A community that moved - and continues moving - from agrarian dependence into the full spectrum of modern professional life</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto mb-14 reveal-stagger">
+
+          <div class="card-lift bg-white rounded-lg p-8 border-l-4 border-divider">
+            <p class="text-text-muted text-xs uppercase tracking-wider font-semibold mb-2">Then</p>
+            <h3 class="font-display text-ambedkar-blue text-2xl mb-5">Agrarian Foundations</h3>
+            <ul class="space-y-3 text-sm text-text-primary">
+              <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-bronze flex-shrink-0 mt-1"></i> Agricultural labour on landowner fields</li>
+              <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-bronze flex-shrink-0 mt-1"></i> Cotton and silk weaving</li>
+              <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-bronze flex-shrink-0 mt-1"></i> Village ritual service &amp; drumming</li>
+              <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-bronze flex-shrink-0 mt-1"></i> Sub-occupations: Charu, Reddi, Parayan, Bandari, Dasu</li>
+            </ul>
+          </div>
+
+          <div class="card-lift bg-white rounded-lg p-8 border-l-4 border-bronze">
+            <p class="text-bronze text-xs uppercase tracking-wider font-semibold mb-2">Now</p>
+            <h3 class="font-display text-ambedkar-blue text-2xl mb-5">Diversified Professions</h3>
+            <ul class="space-y-3 text-sm text-text-primary">
+              <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-bronze flex-shrink-0 mt-1"></i> MLAs, MPs, academicians, advisors</li>
+              <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-bronze flex-shrink-0 mt-1"></i> Government officers, teachers, doctors, engineers</li>
+              <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-bronze flex-shrink-0 mt-1"></i> Defence services, police, administrative roles</li>
+              <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-bronze flex-shrink-0 mt-1"></i> Banking, IT, hospitals, corporate & consulting</li>
+            </ul>
+          </div>
+
+        </div>
+
+        <div class="max-w-3xl mx-auto bg-white rounded-lg border border-divider p-8 reveal-up">
+          <div class="flex gap-4 items-start">
+            <i data-lucide="info" class="w-6 h-6 text-bronze flex-shrink-0 mt-1"></i>
+            <div>
+              <h4 class="font-display text-ambedkar-blue text-lg mb-2">An Honest Acknowledgement</h4>
+              <p class="text-text-muted text-sm leading-relaxed">
+                Despite genuine progress, a majority of Malas in rural Andhra and Telangana remain in low-paying manual work. First-generation graduates often cluster in lower-tier roles rather than the most lucrative professions. Mala women, in particular, remain over-represented in agricultural and domestic labour and under-represented in higher administrative ranks. <strong class="text-ambedkar-blue">Partial mobility layered over continued structural disadvantage</strong> - this is the unfinished work that MALGOA exists to address
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Section: Pillars of the Community - removed from legacy; displayed on home page carousel instead -->
+    <div class="hidden">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 reveal-stagger">
+
+          <div class="card-lift bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg p-7 text-center">
+            <img src="images/legacy-bhagya-reddy-varma.jpg" alt="Bhagya Reddy Varma - Dalit reformer (1888–1939)" class="w-28 h-28 mx-auto mb-5 rounded-full object-cover object-top border-2 border-bronze/40" loading="lazy" />
+            <h3 class="font-display text-white text-xl mb-1">Bhagya Reddy Varma</h3>
+            <p class="text-bronze-light text-xs font-semibold tracking-wide mb-3">1888 – 1939</p>
+            <p class="text-slate-300 text-sm leading-relaxed">Pioneering Dalit reformer of the Adi-Andhra movement who organised conferences, opened schools and hostels, and articulated a new self-respect-based identity for Malas and other Dalits.</p>
+          </div>
+
+          <div class="card-lift bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg p-7 text-center">
+            <img src="images/legacy-g-venkat-swamy.jpg" alt="G. Venkat Swamy 'Kaka' - MP & Union Minister (1929–2014)" class="w-28 h-28 mx-auto mb-5 rounded-full object-cover object-top border-2 border-bronze/40" loading="lazy" />
+            <h3 class="font-display text-white text-xl mb-1">G. Venkat Swamy <span class="text-bronze-light italic font-normal text-base">"Kaka"</span></h3>
+            <p class="text-bronze-light text-xs font-semibold tracking-wide mb-3">1929 – 2014</p>
+            <p class="text-slate-300 text-sm leading-relaxed">Senior Congress leader from Telangana, multi-term MP and Union minister - one of the most prominent Dalit voices from the Mala community at the national level, consistently raising Dalit welfare and reservations.</p>
+          </div>
+
+          <div class="card-lift bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg p-7 text-center">
+            <img src="images/leader-mala-kannamadasu-card.jpg" alt="Mala Kannamadasu" class="w-28 h-28 mx-auto mb-5 rounded-full object-cover object-center border-2 border-bronze/40" loading="lazy" />
+            <h3 class="font-display text-white text-xl mb-1">Mala Kannamadasu</h3>
+            <p class="text-bronze-light text-xs font-semibold tracking-wide mb-3">12th Century · Legendary</p>
+            <p class="text-slate-300 text-sm leading-relaxed">Mala warrior who fought and died at the Battle of Palnadu under Brahmanaidu. Part historical, part legendary - he endures in song and memory as a symbol of courage and a non-subordinate Mala past.</p>
+          </div>
+
+          <div class="card-lift bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg p-7 text-center">
+            <div class="w-28 h-28 mx-auto mb-5 rounded-full bg-gradient-to-br from-bronze/30 to-ambedkar-blue/30 flex items-center justify-center border-2 border-bronze/40">
+              <i data-lucide="user-round" class="w-12 h-12 text-bronze"></i>
+            </div>
+            <h3 class="font-display text-white text-xl mb-1">G. Chennaiah</h3>
+            <p class="text-bronze-light text-xs font-semibold tracking-wide mb-3">National President, Mala Mahanadu</p>
+            <p class="text-slate-300 text-sm leading-relaxed">A defining voice in Andhra–Telangana Dalit politics since the 1990s, organising rallies, legal interventions and policy negotiations around SC reservations and sub-categorisation debates.</p>
+          </div>
+
+        </div>
+
+        <!-- Bridge to Heritage page -->
+        <div class="mt-16 text-center reveal-up">
+          <p class="text-slate-300 max-w-2xl mx-auto mb-6">From this long arc of struggle and self-assertion arises the most recent institutional response - born of a flashpoint in January 2025.</p>
+          <button onclick="router('heritage')" class="btn-cta">Read MALGOA's Founding Story</button>
+        </div>
+
+        <!-- IMAGE SOURCING NOTES (for the user, not visible on page):
+             STATUS as of Iteration 4 (2026-06-03):
+             ✓ EMBEDDED (verified public-domain, Wikimedia Commons):
+               - Bhagya Reddy Varma  → images/legacy-bhagya-reddy-varma.jpg
+                 src: https://commons.wikimedia.org/wiki/Category:Bhagya_Reddy_Varma
+               - G. Venkat Swamy "Kaka" → images/legacy-g-venkat-swamy.jpg
+                 src: https://en.wikipedia.org/wiki/Gaddam_Venkatswamy
+             ◻ STILL A SILHOUETTE - no verifiable / freely-licensed photo found; PLEASE VERIFY & SUPPLY:
+               - Mala Kannamadasu: 12th-century legendary figure - NO photograph exists. Keep silhouette
+                 (currently a shield icon) or commission an artistic depiction.
+               - G. Chennaiah (Mala Mahanadu): candidate sources to confirm identity & licensing -
+                 https://malamahanadu.org/  |  https://theleaderspage.com/kc-chennaiah/  |
+                 https://www.facebook.com/p/MALA-Mahanadu-G-Chennaiah-100064783596405/
+                 NOTE: sources also list "Pandu Ashok Kumar" as All-India President - confirm the correct office-bearer.
+             HOW TO SWAP a silhouette for a real portrait - replace that card's
+             <div class="w-28 h-28 ..."> ... </div> block with:
+               <img src="images/legacy-[firstname]-[lastname].jpg" alt="[Full Name]" class="w-28 h-28 mx-auto mb-5 rounded-full object-cover object-top border-2 border-bronze/40" loading="lazy" />
+             Recommended: square crop, 400x400px min, only use images you have rights to publish.
+        -->
+    </div>
+
   </section>
 
   <!-- ──────────────── HERITAGE & ORIGIN ──────────────── -->
@@ -450,21 +1464,27 @@
 
         <div class="heritage-prose text-text-primary text-lg">
 
+          <p class="lead-narrative">Every movement carries a memory of the moment it became necessary. Ours is not a story of ambition, but of dignity withdrawn and dignity reclaimed - the lived experience of officers who gave decades of faithful service, only to find that the fellowship they trusted had quietly drawn a line through their names.</p>
+
+          <p>What follows is the record exactly as it was felt and set down by those who lived it. We preserve their words, unaltered, because the truth of how it happened matters more than any retelling could</p>
+
           <div class="heritage-illustration" aria-hidden="true">
             <svg viewBox="0 0 160 96" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <line x1="80" y1="12" x2="80" y2="80" stroke="#003F7F" stroke-width="2"/>
+              <line x1="80" y1="12" x2="80" y2="80" stroke="#1565C0" stroke-width="2"/>
               <circle cx="80" cy="10" r="4" fill="#B8962E"/>
-              <line x1="30" y1="30" x2="130" y2="42" stroke="#003F7F" stroke-width="2"/>
+              <line x1="30" y1="30" x2="130" y2="42" stroke="#1565C0" stroke-width="2"/>
               <line x1="30" y1="30" x2="20" y2="60" stroke="#B8962E" stroke-width="1.5"/>
               <line x1="30" y1="30" x2="40" y2="60" stroke="#B8962E" stroke-width="1.5"/>
               <path d="M15 60 Q30 70 45 60" stroke="#B8962E" stroke-width="1.5" fill="none"/>
               <line x1="130" y1="42" x2="115" y2="68" stroke="#B8962E" stroke-width="1.5"/>
               <line x1="130" y1="42" x2="145" y2="68" stroke="#B8962E" stroke-width="1.5"/>
               <path d="M110 68 Q130 80 150 68" stroke="#B8962E" stroke-width="1.5" fill="none"/>
-              <rect x="70" y="80" width="20" height="6" fill="#003F7F"/>
+              <rect x="70" y="80" width="20" height="6" fill="#1565C0"/>
             </svg>
           </div>
+          <p class="heritage-step">Chapter One</p>
           <h3>The Catalyst</h3>
+          <p>For decades there had been no difference - only shared work, shared struggle, and a shared faith in one another. Then a single judgement gave a name to a discrimination that had been waiting, unspoken, beneath the surface. What had bound a community together was suddenly used to set it apart</p>
           <blockquote class="verbatim">
             <p>"In the state of Andhra Pradesh after general elections during May, 2024 the new Government was formed with TDP and its alliance of parties. When the governance of Andhra Pradesh was going with normal standards, the Honourable Apex Court of India delivered the verdict on classification of SC castes in the month of August, 2024."</p>
             <p>"This discovered the hidden agenda of our brethren all these decades, as all of us have gathered and proceeded all these decades together without having any sort of difference. Having boosted with the judgement, the thought of discrimination has been uncovered and started humiliating the Mala officers even in open forums."</p>
@@ -477,12 +1497,12 @@
 
           <div class="heritage-illustration" aria-hidden="true">
             <svg viewBox="0 0 160 96" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <ellipse cx="80" cy="60" rx="50" ry="10" stroke="#003F7F" stroke-width="2" fill="none"/>
-              <circle cx="40" cy="55" r="4" fill="#003F7F"/>
-              <circle cx="80" cy="50" r="4" fill="#003F7F"/>
-              <circle cx="120" cy="55" r="4" fill="#003F7F"/>
-              <circle cx="60" cy="68" r="4" fill="#003F7F"/>
-              <circle cx="100" cy="68" r="4" fill="#003F7F"/>
+              <ellipse cx="80" cy="60" rx="50" ry="10" stroke="#1565C0" stroke-width="2" fill="none"/>
+              <circle cx="40" cy="55" r="4" fill="#1565C0"/>
+              <circle cx="80" cy="50" r="4" fill="#1565C0"/>
+              <circle cx="120" cy="55" r="4" fill="#1565C0"/>
+              <circle cx="60" cy="68" r="4" fill="#1565C0"/>
+              <circle cx="100" cy="68" r="4" fill="#1565C0"/>
               <g stroke="#B8962E" stroke-width="2" stroke-linecap="round">
                 <line x1="80" y1="18" x2="80" y2="34"/>
                 <line x1="68" y1="22" x2="74" y2="32"/>
@@ -493,7 +1513,9 @@
               <circle cx="80" cy="26" r="3" fill="#B8962E"/>
             </svg>
           </div>
+          <p class="heritage-step">Chapter Two</p>
           <h3>The Flashpoint in Visakhapatnam</h3>
+          <p>There is a particular kind of pain in being humiliated in the very room meant to honour your service. On a routine day, in an open forum, that pain became impossible to ignore - and out of it came not bitterness, but resolve. A handful of officers chose to turn injury into organisation, and a quiet decision in a Joint Director's chamber became the seed of everything that followed</p>
           <blockquote class="verbatim">
             <p>"An event, in routine manner, was to be conducted to inaugurate Dairy of SC/ST Gazetted Officers on 24.01.2025 at Visakhapatnam. During the meeting, a lot of humiliation was shown by discriminating the Officers belonging to MALA Caste only."</p>
             <p>"This indecent incident was noticed and discussed with Dr. Y. Praveen Kumar, DMHO (Retired) former President and one of the founders of SC/ST Gazetted Officers Association, Kurnool. During the discussions, an idea has been proposed by Sri Polakati Ramakrishna, DAO(W) to form a separate group with MALA Gazetted Officers to avoid humiliation, disrespect etc."</p>
@@ -507,15 +1529,17 @@
 
           <div class="heritage-illustration" aria-hidden="true">
             <svg viewBox="0 0 160 96" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M40 70 L80 60 L120 70 L120 84 L80 74 L40 84 Z" stroke="#003F7F" stroke-width="2" fill="none"/>
-              <line x1="80" y1="60" x2="80" y2="74" stroke="#003F7F" stroke-width="2"/>
-              <line x1="55" y1="68" x2="55" y2="78" stroke="#003F7F" stroke-width="1"/>
-              <line x1="105" y1="68" x2="105" y2="78" stroke="#003F7F" stroke-width="1"/>
+              <path d="M40 70 L80 60 L120 70 L120 84 L80 74 L40 84 Z" stroke="#1565C0" stroke-width="2" fill="none"/>
+              <line x1="80" y1="60" x2="80" y2="74" stroke="#1565C0" stroke-width="2"/>
+              <line x1="55" y1="68" x2="55" y2="78" stroke="#1565C0" stroke-width="1"/>
+              <line x1="105" y1="68" x2="105" y2="78" stroke="#1565C0" stroke-width="1"/>
               <rect x="76" y="38" width="8" height="22" fill="#B8962E"/>
               <path d="M80 38 Q72 28 76 16 Q80 24 80 16 Q80 28 84 16 Q88 28 80 38 Z" fill="#B8962E"/>
             </svg>
           </div>
+          <p class="heritage-step">Chapter Three</p>
           <h3>The Ideological Foundation</h3>
+          <p>A movement built on grievance alone burns out. To endure, it had to be anchored in something larger than the wound that started it. The officers turned to the conscience that has guided generations before them - not as a slogan, but as a working philosophy for how a just society should be ordered</p>
           <div class="creed">
             <p class="q">"Our God Dr. B.R. Ambedkar has mentioned in 'Buddha and Karl Marx,' 1956: 'An ideology is a system of ideas concerning life and society. It is the sum total of one's social philosophy.'"</p>
             <p class="mt-4" style="color:#FAF7F2;">"Since Dr. B.R. Ambedkar saw ideology as not just a set of abstract beliefs, but as a practical guide for organizing society, rooted in morality, equality, and reason."</p>
@@ -528,17 +1552,19 @@
 
           <div class="heritage-illustration" aria-hidden="true">
             <svg viewBox="0 0 160 96" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="30" y="30" width="10" height="50" stroke="#003F7F" stroke-width="2" fill="none"/>
-              <rect x="120" y="30" width="10" height="50" stroke="#003F7F" stroke-width="2" fill="none"/>
-              <rect x="22" y="78" width="26" height="4" fill="#003F7F"/>
-              <rect x="112" y="78" width="26" height="4" fill="#003F7F"/>
-              <rect x="22" y="26" width="26" height="4" fill="#003F7F"/>
-              <rect x="112" y="26" width="26" height="4" fill="#003F7F"/>
+              <rect x="30" y="30" width="10" height="50" stroke="#1565C0" stroke-width="2" fill="none"/>
+              <rect x="120" y="30" width="10" height="50" stroke="#1565C0" stroke-width="2" fill="none"/>
+              <rect x="22" y="78" width="26" height="4" fill="#1565C0"/>
+              <rect x="112" y="78" width="26" height="4" fill="#1565C0"/>
+              <rect x="22" y="26" width="26" height="4" fill="#1565C0"/>
+              <rect x="112" y="26" width="26" height="4" fill="#1565C0"/>
               <line x1="80" y1="80" x2="80" y2="30" stroke="#B8962E" stroke-width="3"/>
               <path d="M70 40 L80 28 L90 40" stroke="#B8962E" stroke-width="3" stroke-linejoin="round" fill="none"/>
             </svg>
           </div>
+          <p class="heritage-step">Chapter Four</p>
           <h3>The Imperative Need</h3>
+          <p>Conviction without action is only sentiment. Having named the wrong and grounded itself in principle, the State Body refused to let the moment pass into quiet endurance. The decision was unambiguous: not to merely survive, but to rebuild - to realise what was lost and re-innovate what comes next</p>
           <blockquote class="verbatim">
             <p>"Keeping the above in view, trusting the value of democracy (collective responsibility) and with due respect to follow the footprints or OUR GOD Dr. BR Ambedkar, the issues concerning the MALA Caste officers across the state that have been brought to the notice of the STATE BODY have been discussed by the State Body of MALGOA…"</p>
             <p>"…it was felt that there IS AN IMPERATIVE NEED TO REALIZE, RENOVATE, REVAMP AND REFURBISH."</p>
@@ -549,7 +1575,7 @@
             <figcaption class="text-sm text-text-muted italic text-center mt-3">[Caption to be added]</figcaption>
           </figure>
 
-          <p class="pull-quote">Realise and Re-innovate - the strategic mandate born of that imperative.</p>
+          <p class="pull-quote">Realise and Re-innovate - the strategic mandate born of that imperative</p>
 
           <div class="mt-10">
             <button onclick="router('mandate')" class="btn-outline">Read the Strategic Mandate</button>
@@ -566,50 +1592,49 @@
       <h2 class="text-ambedkar-blue text-4xl mt-2">Leadership</h2>
       <div class="section-rule"></div>
       <p class="text-text-muted text-lg leading-relaxed max-w-3xl mx-auto text-center mb-12">
-        The State Body of MALGOA brings together a distinguished core committee of senior officers and elected representatives entrusted with steering the association's constitutional mandate, professional advocacy and intergenerational vision across Andhra Pradesh.
+        The State Body of MALGOA brings together a distinguished core committee of senior officers and elected representatives entrusted with steering the association's constitutional mandate, professional advocacy and intergenerational vision across Andhra Pradesh
       </p>
 
       <!-- Office bearers grid -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7 reveal-stagger">
 
-        <div class="card top-bronze p-8 text-center">
+        <div class="card top-bronze p-8 text-center card-lift">
           <img src="images/leadership/president-vijayanandam.jpg" alt="Sri Jangam Vijayanandam - President, MALGOA" class="leader-photo mx-auto mb-4" loading="lazy" />
           <h4 class="font-heading font-bold text-ambedkar-blue text-lg">Sri Jangam Vijayanandam</h4>
           <p class="text-text-muted italic text-sm mt-1">President</p>
         </div>
 
-        <div class="card top-bronze p-8 text-center">
+        <div class="card top-bronze p-8 text-center card-lift">
           <img src="images/leadership/assoc-president-ramesh.jpg" alt="Sri Ullaji Ramesh - Associate President, MALGOA" class="leader-photo mx-auto mb-4" loading="lazy" />
           <h4 class="font-heading font-bold text-ambedkar-blue text-lg">Sri Ullaji Ramesh</h4>
           <p class="text-text-muted italic text-sm mt-1">Associate President</p>
         </div>
 
-        <div class="card top-bronze p-8 text-center">
-          <!-- TODO: candidate photo images/suresh_kumar.jpeg - confirm this is Sri Beera Suresh before using -->
-          <div class="leader-placeholder mx-auto mb-4"><i data-lucide="user-round" class="w-10 h-10 text-bronze"></i></div>
+        <div class="card top-bronze p-8 text-center card-lift">
+          <img src="images/leadership/vice-president-suresh.jpg" alt="Sri Beera Suresh - Vice-President, MALGOA" class="leader-photo mx-auto mb-4" loading="lazy" />
           <h4 class="font-heading font-bold text-ambedkar-blue text-lg">Sri Beera Suresh</h4>
           <p class="text-text-muted italic text-sm mt-1">Vice-President</p>
         </div>
 
-        <div class="card top-bronze p-8 text-center">
+        <div class="card top-bronze p-8 text-center card-lift">
           <img src="images/leadership/gen-secretary-ramakrishna.jpg" alt="Sri Polakati Ramakrishna - General Secretary, MALGOA" class="leader-photo mx-auto mb-4" loading="lazy" />
           <h4 class="font-heading font-bold text-ambedkar-blue text-lg">Sri Polakati Ramakrishna</h4>
           <p class="text-text-muted italic text-sm mt-1">General Secretary</p>
         </div>
 
-        <div class="card top-bronze p-8 text-center">
+        <div class="card top-bronze p-8 text-center card-lift">
           <div class="leader-placeholder mx-auto mb-4"><i data-lucide="user-round" class="w-10 h-10 text-bronze"></i></div>
           <h4 class="font-heading font-bold text-ambedkar-blue text-lg">Smt. Gummadi Surekha</h4>
           <p class="text-text-muted italic text-sm mt-1">Women Secretary</p>
         </div>
 
-        <div class="card top-bronze p-8 text-center">
+        <div class="card top-bronze p-8 text-center card-lift">
           <div class="leader-placeholder mx-auto mb-4"><i data-lucide="user-round" class="w-10 h-10 text-bronze"></i></div>
           <h4 class="font-heading font-bold text-ambedkar-blue text-lg">Sri S.E. Aravind</h4>
           <p class="text-text-muted italic text-sm mt-1">Joint Secretary</p>
         </div>
 
-        <div class="card top-bronze p-8 text-center">
+        <div class="card top-bronze p-8 text-center card-lift">
           <div class="leader-placeholder mx-auto mb-4"><i data-lucide="user-round" class="w-10 h-10 text-bronze"></i></div>
           <h4 class="font-heading font-bold text-ambedkar-blue text-lg">Sri Pakanati Venkateswarlu</h4>
           <p class="text-text-muted italic text-sm mt-1">Treasurer</p>
@@ -619,12 +1644,12 @@
       <!-- Working President & Advisor (additional confirmed office bearers from the souvenir record) -->
       <h3 class="font-heading text-ambedkar-blue text-2xl mt-16 mb-6">Working President &amp; Advisor</h3>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7 max-w-3xl">
-        <div class="card top-bronze p-8 text-center">
+        <div class="card top-bronze p-8 text-center card-lift">
           <img src="images/leadership/working-president-ratna-prasad.jpg" alt="Sri B. Ratna Prasad - Working President, MALGOA" class="leader-photo mx-auto mb-4" loading="lazy" />
           <h4 class="font-heading font-bold text-ambedkar-blue text-lg">Sri B. Ratna Prasad</h4>
           <p class="text-text-muted italic text-sm mt-1">Working President</p>
         </div>
-        <div class="card top-bronze p-8 text-center">
+        <div class="card top-bronze p-8 text-center card-lift">
           <img src="images/leadership/advisor-gnanaveni.jpg" alt="Smt. K. Gnanaveni - Advisor, MALGOA" class="leader-photo mx-auto mb-4" loading="lazy" />
           <h4 class="font-heading font-bold text-ambedkar-blue text-lg">Smt. K. Gnanaveni</h4>
           <p class="text-text-muted italic text-sm mt-1">Advisor</p>
@@ -645,74 +1670,74 @@
           </p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 reveal-stagger">
 
-          <div class="bg-parchment border-l-4 border-bronze rounded-md p-7">
-            <i data-lucide="scale" class="w-7 h-7 text-bronze mb-4"></i>
+          <div class="bg-parchment border-l-4 border-bronze rounded-md p-7 card-lift">
+            <i data-lucide="scale" class="w-7 h-7 text-bronze mb-4 card-icon"></i>
             <h3 class="font-heading text-ambedkar-blue text-xl mb-3">Constitutional Advocacy</h3>
             <p class="text-text-muted text-base leading-relaxed">
               To uphold the constitutional rights, statutory entitlements and equitable representation of Mala officers across every department, board and forum of the Government of Andhra Pradesh.
             </p>
           </div>
 
-          <div class="bg-parchment border-l-4 border-bronze rounded-md p-7">
-            <i data-lucide="shield-alert" class="w-7 h-7 text-bronze mb-4"></i>
+          <div class="bg-parchment border-l-4 border-bronze rounded-md p-7 card-lift">
+            <i data-lucide="shield-alert" class="w-7 h-7 text-bronze mb-4 card-icon"></i>
             <h3 class="font-heading text-ambedkar-blue text-xl mb-3">Grievance Redressal</h3>
             <p class="text-text-muted text-base leading-relaxed">
               To establish a structured, confidential and time-bound mechanism for receiving, examining and addressing service-related grievances, vigilance matters and instances of discrimination faced by members.
             </p>
           </div>
 
-          <div class="bg-parchment border-l-4 border-bronze rounded-md p-7">
-            <i data-lucide="graduation-cap" class="w-7 h-7 text-bronze mb-4"></i>
+          <div class="bg-parchment border-l-4 border-bronze rounded-md p-7 card-lift">
+            <i data-lucide="graduation-cap" class="w-7 h-7 text-bronze mb-4 card-icon"></i>
             <h3 class="font-heading text-ambedkar-blue text-xl mb-3">Professional Development</h3>
             <p class="text-text-muted text-base leading-relaxed">
               To curate workshops, policy roundtables, leadership symposia and continuing-education programmes that sharpen administrative competence and accelerate professional progression for members at every grade.
             </p>
           </div>
 
-          <div class="bg-parchment border-l-4 border-bronze rounded-md p-7">
-            <i data-lucide="link" class="w-7 h-7 text-bronze mb-4"></i>
+          <div class="bg-parchment border-l-4 border-bronze rounded-md p-7 card-lift">
+            <i data-lucide="link" class="w-7 h-7 text-bronze mb-4 card-icon"></i>
             <h3 class="font-heading text-ambedkar-blue text-xl mb-3">Intergenerational Mentorship</h3>
             <p class="text-text-muted text-base leading-relaxed">
               To formalise structured mentorship between senior retired officers, mid-career professionals and emerging entrants - ensuring institutional wisdom is transferred deliberately, not lost to time.
             </p>
           </div>
 
-          <div class="bg-parchment border-l-4 border-bronze rounded-md p-7">
-            <i data-lucide="landmark" class="w-7 h-7 text-bronze mb-4"></i>
+          <div class="bg-parchment border-l-4 border-bronze rounded-md p-7 card-lift">
+            <i data-lucide="landmark" class="w-7 h-7 text-bronze mb-4 card-icon"></i>
             <h3 class="font-heading text-ambedkar-blue text-xl mb-3">Policy Engagement</h3>
             <p class="text-text-muted text-base leading-relaxed">
               To engage substantively with State-level policy formulation, legislative deliberations and administrative reforms - ensuring the lived realities and considered perspectives of the Mala community shape decisions that affect it.
             </p>
           </div>
 
-          <div class="bg-parchment border-l-4 border-bronze rounded-md p-7">
-            <i data-lucide="users-round" class="w-7 h-7 text-bronze mb-4"></i>
+          <div class="bg-parchment border-l-4 border-bronze rounded-md p-7 card-lift">
+            <i data-lucide="users-round" class="w-7 h-7 text-bronze mb-4 card-icon"></i>
             <h3 class="font-heading text-ambedkar-blue text-xl mb-3">Network &amp; Solidarity</h3>
             <p class="text-text-muted text-base leading-relaxed">
               To build an enduring inter-district, inter-departmental network of Mala officials, public representatives, academicians and consultants - converting individual standing into collective institutional strength.
             </p>
           </div>
 
-          <div class="bg-parchment border-l-4 border-bronze rounded-md p-7">
-            <i data-lucide="archive" class="w-7 h-7 text-bronze mb-4"></i>
+          <div class="bg-parchment border-l-4 border-bronze rounded-md p-7 card-lift">
+            <i data-lucide="archive" class="w-7 h-7 text-bronze mb-4 card-icon"></i>
             <h3 class="font-heading text-ambedkar-blue text-xl mb-3">Documentation &amp; Archive</h3>
             <p class="text-text-muted text-base leading-relaxed">
               To compile, preserve and publish the historical record of the Mala community in Andhra Pradesh - service histories, policy contributions, scholarly works and oral testimonies - as a permanent institutional archive.
             </p>
           </div>
 
-          <div class="bg-parchment border-l-4 border-bronze rounded-md p-7">
-            <i data-lucide="heart-handshake" class="w-7 h-7 text-bronze mb-4"></i>
+          <div class="bg-parchment border-l-4 border-bronze rounded-md p-7 card-lift">
+            <i data-lucide="heart-handshake" class="w-7 h-7 text-bronze mb-4 card-icon"></i>
             <h3 class="font-heading text-ambedkar-blue text-xl mb-3">Community Outreach</h3>
             <p class="text-text-muted text-base leading-relaxed">
               To extend the institutional standing of MALGOA's members in service of the broader Mala community - through scholarship support, civic awareness initiatives and direct engagement with grassroots concerns.
             </p>
           </div>
 
-          <div class="bg-parchment border-l-4 border-bronze rounded-md p-7">
-            <i data-lucide="award" class="w-7 h-7 text-bronze mb-4"></i>
+          <div class="bg-parchment border-l-4 border-bronze rounded-md p-7 card-lift">
+            <i data-lucide="award" class="w-7 h-7 text-bronze mb-4 card-icon"></i>
             <h3 class="font-heading text-ambedkar-blue text-xl mb-3">Recognition &amp; Dignity</h3>
             <p class="text-text-muted text-base leading-relaxed">
               To publicly recognise distinguished service, scholarship and leadership within the community - restoring and reinforcing professional dignity that has too often been overlooked in mainstream forums.
@@ -735,13 +1760,13 @@
         <p class="heritage-eyebrow">In Solidarity</p>
         <h2 class="text-ambedkar-blue text-4xl mt-2">Patrons &amp; Well-Wishers</h2>
         <p class="text-text-muted text-lg leading-relaxed max-w-3xl mx-auto text-center">
-          MALGOA draws moral, intellectual and institutional support from a distinguished circle of patrons, statutory office bearers and public-policy leaders whose lifetimes of service inform and strengthen the association's constitutional mission.
+          MALGOA draws moral, intellectual and institutional support from a distinguished circle of patrons, statutory office bearers and public-policy leaders whose lifetimes of service inform and strengthen the association's constitutional mission
         </p>
         <div class="section-rule mx-auto mt-6 mb-12"></div>
 
         <!-- Members of Parliament -->
         <h3 class="font-heading text-ambedkar-blue text-2xl mb-6">Members of Parliament</h3>
-        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 mb-14">
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 mb-14 reveal-stagger">
           <div class="card p-6 text-center">
             <img src="images/patrons/mp-harish-balayogi.jpg" alt="Sri G.M. Harish Balayogi - Member of Parliament, Amalapuram" class="patron-photo mx-auto mb-3" loading="lazy" />
             <h4 class="font-heading font-semibold text-ambedkar-blue text-sm">Sri G.M. Harish Balayogi</h4>
@@ -761,7 +1786,7 @@
 
         <!-- Members of the Legislative Assembly -->
         <h3 class="font-heading text-ambedkar-blue text-2xl mb-6">Members of the Legislative Assembly</h3>
-        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 mb-14">
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 mb-14 reveal-stagger">
           <div class="card p-6 text-center"><img src="images/patrons/mla-ananda-rao.jpg" alt="Sri A. Ananda Rao - MLA, Amalapuram" class="patron-photo mx-auto mb-3" loading="lazy" /><h4 class="font-heading font-semibold text-ambedkar-blue text-sm">Sri A. Ananda Rao</h4><p class="text-text-muted italic text-xs mt-1">Hon'ble MLA, Amalapuram</p></div>
           <div class="card p-6 text-center"><img src="images/patrons/mla-tenali-sravan-kumar.jpg" alt="Sri Tenali Sravan Kumar - MLA, Tadikonda" class="patron-photo mx-auto mb-3" loading="lazy" /><h4 class="font-heading font-semibold text-ambedkar-blue text-sm">Sri Tenali Sravan Kumar</h4><p class="text-text-muted italic text-xs mt-1">Hon'ble MLA, Tadikonda</p></div>
           <div class="card p-6 text-center"><img src="images/patrons/mla-kondru-murali-mohan.jpg" alt="Sri Kondru Murali Mohan - MLA, Rajam" class="patron-photo mx-auto mb-3" loading="lazy" /><h4 class="font-heading font-semibold text-ambedkar-blue text-sm">Sri Kondru Murali Mohan</h4><p class="text-text-muted italic text-xs mt-1">Hon'ble MLA, Rajam</p></div>
@@ -797,11 +1822,9 @@
           <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
 
             <div class="text-center">
-              <div class="w-32 h-32 mx-auto rounded-full bg-parchment border-4 border-bronze flex items-center justify-center mb-4">
-                <i data-lucide="user-round" class="w-12 h-12 text-ambedkar-blue/30"></i>
-              </div>
-              <p class="font-heading text-ambedkar-blue text-lg">[Name to be added]</p>
-              <p class="text-text-muted text-sm italic mt-1">[Designation]</p>
+              <img src="images/patrons/policy-stephen-anurag.jpg" alt="Stephen Anurag P - Project Officer, NISG, Government of Meghalaya" class="w-32 h-32 mx-auto rounded-full object-cover border-4 border-bronze mb-4" loading="lazy" />
+              <p class="font-heading text-ambedkar-blue text-lg">Stephen Anurag P</p>
+              <p class="text-text-muted text-sm italic mt-1">Project Officer, NISG, Government of Meghalaya</p>
             </div>
 
             <div class="text-center">
@@ -850,32 +1873,56 @@
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-7 mb-12">
 
-        <div class="card top-bronze p-8 reveal d1">
-          <div class="w-14 h-14 rounded-xl bg-ambedkar-blue flex items-center justify-center mb-5"><i data-lucide="landmark" class="w-7 h-7 text-bronze-light"></i></div>
+        <div class="card top-bronze p-8 reveal d1 toc-card" data-stream="experience" role="button" tabindex="0" aria-pressed="false">
+          <div class="toc-card-icon w-14 h-14 rounded-xl bg-ambedkar-blue flex items-center justify-center mb-5"><i data-lucide="landmark" class="w-7 h-7 text-bronze-light"></i></div>
           <p class="heritage-eyebrow">The Veterans</p>
           <h3 class="font-heading font-bold text-ambedkar-blue text-xl mt-1 mb-3">Wisdom &amp; Heritage</h3>
           <p class="text-text-muted leading-relaxed">Our senior officers provide the foundational bedrock of MALGOA. They bring decades of administrative experience, institutional memory, and the steady resilience required to navigate complex challenges. Their guidance ensures that our organizational roots remain deeply grounded in our core principles and historical legacy.</p>
         </div>
 
-        <div class="card top-bronze p-8 reveal d2">
-          <div class="w-14 h-14 rounded-xl bg-ambedkar-blue flex items-center justify-center mb-5"><i data-lucide="git-merge" class="w-7 h-7 text-bronze-light"></i></div>
+        <div class="card top-bronze p-8 reveal d2 toc-card" data-stream="execution" role="button" tabindex="0" aria-pressed="false">
+          <div class="toc-card-icon w-14 h-14 rounded-xl bg-ambedkar-blue flex items-center justify-center mb-5"><i data-lucide="git-merge" class="w-7 h-7 text-bronze-light"></i></div>
           <p class="heritage-eyebrow">The Core</p>
           <h3 class="font-heading font-bold text-ambedkar-blue text-xl mt-1 mb-3">Strategy &amp; Execution</h3>
           <p class="text-text-muted leading-relaxed">Serving as the vital bridge between heritage and innovation, this generation translates vision into actionable strategy. With a deep understanding of both traditional governance and modern operational frameworks, they drive the day-to-day execution of MALGOA's objectives, ensuring our mandate is realised efficiently and effectively.</p>
         </div>
 
-        <div class="card top-bronze p-8 reveal d3">
-          <div class="w-14 h-14 rounded-xl bg-ambedkar-blue flex items-center justify-center mb-5"><i data-lucide="compass" class="w-7 h-7 text-bronze-light"></i></div>
+        <div class="card top-bronze p-8 reveal d3 toc-card" data-stream="innovation" role="button" tabindex="0" aria-pressed="false">
+          <div class="toc-card-icon w-14 h-14 rounded-xl bg-ambedkar-blue flex items-center justify-center mb-5"><i data-lucide="compass" class="w-7 h-7 text-bronze-light"></i></div>
           <p class="heritage-eyebrow">The Vanguard</p>
           <h3 class="font-heading font-bold text-ambedkar-blue text-xl mt-1 mb-3">Innovation &amp; Continuity</h3>
           <p class="text-text-muted leading-relaxed">Our newest officers represent the future and sustainability of the association. As digital natives equipped with fresh perspectives and contemporary technological fluency, they bring the disruptive energy necessary to evolve our advocacy. Their integration ensures MALGOA remains a dynamic, forward-looking force for decades to come.</p>
         </div>
       </div>
 
+      <!-- Convergence infographic -->
+      <p class="text-center text-text-muted text-sm mb-5">Select a generation above, or watch how the three streams converge</p>
+      <div class="toc-infographic reveal" aria-label="How three generations converge into systemic equality">
+        <div class="toc-streams">
+          <div class="toc-stream" data-stream="experience">
+            <div class="toc-stream-head"><i data-lucide="landmark"></i><span>Experience</span></div>
+            <div class="toc-meter"><span class="toc-meter-fill f1"></span></div>
+            <p class="toc-stream-val">The Veterans &middot; institutional memory &amp; resilience</p>
+          </div>
+          <div class="toc-stream" data-stream="execution">
+            <div class="toc-stream-head"><i data-lucide="git-merge"></i><span>Execution</span></div>
+            <div class="toc-meter"><span class="toc-meter-fill f2"></span></div>
+            <p class="toc-stream-val">The Core &middot; vision turned into strategy</p>
+          </div>
+          <div class="toc-stream" data-stream="innovation">
+            <div class="toc-stream-head"><i data-lucide="compass"></i><span>Innovation</span></div>
+            <div class="toc-meter"><span class="toc-meter-fill f3"></span></div>
+            <p class="toc-stream-val">The Vanguard &middot; fresh energy &amp; continuity</p>
+          </div>
+        </div>
+        <div class="toc-converge"><i data-lucide="arrow-down"></i></div>
+        <div class="toc-result"><i data-lucide="scale"></i><span>Systemic Equality</span></div>
+      </div>
+
       <!-- Unified outcome -->
       <div class="creed">
         <h3 class="font-heading font-bold text-bronze-light text-2xl mb-3">The Unified Outcome</h3>
-        <p class="text-bronze-light text-lg font-medium mb-4">Experience + Execution + Innovation = Systemic Equality.</p>
+        <p class="text-bronze-light text-lg font-medium mb-4">Experience + Execution + Innovation = Systemic Equality</p>
         <p class="leading-relaxed" style="color:#FAF7F2;">When the steadfast guidance of our elders merges with the strategic drive of millennials and the dynamic energy of Gen Z, MALGOA transforms from a protective collective into a proactive engine for systemic change. This is how we secure a common, greater future - leaving no officer behind, regardless of age or tenure.</p>
       </div>
     </div>
@@ -929,7 +1976,7 @@
       <p class="heritage-eyebrow">Archive</p>
       <h2 class="text-ambedkar-blue text-4xl mt-2">Media &amp; Milestones</h2>
       <div class="section-rule"></div>
-      <p class="text-text-muted mb-8 max-w-xl">A visual record of MALGOA's gatherings, formation meetings, and milestone events.</p>
+      <p class="text-text-muted mb-8 max-w-xl">A visual record of MALGOA's gatherings, formation meetings, and milestone events</p>
 
       <!-- Tab switcher -->
       <div class="flex gap-3 mb-8" role="tablist" aria-label="Gallery tabs">
@@ -955,7 +2002,7 @@
       <p class="heritage-eyebrow">Get in Touch</p>
       <h2 class="text-ambedkar-blue text-4xl mt-2">Contact Us</h2>
       <div class="section-rule"></div>
-      <p class="text-text-muted mb-10 max-w-xl">Reach out to MALGOA for membership enquiries, event information, or any other questions.</p>
+      <p class="text-text-muted mb-10 max-w-xl">Reach out to MALGOA for membership enquiries, event information, or any other questions</p>
 
       <div class="grid grid-cols-1 lg:grid-cols-5 gap-10">
 
@@ -981,7 +2028,7 @@
                 <div>
                   <p class="font-semibold text-ambedkar-blue text-sm">Phone</p>
                   <!-- TODO: Replace with actual contact number -->
-                  <p class="text-text-muted text-sm mt-0.5">+91 00000 00000</p>
+                  <p class="text-text-muted text-sm mt-0.5">+91 94409 03543</p>
                 </div>
               </div>
               <div class="flex items-start gap-3">
@@ -990,8 +2037,7 @@
                 </div>
                 <div>
                   <p class="font-semibold text-ambedkar-blue text-sm">Email</p>
-                  <!-- TODO: Replace with actual email address -->
-                  <p class="text-text-muted text-sm mt-0.5">info@malgoa.org</p>
+                  <a href="mailto:malgoa.in@gmail.com" class="text-text-muted text-sm mt-0.5 hover:text-bronze transition-colors block break-all">malgoa.in@gmail.com</a>
                 </div>
               </div>
             </div>
@@ -1001,11 +2047,11 @@
           <div class="card p-6">
             <h3 class="font-heading font-semibold text-ambedkar-blue mb-4 text-base">Follow Us</h3>
             <div class="flex gap-4">
-              <!-- TODO: Replace placeholder URLs with actual MALGOA social media profile links -->
-              <a href="https://facebook.com/" target="_blank" rel="noopener noreferrer"
+              <!-- TODO: Replace remaining placeholder URLs with actual MALGOA social media profile links -->
+              <a href="https://www.facebook.com/profile.php?id=61590569493991" target="_blank" rel="noopener noreferrer"
                  class="w-10 h-10 bg-[#1877F2] rounded-lg flex items-center justify-center text-white hover:opacity-80 transition-opacity"
                  aria-label="MALGOA on Facebook">
-                <i data-lucide="facebook" class="w-5 h-5"></i>
+                <svg class="w-5 h-5" viewBox="0 0 320 512" fill="currentColor" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z"/></svg>
               </a>
               <a href="https://instagram.com/" target="_blank" rel="noopener noreferrer"
                  class="w-10 h-10 bg-[#E1306C] rounded-lg flex items-center justify-center text-white hover:opacity-80 transition-opacity"
@@ -1080,7 +2126,7 @@
       <!-- Brand -->
       <div class="lg:col-span-2">
         <div class="flex items-center gap-3 mb-4">
-          <img src="images/logo.jpg" alt="MALGOA" class="w-10 h-10 rounded-full border-2 border-bronze object-cover" />
+          <img src="images/logo.PNG" alt="MALGOA - Mala Gazetted Officers Association" class="h-12 w-auto object-contain" />
           <div>
             <p class="font-heading font-bold text-white text-lg">MALGOA</p>
             <p class="text-bronze text-xs tracking-wide">Mala Gazetted Officers Association</p>
@@ -1090,11 +2136,11 @@
           A premier body of Gazetted Officers, elected representatives and senior professionals of the Mala community of Andhra Pradesh. Registered under Reg. No. 185/2025.
         </p>
         <div class="flex gap-3 mt-5">
-          <!-- TODO: Replace placeholder URLs with actual MALGOA social media profile links -->
-          <a href="https://facebook.com/" target="_blank" rel="noopener noreferrer"
+          <!-- TODO: Replace remaining placeholder URLs with actual MALGOA social media profile links -->
+          <a href="https://www.facebook.com/profile.php?id=61590569493991" target="_blank" rel="noopener noreferrer"
              class="w-8 h-8 bg-white/10 rounded flex items-center justify-center text-slate-300 hover:text-bronze hover:bg-white/20 transition-colors"
              aria-label="Facebook">
-            <i data-lucide="facebook" class="w-4 h-4"></i>
+            <svg class="w-4 h-4" viewBox="0 0 320 512" fill="currentColor" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z"/></svg>
           </a>
           <a href="https://instagram.com/" target="_blank" rel="noopener noreferrer"
              class="w-8 h-8 bg-white/10 rounded flex items-center justify-center text-slate-300 hover:text-bronze hover:bg-white/20 transition-colors"
@@ -1114,6 +2160,7 @@
         <h4 class="font-heading font-semibold text-white text-sm mb-4 tracking-wide uppercase">Navigate</h4>
         <ul class="space-y-2 text-sm">
           <li><button onclick="router('home')"             class="text-slate-400 hover:text-bronze transition-colors">Home</button></li>
+          <li><button onclick="router('legacy')"           class="text-slate-400 hover:text-bronze transition-colors">Our Legacy</button></li>
           <li><button onclick="router('heritage')"         class="text-slate-400 hover:text-bronze transition-colors">Heritage &amp; Origin</button></li>
           <li><button onclick="router('leadership')"       class="text-slate-400 hover:text-bronze transition-colors">Leadership</button></li>
           <li><button onclick="router('objectives')"       class="text-slate-400 hover:text-bronze transition-colors">Objectives</button></li>
@@ -1125,20 +2172,16 @@
         </ul>
       </div>
 
-      <!-- Event card -->
+      <!-- Office -->
       <div>
-        <h4 class="font-heading font-semibold text-white text-sm mb-4 tracking-wide uppercase">Inaugural Launch</h4>
-        <div class="bg-white/5 border border-white/10 rounded-lg p-4">
-          <div class="flex items-center gap-2 text-bronze mb-2">
-            <i data-lucide="calendar-check" class="w-4 h-4"></i>
-            <span class="font-heading font-semibold text-sm">7 June 2026</span>
-          </div>
-          <p class="text-white text-sm font-semibold mb-1">Website Launch &amp; First Anniversary</p>
-          <p class="text-slate-400 text-xs">Tadepalli, Guntur, AP</p>
-          <button onclick="openJoin()" class="btn-cta text-xs px-4 py-2 mt-4 block w-full text-center">
-            Apply for Membership
-          </button>
-        </div>
+        <h4 class="font-heading font-semibold text-white text-sm mb-4 tracking-wide uppercase">Office</h4>
+        <address class="not-italic text-slate-400 text-sm leading-relaxed">
+          State Body, MALGOA<br />
+          Andhra Pradesh, India<br /><br />
+          <a href="mailto:malgoa.in@gmail.com" class="hover:text-bronze transition-colors">
+            malgoa.in@gmail.com
+          </a>
+        </address>
       </div>
     </div>
 
@@ -1153,17 +2196,17 @@
 <div id="join-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="join-title" aria-hidden="true">
   <div class="modal-card p-8 sm:p-10">
     <div class="flex items-start justify-between mb-2">
-      <h2 id="join-title" class="font-heading font-bold text-ambedkar-blue text-2xl">Apply for Membership</h2>
-      <button onclick="closeJoin()" class="text-text-muted hover:text-ambedkar-blue p-1 -mr-1" aria-label="Close membership form">
+      <h2 id="join-title" class="font-heading font-bold text-ambedkar-blue text-2xl">Enroll with Us</h2>
+      <button onclick="closeJoin()" class="text-text-muted hover:text-ambedkar-blue p-1 -mr-1" aria-label="Close enrolment form">
         <i data-lucide="x" class="w-6 h-6"></i>
       </button>
     </div>
     <p class="text-text-muted text-sm leading-relaxed mt-2 mb-6">
-      This portal encourages senior-level Government Officials and their associated professionals from the <strong class="text-ambedkar-blue">MALA (SC &amp; BC-C) community</strong> of Andhra Pradesh. All applications are manually verified by the State Body before activation.
+      This portal welcomes senior-level Government Officials and their associated professionals from the <strong class="text-ambedkar-blue">MALA (SC &amp; BC-C) community</strong> of Andhra Pradesh to enrol with MALGOA. All enrolment requests are manually verified by the State Body before activation.
     </p>
 
     <div id="join-success" class="modal-success" role="alert" aria-live="polite">
-      Your application has been received. A Board Member of MALGOA will manually verify your designation and activate your account within 3–5 working days. You will be notified via email.
+      Your enrolment request has been received. A Board Member of MALGOA will manually verify your designation and activate your account within 3–5 working days. You will be notified via email.
     </div>
 
     <form id="join-form" novalidate>
@@ -1295,6 +2338,51 @@
   <p id="lightbox-counter" class="absolute bottom-4 left-1/2 -translate-x-1/2 text-white/60 text-sm font-heading" aria-live="polite"></p>
 </div>
 
+<script>
+  /* Home hero background video slideshow: play one clip, fade to the next on end, loop. */
+  (function () {
+    var layer = document.getElementById('heroVideoLayer');
+    if (!layer) return;
+    var vids = Array.prototype.slice.call(layer.querySelectorAll('[data-hero-video]'));
+    if (vids.length === 0) return;
+
+    var current = 0;
+    var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function show(i) {
+      vids.forEach(function (v, idx) {
+        if (idx === i) v.classList.add('is-active');
+        else v.classList.remove('is-active');
+      });
+    }
+
+    function play(i) {
+      var v = vids[i];
+      if (!v) return;
+      try { v.currentTime = 0; } catch (e) {}
+      var p = v.play();
+      if (p && typeof p.catch === 'function') { p.catch(function () {}); }
+    }
+
+    function advance() {
+      var next = (current + 1) % vids.length;
+      // Warm up the next clip so the crossfade has frames ready.
+      vids[next].preload = 'auto';
+      show(next);
+      play(next);
+      current = next;
+    }
+
+    vids.forEach(function (v) {
+      v.addEventListener('ended', advance);
+      // Safety net: if a clip stalls or has no duration, move on.
+      v.addEventListener('error', advance);
+    });
+
+    show(0);
+    play(0);
+  })();
+</script>
 <script src="main.js"></script>
 </body>
 </html>

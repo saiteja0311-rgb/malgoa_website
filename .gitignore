@@ -1,6 +1,16 @@
 # Local Claude Code config
-.claude/settings.local.json
+.claude/
 
 # OS / editor cruft
 Thumbs.db
 .DS_Store
+
+# Local-only admin documentation (never publish)
+ADMIN_ACCESS.md
+
+# Large source assets not used by the live site (kept locally only)
+public_html/All pages NEW Update.pdf
+public_html/Malgoa Video Clips/
+
+# Hostinger parking placeholder (real homepage is index.html)
+public_html/default.php

@@ -1,3 +1,84 @@
+// ─── Launch overlay ────────────────────────────────────────────────────────────
+window.MALGOA_LAUNCH = (function () {
+  // SET enabled = true to activate the overlay; false to disable permanently.
+  var enabled = true;
+
+  var STORAGE_KEY = 'malgoa_launch_shown';
+  var DURATION    = 10; // countdown seconds
+
+  function setPhase(name) {
+    ['lo-phase-btn', 'lo-phase-count', 'lo-phase-logo'].forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) el.classList.remove('lo-active');
+    });
+    var target = document.getElementById(name);
+    if (target) target.classList.add('lo-active');
+  }
+
+  function dismiss() {
+    var el = document.getElementById('launch-overlay');
+    if (el) el.classList.add('hidden');
+    // Persistence disabled while previewing so the overlay returns on reload.
+    // Re-enable to remember dismissal per visitor:
+    // try { localStorage.setItem(STORAGE_KEY, '1'); } catch (_) {}
+  }
+
+  function showLogo() {
+    setPhase('lo-phase-logo');
+    var img = document.getElementById('lo-logo-img');
+    if (img) {
+      img.classList.remove('lo-logo-pre');
+      img.classList.add('lo-logo-animate');
+    }
+    setTimeout(dismiss, 3000);
+  }
+
+  function beginCountdown() {
+    var countEl = document.getElementById('launch-count');
+    var circle  = document.getElementById('launch-ring-circle');
+    if (!countEl || !circle) { dismiss(); return; }
+
+    var r = 88;
+    var circumference = 2 * Math.PI * r;
+    circle.style.strokeDasharray  = circumference;
+    circle.style.strokeDashoffset = 0;
+    countEl.textContent = DURATION;
+
+    setPhase('lo-phase-count');
+
+    var remaining = DURATION;
+    function tick() {
+      remaining--;
+      countEl.textContent = remaining;
+      circle.style.strokeDashoffset = circumference * (1 - remaining / DURATION);
+      if (remaining <= 0) { showLogo(); return; }
+      setTimeout(tick, 1000);
+    }
+    setTimeout(tick, 1000);
+  }
+
+  function start() {
+    if (!enabled) return;
+    // NOTE: one-time localStorage guard intentionally disabled so the overlay
+    // shows on every load while previewing. Re-enable the line below to make it
+    // appear only once per visitor.
+    // try { if (localStorage.getItem(STORAGE_KEY)) return; } catch (_) {}
+    var overlay = document.getElementById('launch-overlay');
+    if (!overlay) return;
+    setPhase('lo-phase-btn');
+    overlay.classList.remove('hidden');
+  }
+
+  // Reset (call from console: MALGOA_LAUNCH.reset()) to re-show the overlay.
+  function reset() {
+    try { localStorage.removeItem(STORAGE_KEY); } catch (_) {}
+  }
+
+  document.addEventListener('DOMContentLoaded', start);
+
+  return { dismiss: dismiss, reset: reset, beginCountdown: beginCountdown };
+}());
+
 // ─── Gallery data ──────────────────────────────────────────────────────────────
 
 const uttandhraImages = Array.from({ length: 40 }, (_, i) => ({
@@ -31,11 +112,15 @@ function router(pageId) {
   closeMobileMenu();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 
-  // Replay reveal animations for the newly shown section
+  // Replay reveal animations for the newly shown section.
+  // (Sections are display:none when inactive, so IntersectionObserver can miss
+  //  them on toggle — we replay reveals here to guarantee content becomes visible.)
   if (target) {
     target.querySelectorAll('.reveal').forEach(el => el.classList.remove('in-view'));
+    target.querySelectorAll('.reveal-up, .reveal-stagger, .fraunces-reveal').forEach(el => el.classList.remove('visible'));
     requestAnimationFrame(() => {
       target.querySelectorAll('.reveal').forEach(el => el.classList.add('in-view'));
+      target.querySelectorAll('.reveal-up, .reveal-stagger, .fraunces-reveal').forEach(el => el.classList.add('visible'));
     });
   }
 
@@ -412,4 +497,120 @@ document.addEventListener('DOMContentLoaded', function () {
   router(hash && document.getElementById(hash)?.classList.contains('page-section') ? hash : 'home');
   if (hash === 'join')  openJoin();
   if (hash === 'login') openLogin();
+});
+
+// ─── Hidden admin portal: triggered by URL hash ───────────────────────
+// Admins access the login modal by visiting yoursite.com/#admin-portal
+// or appending #admin-portal to any page URL.
+function checkAdminHash() {
+  if (window.location.hash === '#admin-portal' || window.location.hash === '#member-login') {
+    if (typeof openLogin === 'function') {
+      openLogin();
+      // Clear the hash from URL so it's not bookmarkable as login-open state
+      history.replaceState(null, '', window.location.pathname + window.location.search);
+    }
+  }
+}
+
+// Run on page load and whenever hash changes
+window.addEventListener('DOMContentLoaded', checkAdminHash);
+window.addEventListener('hashchange', checkAdminHash);
+
+// ─── Heading reveal animation (fade/slide settle-in) ────
+const headingRevealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      headingRevealObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.2 });
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('h1, h2').forEach(el => {
+    el.classList.add('fraunces-reveal');
+    headingRevealObserver.observe(el);
+  });
+});
+
+// ─── Animated stat counter ─────────────────────────────────────
+function animateCounter(el, target, duration = 1800) {
+  const start = 0;
+  const startTime = performance.now();
+  const isInt = Number.isInteger(target);
+  function step(now) {
+    const elapsed = now - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    const value = start + (target - start) * eased;
+    el.textContent = isInt ? Math.floor(value).toLocaleString('en-IN') : value.toFixed(1);
+    if (progress < 1) requestAnimationFrame(step);
+    else el.textContent = isInt ? target.toLocaleString('en-IN') : target.toFixed(1);
+  }
+  requestAnimationFrame(step);
+}
+
+const counterObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting && !entry.target.dataset.animated) {
+      const target = parseFloat(entry.target.dataset.target);
+      entry.target.dataset.animated = '1';
+      animateCounter(entry.target, target);
+      counterObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.4 });
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.stat-counter').forEach(el => counterObserver.observe(el));
+});
+
+// ─── Scroll-triggered section reveals (reveal-up / reveal-stagger) ──
+const revealUpObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      revealUpObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.15 });
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.reveal-up, .reveal-stagger').forEach(el => revealUpObserver.observe(el));
+});
+
+// ─── Theory of Change: interactive generation selector ──
+document.addEventListener('DOMContentLoaded', () => {
+  const cards = Array.from(document.querySelectorAll('.toc-card'));
+  const streams = Array.from(document.querySelectorAll('.toc-stream'));
+  if (!cards.length) return;
+
+  function clearSelection() {
+    cards.forEach(c => { c.classList.remove('is-active'); c.setAttribute('aria-pressed', 'false'); });
+    streams.forEach(s => s.classList.remove('pop', 'dim'));
+  }
+
+  function selectStream(stream) {
+    cards.forEach(c => {
+      const on = c.dataset.stream === stream;
+      c.classList.toggle('is-active', on);
+      c.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+    streams.forEach(s => {
+      const on = s.dataset.stream === stream;
+      s.classList.toggle('pop', on);
+      s.classList.toggle('dim', !on);
+    });
+  }
+
+  cards.forEach(card => {
+    const activate = () => {
+      if (card.classList.contains('is-active')) clearSelection();
+      else selectStream(card.dataset.stream);
+    };
+    card.addEventListener('click', activate);
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); }
+    });
+  });
 });
