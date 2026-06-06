@@ -1,4 +1,4 @@
-// ─── Launch overlay ────────────────────────────────────────────────────────────
+// --- Launch overlay ------------------------------------------------------------
 window.MALGOA_LAUNCH = (function () {
   // SET enabled = true to activate the overlay; false to disable permanently.
   var enabled = true;
@@ -79,26 +79,26 @@ window.MALGOA_LAUNCH = (function () {
   return { dismiss: dismiss, reset: reset, beginCountdown: beginCountdown };
 }());
 
-// ─── Gallery data ──────────────────────────────────────────────────────────────
+// --- Gallery data --------------------------------------------------------------
 
 const uttandhraImages = Array.from({ length: 40 }, (_, i) => ({
   src: `images/uttandhra-meet-${i + 1}.jpg`,
-  alt: `Uttarandhra Meet 2025 — photo ${i + 1}`,
+  alt: `Uttarandhra Meet 2025 - photo ${i + 1}`,
 }));
 
 const formationImages = Array.from({ length: 4 }, (_, i) => ({
   src: `images/gallery-${i + 1}.jpg`,
-  alt: `MALGOA Formation Event — photo ${i + 1}`,
+  alt: `MALGOA Formation Event - photo ${i + 1}`,
 }));
 
 const galleries = { uttandhra: uttandhraImages, formation: formationImages };
 
-// ─── Lightbox state ────────────────────────────────────────────────────────────
+// --- Lightbox state ------------------------------------------------------------
 
 let lightboxImages = [];
 let lightboxIndex  = 0;
 
-// ─── Router ────────────────────────────────────────────────────────────────────
+// --- Router --------------------------------------------------------------------
 
 function router(pageId) {
   document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
@@ -114,7 +114,7 @@ function router(pageId) {
 
   // Replay reveal animations for the newly shown section.
   // (Sections are display:none when inactive, so IntersectionObserver can miss
-  //  them on toggle — we replay reveals here to guarantee content becomes visible.)
+  //  them on toggle - we replay reveals here to guarantee content becomes visible.)
   if (target) {
     target.querySelectorAll('.reveal').forEach(el => el.classList.remove('in-view'));
     target.querySelectorAll('.reveal-up, .reveal-stagger, .fraunces-reveal').forEach(el => el.classList.remove('visible'));
@@ -127,7 +127,7 @@ function router(pageId) {
   if (window.lucide) lucide.createIcons();
 }
 
-// ─── Mobile menu ───────────────────────────────────────────────────────────────
+// --- Mobile menu ---------------------------------------------------------------
 
 function closeMobileMenu() {
   const toggle = document.getElementById('menu-toggle');
@@ -152,7 +152,7 @@ document.getElementById('menu-toggle')?.addEventListener('click', function () {
   }
 });
 
-// ─── Navigation click delegation ───────────────────────────────────────────────
+// --- Navigation click delegation -----------------------------------------------
 
 document.addEventListener('click', function (e) {
   const link = e.target.closest('[data-page]');
@@ -162,7 +162,7 @@ document.addEventListener('click', function (e) {
   }
 });
 
-// ─── Reveal-on-scroll (Theory of Change, Mandate) ────────────────────────────────
+// --- Reveal-on-scroll (Theory of Change, Mandate) --------------------------------
 
 const revealObserver = ('IntersectionObserver' in window)
   ? new IntersectionObserver((entries) => {
@@ -180,7 +180,7 @@ function initReveal() {
   document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 }
 
-// ─── Gallery rendering ─────────────────────────────────────────────────────────
+// --- Gallery rendering ---------------------------------------------------------
 
 function renderGallery(containerId, images, galleryKey) {
   const container = document.getElementById(containerId);
@@ -197,7 +197,7 @@ function renderGallery(containerId, images, galleryKey) {
   `).join('');
 }
 
-// ─── Tab switcher ──────────────────────────────────────────────────────────────
+// --- Tab switcher --------------------------------------------------------------
 
 function switchTab(tabName) {
   const tabs = ['uttandhra', 'formation'];
@@ -216,7 +216,7 @@ function switchTab(tabName) {
   });
 }
 
-// ─── Lightbox ──────────────────────────────────────────────────────────────────
+// --- Lightbox ------------------------------------------------------------------
 
 function openLightbox(galleryKey, index) {
   lightboxImages = galleries[galleryKey] || [];
@@ -266,7 +266,7 @@ document.getElementById('lightbox')?.addEventListener('click', function (e) {
   if (e.target === this) closeLightbox();
 });
 
-// ─── Modal controller (Join Us / Member Login) ───────────────────────────────────
+// --- Modal controller (Join Us / Member Login) -----------------------------------
 
 let activeModal      = null;
 let lastFocusedEl    = null;
@@ -320,14 +320,14 @@ document.addEventListener('keydown', function (e) {
   }
 });
 
-// ─── Field validation helpers ────────────────────────────────────────────────────
+// --- Field validation helpers ----------------------------------------------------
 
 function toggleErr(input, errEl, hasError) {
   input.classList.toggle('field-error', hasError);
   errEl?.classList.toggle('show', hasError);
 }
 
-// ─── Join Us form ────────────────────────────────────────────────────────────────
+// --- Join Us form ----------------------------------------------------------------
 
 (function initJoinForm() {
   const form = document.getElementById('join-form');
@@ -381,7 +381,7 @@ function toggleErr(input, errEl, hasError) {
   });
 })();
 
-// ─── Member Login form ───────────────────────────────────────────────────────────
+// --- Member Login form -----------------------------------------------------------
 
 (function initLoginForm() {
   const form = document.getElementById('login-form');
@@ -404,11 +404,11 @@ function toggleErr(input, errEl, hasError) {
     if (!valid) { firstBad?.focus(); return; }
 
     // TODO: wire to auth endpoint
-    console.log('MALGOA member login attempt:', { email: email.el.value.trim(), password: '••••••' });
+    console.log('MALGOA member login attempt:', { email: email.el.value.trim(), password: '******' });
   });
 })();
 
-// ─── Contact form ──────────────────────────────────────────────────────────────
+// --- Contact form --------------------------------------------------------------
 
 (function initContactForm() {
   const form    = document.getElementById('contact-form');
@@ -454,7 +454,7 @@ function toggleErr(input, errEl, hasError) {
     if (!validateAll()) return;
 
     submit.disabled = true;
-    submit.textContent = 'Sending…';
+    submit.textContent = 'Sending...';
 
     // TODO: Replace this simulation with a real submission (EmailJS, Formspree, or backend API)
     setTimeout(() => {
@@ -467,13 +467,13 @@ function toggleErr(input, errEl, hasError) {
   });
 })();
 
-// ─── Scroll nav shadow ─────────────────────────────────────────────────────────
+// --- Scroll nav shadow ---------------------------------------------------------
 
 window.addEventListener('scroll', function () {
   document.getElementById('main-nav')?.classList.toggle('scrolled', window.scrollY > 8);
 }, { passive: true });
 
-// ─── Splash ────────────────────────────────────────────────────────────────────
+// --- Splash --------------------------------------------------------------------
 
 window.addEventListener('load', function () {
   setTimeout(() => {
@@ -481,7 +481,7 @@ window.addEventListener('load', function () {
   }, 1800);
 });
 
-// ─── Init ──────────────────────────────────────────────────────────────────────
+// --- Init ----------------------------------------------------------------------
 
 document.addEventListener('DOMContentLoaded', function () {
   if (window.lucide) lucide.createIcons();
@@ -492,6 +492,16 @@ document.addEventListener('DOMContentLoaded', function () {
   switchTab('uttandhra');
   initReveal();
 
+  // Legacy hero clip: loop only the first 12 seconds of the source video
+  (function capLegacyClip() {
+    const LEGACY_CLIP_SECONDS = 12;
+    const video = document.getElementById('legacyBgVideo');
+    if (!video) return;
+    video.addEventListener('timeupdate', function () {
+      if (video.currentTime >= LEGACY_CLIP_SECONDS) video.currentTime = 0;
+    });
+  })();
+
   // Deep-link support: open the section named in the URL hash, else Home
   const hash = location.hash.slice(1);
   router(hash && document.getElementById(hash)?.classList.contains('page-section') ? hash : 'home');
@@ -499,7 +509,7 @@ document.addEventListener('DOMContentLoaded', function () {
   if (hash === 'login') openLogin();
 });
 
-// ─── Hidden admin portal: triggered by URL hash ───────────────────────
+// --- Hidden admin portal: triggered by URL hash -----------------------
 // Admins access the login modal by visiting yoursite.com/#admin-portal
 // or appending #admin-portal to any page URL.
 function checkAdminHash() {
@@ -516,7 +526,7 @@ function checkAdminHash() {
 window.addEventListener('DOMContentLoaded', checkAdminHash);
 window.addEventListener('hashchange', checkAdminHash);
 
-// ─── Heading reveal animation (fade/slide settle-in) ────
+// --- Heading reveal animation (fade/slide settle-in) ----
 const headingRevealObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
@@ -533,7 +543,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-// ─── Animated stat counter ─────────────────────────────────────
+// --- Animated stat counter -------------------------------------
 function animateCounter(el, target, duration = 1800) {
   const start = 0;
   const startTime = performance.now();
@@ -565,7 +575,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.stat-counter').forEach(el => counterObserver.observe(el));
 });
 
-// ─── Scroll-triggered section reveals (reveal-up / reveal-stagger) ──
+// --- Scroll-triggered section reveals (reveal-up / reveal-stagger) --
 const revealUpObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
@@ -579,7 +589,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.reveal-up, .reveal-stagger').forEach(el => revealUpObserver.observe(el));
 });
 
-// ─── Theory of Change: interactive generation selector ──
+// --- Theory of Change: interactive generation selector --
 document.addEventListener('DOMContentLoaded', () => {
   const cards = Array.from(document.querySelectorAll('.toc-card'));
   const streams = Array.from(document.querySelectorAll('.toc-stream'));

@@ -18,7 +18,7 @@
       theme: {
         extend: {
           colors: {
-            /* ── Constitutional & Historic palette (locked - Part 2.1) ── */
+            /* -- Constitutional & Historic palette (locked - Part 2.1) -- */
             'ambedkar-blue': '#1565C0',
             'navy-deep':     '#0F1E2E',
             bronze:          '#B8962E',
@@ -28,7 +28,7 @@
             'text-muted':    '#5C5C5C',
             divider:         '#E8E3D7',
 
-            /* ── Legacy aliases (kept for backwards compatibility) ── */
+            /* -- Legacy aliases (kept for backwards compatibility) -- */
             navy:   { DEFAULT: '#1a2d42', light: '#243d5a', dark: '#0f1e2e' },
             gold:   { DEFAULT: '#c9a84c', light: '#e0c472', dark: '#a8892e' },
             cream:  '#f8f6f2',
@@ -148,10 +148,6 @@
       pointer-events: none;
       opacity: 0.6;
     }
-    @keyframes ambedkarDrift {
-      0%, 100% { transform: translateY(0) scale(1);     opacity: 0.11; }
-      50%      { transform: translateY(-16px) scale(1.04); opacity: 0.18; }
-    }
     .hero-bg > * { position: relative; z-index: 1; }
 
     /* Readability scrim so hero text stays legible over the gradient */
@@ -213,17 +209,9 @@
       padding: 0.25rem 0 0.25rem 1.1rem;
     }
 
-    /* Ambedkar / heritage portrait watermark for dark sections */
-    .ambedkar-watermark {
-      position: absolute; top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      width: min(640px, 82%);
-      opacity: 0.06;
-      filter: grayscale(1) brightness(1.7) contrast(1.1);
-      mix-blend-mode: screen;
-      pointer-events: none;
-      z-index: 0;
-      animation: ambedkarDrift 26s ease-in-out infinite;
+    /* Legacy hero - muted looping background clip (gradient as fallback) */
+    .legacy-hero {
+      background: linear-gradient(135deg, #0F1E2E 0%, #1565C0 55%, #0F1E2E 100%);
     }
 
     /* Cards */
@@ -434,7 +422,7 @@
       transform: translateY(0);
     }
 
-    /* ── Launch overlay ───────────────────────────────────────────── */
+    /* -- Launch overlay --------------------------------------------- */
     #launch-overlay {
       position: fixed; inset: 0; z-index: 10000;
       background: radial-gradient(ellipse at center, #0d1b2e 0%, #020b14 100%);
@@ -518,7 +506,7 @@
     }
     .lo-skip:hover { border-color: rgba(255,255,255,0.5); color: rgba(255,255,255,0.8); }
 
-    /* ── Leaders carousel ─────────────────────────────────────────── */
+    /* -- Leaders carousel ------------------------------------------- */
     .carousel-track {
       display: flex;
       width: max-content;
@@ -530,7 +518,7 @@
       100% { transform: translateX(-50%); }
     }
 
-    /* ── Background textures and section dividers ─────────────────── */
+    /* -- Background textures and section dividers ------------------- */
     .bg-grain { position: relative; }
     .bg-grain::after {
       content: '';
@@ -579,14 +567,14 @@
     .accent-blob-bronze { background: radial-gradient(circle, #B8962E 0%, transparent 70%); }
     .accent-blob-blue   { background: radial-gradient(circle, #1565C0 0%, transparent 70%); }
 
-    /* ── Animated stat counter ────────────────────────────────────── */
+    /* -- Animated stat counter -------------------------------------- */
     .stat-counter {
       display: inline-block;
       font-family: 'Urbanist', sans-serif;
       font-weight: 700;
     }
 
-    /* ── Card hover micro-interactions ────────────────────────────── */
+    /* -- Card hover micro-interactions ------------------------------ */
     .card-lift {
       transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
                   box-shadow 0.35s ease,
@@ -601,7 +589,7 @@
     .card-lift:hover .card-icon { transform: scale(1.08) rotate(-2deg); color: #B8962E; }
     .card-icon { transition: transform 0.35s ease, color 0.35s ease; }
 
-    /* ── Scroll-triggered section reveals ─────────────────────────── */
+    /* -- Scroll-triggered section reveals --------------------------- */
     .reveal-up {
       opacity: 0;
       transform: translateY(28px);
@@ -623,7 +611,7 @@
     .reveal-stagger.visible > *:nth-child(9) { animation-delay: 0.85s; }
     @keyframes staggerIn { to { opacity: 1; transform: translateY(0); } }
 
-    /* ── Cinematic page transition (fires whenever a page-section becomes active) ── */
+    /* -- Cinematic page transition (fires whenever a page-section becomes active) -- */
     .page-section.active { animation: pageIn 0.85s cubic-bezier(0.16, 1, 0.3, 1) both; }
     @keyframes pageIn {
       0%   { opacity: 0; transform: translateY(34px) scale(0.985); filter: blur(6px); }
@@ -639,7 +627,7 @@
       to   { opacity: 1; transform: translateY(0); }
     }
 
-    /* ── Living background accents: slow drift on the bronze/blue blobs ── */
+    /* -- Living background accents: slow drift on the bronze/blue blobs -- */
     @keyframes blobFloat {
       0%, 100% { transform: translate(0, 0) scale(1); }
       50%      { transform: translate(24px, -32px) scale(1.06); }
@@ -647,18 +635,18 @@
     .accent-blob { animation: blobFloat 16s ease-in-out infinite; }
     .accent-blob-blue { animation-duration: 21s; animation-direction: reverse; }
 
-    /* ── Image zoom-on-hover (editorial / tourism feel) ── */
+    /* -- Image zoom-on-hover (editorial / tourism feel) -- */
     .card { overflow: hidden; }
     .card img { transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
     .card:hover img { transform: scale(1.06); }
 
-    /* ── Smoother CTA + nav-link motion ── */
+    /* -- Smoother CTA + nav-link motion -- */
     .btn-cta, .btn-primary, .btn-outline, .btn-navy {
       transition: background 0.25s ease, color 0.25s ease, box-shadow 0.25s ease, transform 0.25s cubic-bezier(0.16,1,0.3,1);
     }
     .btn-cta:hover, .btn-primary:hover { transform: translateY(-2px); }
 
-    /* ── Respect reduced-motion preference ── */
+    /* -- Respect reduced-motion preference -- */
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after {
         animation-duration: 0.001ms !important;
@@ -677,14 +665,14 @@
 </head>
 <body class="bg-white">
 
-<!-- ═══════════════════════ SPLASH ═══════════════════════ -->
+<!-- ======================= SPLASH ======================= -->
 <div id="splash" role="status" aria-live="polite" aria-label="Loading MALGOA website">
   <img src="images/logo.png" alt="MALGOA - Mala Gazetted Officers Association" class="h-40 w-auto object-contain mb-6" />
   <p class="text-bronze font-heading font-bold text-lg tracking-widest mb-8">MALGOA</p>
   <div class="splash-spinner" aria-hidden="true"></div>
 </div>
 
-<!-- ═══════════════════ LAUNCH OVERLAY ══════════════════ -->
+<!-- =================== LAUNCH OVERLAY ================== -->
 <div id="launch-overlay" class="hidden" role="dialog" aria-modal="true" aria-label="Official website launch">
 
   <!-- Phase 1: Button -->
@@ -714,12 +702,12 @@
   <div id="lo-phase-logo">
     <img src="images/logo.png" alt="MALGOA" class="h-36 w-auto object-contain lo-logo-pre" id="lo-logo-img" />
     <p class="lo-brandname">MALGOA</p>
-    <p class="lo-brandtag">Mala Gazetted Officers Association · AP</p>
+    <p class="lo-brandtag">Mala Gazetted Officers Association - AP</p>
   </div>
 
 </div>
 
-<!-- ═══════════════════════ NAVIGATION ═══════════════════ -->
+<!-- ======================= NAVIGATION =================== -->
 <nav id="main-nav" class="fixed top-0 left-0 right-0 z-50 bg-ambedkar-blue" aria-label="Main navigation">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex items-center justify-between h-16">
@@ -775,10 +763,10 @@
   </div>
 </nav>
 
-<!-- ═══════════════════════ MAIN ═══════════════════════════ -->
+<!-- ======================= MAIN =========================== -->
 <main id="main-content" class="pt-16">
 
-  <!-- ──────────────── HOME ──────────────── -->
+  <!-- ---------------- HOME ---------------- -->
   <section id="home" class="page-section" aria-label="Home">
 
     <!-- Hero -->
@@ -869,7 +857,7 @@
           <div class="flex-shrink-0 w-56 mx-4 bg-white/5 border border-white/10 rounded-xl p-6 text-center">
             <img src="images/leader-mala-kannamadasu-card.jpg" alt="Mala Kannamadasu" class="w-20 h-20 mx-auto mb-4 rounded-full object-cover object-center border-2 border-bronze/40" loading="lazy" />
             <p class="text-white font-semibold text-sm leading-snug">Mala Kannamadasu</p>
-            <p class="text-bronze-light text-xs mt-1">Warrior · 12th Century</p>
+            <p class="text-bronze-light text-xs mt-1">Warrior - 12th Century</p>
           </div>
           <div class="flex-shrink-0 w-56 mx-4 bg-white/5 border border-white/10 rounded-xl p-6 text-center">
             <img src="images/leader-damodaram-sanjivayya-card.jpg" alt="Damodaram Sanjivayya" class="w-20 h-20 mx-auto mb-4 rounded-full object-cover object-center border-2 border-bronze/40" loading="lazy" />
@@ -915,7 +903,7 @@
           <div class="flex-shrink-0 w-56 mx-4 bg-white/5 border border-white/10 rounded-xl p-6 text-center" aria-hidden="true">
             <img src="images/leader-mala-kannamadasu-card.jpg" alt="" class="w-20 h-20 mx-auto mb-4 rounded-full object-cover object-center border-2 border-bronze/40" loading="lazy" />
             <p class="text-white font-semibold text-sm leading-snug">Mala Kannamadasu</p>
-            <p class="text-bronze-light text-xs mt-1">Warrior · 12th Century</p>
+            <p class="text-bronze-light text-xs mt-1">Warrior - 12th Century</p>
           </div>
           <div class="flex-shrink-0 w-56 mx-4 bg-white/5 border border-white/10 rounded-xl p-6 text-center" aria-hidden="true">
             <img src="images/leader-damodaram-sanjivayya-card.jpg" alt="" class="w-20 h-20 mx-auto mb-4 rounded-full object-cover object-center border-2 border-bronze/40" loading="lazy" />
@@ -967,15 +955,13 @@
 
   </section>
 
-  <!-- ──────────────── OUR LEGACY (COMMUNITY HERITAGE) ──────────────── -->
+  <!-- ---------------- OUR LEGACY (COMMUNITY HERITAGE) ---------------- -->
   <section id="legacy" class="page-section" aria-label="Our Legacy">
 
     <!-- Hero -->
-    <div class="relative overflow-hidden bg-navy-deep bg-dot-grid py-24 lg:py-32">
-      <img class="ambedkar-watermark" src="images/ambedkar-bg.jpg" alt="" aria-hidden="true" />
+    <div class="legacy-hero relative overflow-hidden py-24 lg:py-32">
+      <video id="legacyBgVideo" src="videos/malgoa-main.mp4" muted loop playsinline autoplay preload="metadata" aria-hidden="true" class="bg-video"></video>
       <div class="bg-video-scrim bg-video-scrim-navy" aria-hidden="true"></div>
-      <div class="accent-blob accent-blob-bronze" style="top:-120px; right:-140px; width:420px; height:420px;"></div>
-      <div class="accent-blob accent-blob-blue" style="bottom:-100px; left:-120px; width:360px; height:360px;"></div>
 
       <div class="relative z-10 max-w-5xl mx-auto px-6 sm:px-8 text-center">
         <p class="text-bronze-light text-xs uppercase tracking-[0.18em] font-medium mb-5">Community Heritage</p>
@@ -1112,7 +1098,7 @@
           <div class="lg:col-span-5 reveal-up">
             <h3 class="font-display text-ambedkar-blue text-2xl mb-4">A Coastal Heartland</h3>
             <p class="text-text-primary text-base leading-[1.85] mb-6">
-              The community's centre of gravity lies on the eastern seaboard. Early mission schools and the fertile Krishna–Godavari delta gave coastal Mala families comparatively earlier access to education and the professions - a head start whose legacy runs through MALGOA today.
+              The community's centre of gravity lies on the eastern seaboard. Early mission schools and the fertile Krishna-Godavari delta gave coastal Mala families comparatively earlier access to education and the professions - a head start whose legacy runs through MALGOA today.
             </p>
 
             <ul class="space-y-3 mb-6 reveal-stagger">
@@ -1132,7 +1118,7 @@
 
             <div class="bg-parchment border-l-4 border-bronze rounded-r-md p-4">
               <p class="text-text-muted text-sm leading-relaxed">
-                In the 2011 census of Andhra Pradesh, Malas were <strong class="text-ambedkar-blue">45%</strong> of the SC population - the single largest bloc, with the densest concentrations along the Krishna–Godavari delta and the Uttarandhra coast
+                In the 2011 census of Andhra Pradesh, Malas were <strong class="text-ambedkar-blue">45%</strong> of the SC population - the single largest bloc, with the densest concentrations along the Krishna-Godavari delta and the Uttarandhra coast
               </p>
             </div>
           </div>
@@ -1239,7 +1225,7 @@
               </div>
               <div class="absolute left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-bronze ring-4 ring-parchment"></div>
               <div class="pl-10">
-                <p class="text-text-primary leading-relaxed">Birth of Bhagya Reddy Varma (1888–1939), pioneering Dalit reformer who would mobilise Malas and Madigas against untouchability - opening schools and hostels for Dalit children and connecting Telugu Dalit struggle to wider anti-caste currents</p>
+                <p class="text-text-primary leading-relaxed">Birth of Bhagya Reddy Varma (1888-1939), pioneering Dalit reformer who would mobilise Malas and Madigas against untouchability - opening schools and hostels for Dalit children and connecting Telugu Dalit struggle to wider anti-caste currents</p>
               </div>
             </div>
 
@@ -1267,7 +1253,7 @@
 
             <div class="relative grid grid-cols-2 gap-8 items-center">
               <div class="text-right pr-10">
-                <p class="text-text-primary leading-relaxed">Mala Mahanadu emerges as the major organisation representing Mala interests, particularly around SC reservation distribution. Through leaders like G. Chennaiah and others, the community asserts itself in Andhra–Telangana Dalit politics through rallies, legal interventions, and policy negotiations</p>
+                <p class="text-text-primary leading-relaxed">Mala Mahanadu emerges as the major organisation representing Mala interests, particularly around SC reservation distribution. Through leaders like G. Chennaiah and others, the community asserts itself in Andhra-Telangana Dalit politics through rallies, legal interventions, and policy negotiations</p>
               </div>
               <div class="absolute left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-bronze ring-4 ring-parchment"></div>
               <div class="pl-10">
@@ -1305,7 +1291,7 @@
               </div>
               <div class="absolute left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-bronze ring-4 ring-parchment"></div>
               <div class="pl-10">
-                <p class="text-text-primary leading-relaxed">On 7 June 2025 in Amaravati, the Mala Gazetted Officers Association is founded - registered under Reg. No. 185/2025. A new institutional vehicle for the next chapter of the community through government platform</p>
+                <p class="text-text-primary leading-relaxed">On 7 June 2025 in Amaravati, the Mala Gazetted Officers Association is founded - registered under Reg. No. 185/2025 - a new institutional vehicle for the next chapter of the community through a government platform</p>
               </div>
             </div>
 
@@ -1343,7 +1329,7 @@
           <div class="card-lift bg-parchment rounded-lg p-7 border border-divider">
             <i data-lucide="church" class="w-8 h-8 text-bronze mb-4 card-icon"></i>
             <h3 class="font-display text-ambedkar-blue text-xl mb-3">Christian Heritage</h3>
-            <p class="text-text-muted text-sm leading-relaxed">Significant Christian segments, especially in the Krishna–Godavari belt, trace their identity to mission-era schools and theology. Christian Malas helped build a culture of education that became a ladder into the professions</p>
+            <p class="text-text-muted text-sm leading-relaxed">Significant Christian segments, especially in the Krishna-Godavari belt, trace their identity to mission-era schools and theology. Christian Malas helped build a culture of education that became a ladder into the professions</p>
           </div>
 
           <div class="card-lift bg-parchment rounded-lg p-7 border border-divider">
@@ -1417,24 +1403,24 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 reveal-stagger">
 
           <div class="card-lift bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg p-7 text-center">
-            <img src="images/legacy-bhagya-reddy-varma.jpg" alt="Bhagya Reddy Varma - Dalit reformer (1888–1939)" class="w-28 h-28 mx-auto mb-5 rounded-full object-cover object-top border-2 border-bronze/40" loading="lazy" />
+            <img src="images/legacy-bhagya-reddy-varma.jpg" alt="Bhagya Reddy Varma - Dalit reformer (1888-1939)" class="w-28 h-28 mx-auto mb-5 rounded-full object-cover object-top border-2 border-bronze/40" loading="lazy" />
             <h3 class="font-display text-white text-xl mb-1">Bhagya Reddy Varma</h3>
-            <p class="text-bronze-light text-xs font-semibold tracking-wide mb-3">1888 – 1939</p>
-            <p class="text-slate-300 text-sm leading-relaxed">Pioneering Dalit reformer of the Adi-Andhra movement who organised conferences, opened schools and hostels, and articulated a new self-respect-based identity for Malas and other Dalits.</p>
+            <p class="text-bronze-light text-xs font-semibold tracking-wide mb-3">1888 - 1939</p>
+            <p class="text-slate-300 text-sm leading-relaxed">Pioneering Dalit reformer of the Adi-Andhra movement who organised conferences, opened schools and hostels, and articulated a new self-respect-based identity for Malas and other Dalits</p>
           </div>
 
           <div class="card-lift bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg p-7 text-center">
-            <img src="images/legacy-g-venkat-swamy.jpg" alt="G. Venkat Swamy 'Kaka' - MP & Union Minister (1929–2014)" class="w-28 h-28 mx-auto mb-5 rounded-full object-cover object-top border-2 border-bronze/40" loading="lazy" />
+            <img src="images/legacy-g-venkat-swamy.jpg" alt="G. Venkat Swamy 'Kaka' - MP & Union Minister (1929-2014)" class="w-28 h-28 mx-auto mb-5 rounded-full object-cover object-top border-2 border-bronze/40" loading="lazy" />
             <h3 class="font-display text-white text-xl mb-1">G. Venkat Swamy <span class="text-bronze-light italic font-normal text-base">"Kaka"</span></h3>
-            <p class="text-bronze-light text-xs font-semibold tracking-wide mb-3">1929 – 2014</p>
-            <p class="text-slate-300 text-sm leading-relaxed">Senior Congress leader from Telangana, multi-term MP and Union minister - one of the most prominent Dalit voices from the Mala community at the national level, consistently raising Dalit welfare and reservations.</p>
+            <p class="text-bronze-light text-xs font-semibold tracking-wide mb-3">1929 - 2014</p>
+            <p class="text-slate-300 text-sm leading-relaxed">Senior Congress leader from Telangana, multi-term MP and Union minister - one of the most prominent Dalit voices from the Mala community at the national level, consistently raising Dalit welfare and reservations</p>
           </div>
 
           <div class="card-lift bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg p-7 text-center">
             <img src="images/leader-mala-kannamadasu-card.jpg" alt="Mala Kannamadasu" class="w-28 h-28 mx-auto mb-5 rounded-full object-cover object-center border-2 border-bronze/40" loading="lazy" />
             <h3 class="font-display text-white text-xl mb-1">Mala Kannamadasu</h3>
-            <p class="text-bronze-light text-xs font-semibold tracking-wide mb-3">12th Century · Legendary</p>
-            <p class="text-slate-300 text-sm leading-relaxed">Mala warrior who fought and died at the Battle of Palnadu under Brahmanaidu. Part historical, part legendary - he endures in song and memory as a symbol of courage and a non-subordinate Mala past.</p>
+            <p class="text-bronze-light text-xs font-semibold tracking-wide mb-3">12th Century - Legendary</p>
+            <p class="text-slate-300 text-sm leading-relaxed">Mala warrior who fought and died at the Battle of Palnadu under Brahmanaidu. Part historical, part legendary - he endures in song and memory as a symbol of courage and a non-subordinate Mala past</p>
           </div>
 
           <div class="card-lift bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg p-7 text-center">
@@ -1443,25 +1429,25 @@
             </div>
             <h3 class="font-display text-white text-xl mb-1">G. Chennaiah</h3>
             <p class="text-bronze-light text-xs font-semibold tracking-wide mb-3">National President, Mala Mahanadu</p>
-            <p class="text-slate-300 text-sm leading-relaxed">A defining voice in Andhra–Telangana Dalit politics since the 1990s, organising rallies, legal interventions and policy negotiations around SC reservations and sub-categorisation debates.</p>
+            <p class="text-slate-300 text-sm leading-relaxed">A defining voice in Andhra-Telangana Dalit politics since the 1990s, organising rallies, legal interventions and policy negotiations around SC reservations and sub-categorisation debates</p>
           </div>
 
         </div>
 
         <!-- Bridge to Heritage page -->
         <div class="mt-16 text-center reveal-up">
-          <p class="text-slate-300 max-w-2xl mx-auto mb-6">From this long arc of struggle and self-assertion arises the most recent institutional response - born of a flashpoint in January 2025.</p>
+          <p class="text-slate-300 max-w-2xl mx-auto mb-6">From this long arc of struggle and self-assertion arises the most recent institutional response - born of a flashpoint in January 2025</p>
           <button onclick="router('heritage')" class="btn-cta">Read MALGOA's Founding Story</button>
         </div>
 
         <!-- IMAGE SOURCING NOTES (for the user, not visible on page):
              STATUS as of Iteration 4 (2026-06-03):
-             ✓ EMBEDDED (verified public-domain, Wikimedia Commons):
-               - Bhagya Reddy Varma  → images/legacy-bhagya-reddy-varma.jpg
+             [x] EMBEDDED (verified public-domain, Wikimedia Commons):
+               - Bhagya Reddy Varma  -> images/legacy-bhagya-reddy-varma.jpg
                  src: https://commons.wikimedia.org/wiki/Category:Bhagya_Reddy_Varma
-               - G. Venkat Swamy "Kaka" → images/legacy-g-venkat-swamy.jpg
+               - G. Venkat Swamy "Kaka" -> images/legacy-g-venkat-swamy.jpg
                  src: https://en.wikipedia.org/wiki/Gaddam_Venkatswamy
-             ◻ STILL A SILHOUETTE - no verifiable / freely-licensed photo found; PLEASE VERIFY & SUPPLY:
+             [ ] STILL A SILHOUETTE - no verifiable / freely-licensed photo found; PLEASE VERIFY & SUPPLY:
                - Mala Kannamadasu: 12th-century legendary figure - NO photograph exists. Keep silhouette
                  (currently a shield icon) or commission an artistic depiction.
                - G. Chennaiah (Mala Mahanadu): candidate sources to confirm identity & licensing -
@@ -1477,7 +1463,7 @@
 
   </section>
 
-  <!-- ──────────────── HERITAGE & ORIGIN ──────────────── -->
+  <!-- ---------------- HERITAGE & ORIGIN ---------------- -->
   <section id="heritage" class="page-section" aria-label="Heritage and Origin">
 
     <!-- Hero with muted looping background clip -->
@@ -1496,7 +1482,7 @@
 
         <div class="heritage-prose text-text-primary text-lg">
 
-          <p class="lead-narrative">Every movement carries a memory of the moment it became necessary. Ours is not a story of ambition, but of dignity withdrawn and dignity reclaimed - the lived experience of officers who gave decades of faithful service, only to find that the fellowship they trusted had quietly drawn a line through their names.</p>
+          <p class="lead-narrative">Every movement carries a memory of the moment it became necessary. Ours is not a story of ambition, but of dignity withdrawn and dignity reclaimed - the lived experience of officers who gave decades of faithful service, only to find that the fellowship they trusted had quietly drawn a line through their names</p>
 
           <p>What follows is the record exactly as it was felt and set down by those who lived it. We preserve their words, unaltered, because the truth of how it happened matters more than any retelling could</p>
 
@@ -1521,7 +1507,7 @@
             <p>"In the state of Andhra Pradesh after general elections during May, 2024 the new Government was formed with TDP and its alliance of parties. When the governance of Andhra Pradesh was going with normal standards, the Honourable Apex Court of India delivered the verdict on classification of SC castes in the month of August, 2024."</p>
             <p>"This discovered the hidden agenda of our brethren all these decades, as all of us have gathered and proceeded all these decades together without having any sort of difference. Having boosted with the judgement, the thought of discrimination has been uncovered and started humiliating the Mala officers even in open forums."</p>
           </blockquote>
-          <!-- ARCHIVAL PHOTO SLOT - Replace this block when historical photographs are available. Filename convention: images/heritage-catalyst.jpg, heritage-flashpoint.jpg, heritage-ideology.jpg, heritage-imperative.jpg. Recommended dimensions: 1200×675px. -->
+          <!-- ARCHIVAL PHOTO SLOT - Replace this block when historical photographs are available. Filename convention: images/heritage-catalyst.jpg, heritage-flashpoint.jpg, heritage-ideology.jpg, heritage-imperative.jpg. Recommended dimensions: 1200x675px. -->
           <figure class="my-10 hidden" data-photo-slot="catalyst">
             <img src="images/heritage-catalyst.jpg" alt="Historical context illustration" class="w-full rounded-md border border-divider" />
             <figcaption class="text-sm text-text-muted italic text-center mt-3">[Caption to be added]</figcaption>
@@ -1598,8 +1584,8 @@
           <h3>The Imperative Need</h3>
           <p>Conviction without action is only sentiment. Having named the wrong and grounded itself in principle, the State Body refused to let the moment pass into quiet endurance. The decision was unambiguous: not to merely survive, but to rebuild - to realise what was lost and re-innovate what comes next</p>
           <blockquote class="verbatim">
-            <p>"Keeping the above in view, trusting the value of democracy (collective responsibility) and with due respect to follow the footprints or OUR GOD Dr. BR Ambedkar, the issues concerning the MALA Caste officers across the state that have been brought to the notice of the STATE BODY have been discussed by the State Body of MALGOA…"</p>
-            <p>"…it was felt that there IS AN IMPERATIVE NEED TO REALIZE, RENOVATE, REVAMP AND REFURBISH."</p>
+            <p>"Keeping the above in view, trusting the value of democracy (collective responsibility) and with due respect to follow the footprints or OUR GOD Dr. BR Ambedkar, the issues concerning the MALA Caste officers across the state that have been brought to the notice of the STATE BODY have been discussed by the State Body of MALGOA..."</p>
+            <p>"...it was felt that there IS AN IMPERATIVE NEED TO REALIZE, RENOVATE, REVAMP AND REFURBISH."</p>
           </blockquote>
           <!-- ARCHIVAL PHOTO SLOT - Replace this block when historical photographs are available. -->
           <figure class="my-10 hidden" data-photo-slot="imperative">
@@ -1617,7 +1603,7 @@
     </div>
   </section>
 
-  <!-- ──────────────── DR. B.R. AMBEDKAR ──────────────── -->
+  <!-- ---------------- DR. B.R. AMBEDKAR ---------------- -->
   <section id="ambedkar" class="page-section" aria-label="Dr. B.R. Ambedkar">
 
     <!-- Hero with muted looping footage drawn from the Malgoa film -->
@@ -1628,7 +1614,7 @@
         <p class="heritage-eyebrow" style="color:#D4B043;">The Architect of the Constitution</p>
         <h2 class="text-white text-4xl sm:text-5xl mt-2 tracking-tight" style="line-height:1.1;">Dr. B.R. Ambedkar</h2>
         <p class="text-slate-200 text-lg mt-4" style="max-width:60ch;">
-          Bharat Ratna Dr. Bhimrao Ramji Ambedkar (1891&ndash;1956) &mdash; jurist, economist, social reformer, and the principal architect of the Constitution of India. Affectionately known as <em>Babasaheb</em>.
+          Bharat Ratna Dr. Bhimrao Ramji Ambedkar (1891-1956) - jurist, economist, social reformer, and the principal architect of the Constitution of India. Affectionately known as <em>Babasaheb</em>.
         </p>
       </div>
     </div>
@@ -1641,15 +1627,15 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-6 mb-14">
           <div class="ambedkar-fact">
             <p class="text-text-muted text-sm">Born</p>
-            <p class="font-heading text-ambedkar-blue text-lg">14 April 1891 &middot; Mhow, Central Provinces (now Madhya Pradesh)</p>
+            <p class="font-heading text-ambedkar-blue text-lg">14 April 1891 - Mhow, Central Provinces (now Madhya Pradesh)</p>
           </div>
           <div class="ambedkar-fact">
             <p class="text-text-muted text-sm">Passed Away</p>
-            <p class="font-heading text-ambedkar-blue text-lg">6 December 1956 &middot; New Delhi</p>
+            <p class="font-heading text-ambedkar-blue text-lg">6 December 1956 - New Delhi</p>
           </div>
           <div class="ambedkar-fact">
             <p class="text-text-muted text-sm">Education</p>
-            <p class="font-heading text-ambedkar-blue text-lg">Columbia University &middot; London School of Economics &middot; Gray&rsquo;s Inn</p>
+            <p class="font-heading text-ambedkar-blue text-lg">Columbia University - London School of Economics - Gray's Inn</p>
           </div>
           <div class="ambedkar-fact">
             <p class="text-text-muted text-sm">Honour</p>
@@ -1659,30 +1645,30 @@
 
         <div class="heritage-prose text-text-primary text-lg">
 
-          <p class="lead-narrative">Born into the Mahar community and made to feel the daily indignities of untouchability, Dr. Ambedkar rose to become one of the most learned figures of his age and the foremost champion of social justice in modern India.</p>
+          <p class="lead-narrative">Born into the Mahar community and made to feel the daily indignities of untouchability, Dr. Ambedkar rose to become one of the most learned figures of his age and the foremost champion of social justice in modern India</p>
 
           <p class="heritage-step">Early Life &amp; Education</p>
           <h3>From Exclusion to Excellence</h3>
-          <p>Bhimrao was the fourteenth and last child of Ramji Maloji Sakpal, a subedar in the British Indian Army, and Bhimabai. Despite the barriers placed before children of his community, he excelled academically &mdash; studying at Elphinstone College in Bombay, then earning postgraduate degrees from Columbia University in New York and a doctorate in economics, alongside study at the London School of Economics and qualification as a barrister at Gray&rsquo;s Inn, London.</p>
+          <p>Bhimrao was the fourteenth and last child of Ramji Maloji Sakpal, a subedar in the British Indian Army, and Bhimabai. Despite the barriers placed before children of his community, he excelled academically - studying at Elphinstone College in Bombay, then earning postgraduate degrees from Columbia University in New York and a doctorate in economics, alongside study at the London School of Economics and qualification as a barrister at Gray's Inn, London</p>
 
           <p class="heritage-step">The Reformer</p>
           <h3>The Fight Against Caste</h3>
-          <p>Through the 1920s and 1930s, Dr. Ambedkar led landmark movements for the dignity of the oppressed &mdash; the Mahad Satyagraha of 1927 asserting the right to draw water from a public tank, and the Kalaram Temple entry movement. He founded journals such as <em>Mooknayak</em> and <em>Bahishkrit Bharat</em> to give voice to the voiceless, and in 1936 published his powerful treatise <em>Annihilation of Caste</em>.</p>
+          <p>Through the 1920s and 1930s, Dr. Ambedkar led landmark movements for the dignity of the oppressed - the Mahad Satyagraha of 1927 asserting the right to draw water from a public tank, and the Kalaram Temple entry movement. He founded journals such as <em>Mooknayak</em> and <em>Bahishkrit Bharat</em> to give voice to the voiceless, and in 1936 published his powerful treatise <em>Annihilation of Caste</em></p>
 
           <blockquote class="verbatim">
-            <p>&ldquo;I measure the progress of a community by the degree of progress which women have achieved.&rdquo;</p>
-            <p>&ldquo;Be Educated, Be Organised, and Be Agitated.&rdquo;</p>
+            <p>"I measure the progress of a community by the degree of progress which women have achieved."</p>
+            <p>"Be Educated, Be Organised, and Be Agitated."</p>
           </blockquote>
 
           <p class="heritage-step">Nation Builder</p>
           <h3>Father of the Indian Constitution</h3>
-          <p>On 29 August 1947 Dr. Ambedkar was appointed Chairman of the Drafting Committee of the Constituent Assembly, and he steered the drafting of the Constitution of India through years of debate. He served as independent India&rsquo;s first Minister of Law and Justice, and championed the rights of women, workers, and the marginalised &mdash; including the Hindu Code Bill reforms.</p>
+          <p>On 29 August 1947 Dr. Ambedkar was appointed Chairman of the Drafting Committee of the Constituent Assembly, and he steered the drafting of the Constitution of India through years of debate. He served as independent India's first Minister of Law and Justice, and championed the rights of women, workers, and the marginalised - including the Hindu Code Bill reforms</p>
 
           <p class="heritage-step">The Final Chapter</p>
           <h3>The Turn to Buddhism</h3>
-          <p>On 14 October 1956, at Deekshabhoomi in Nagpur, Dr. Ambedkar embraced Buddhism along with hundreds of thousands of followers, founding the modern Navayana Buddhist movement. He passed away in New Delhi weeks later, on 6 December 1956 &mdash; a day now observed as Mahaparinirvan Diwas.</p>
+          <p>On 14 October 1956, at Deekshabhoomi in Nagpur, Dr. Ambedkar embraced Buddhism along with hundreds of thousands of followers, founding the modern Navayana Buddhist movement. He passed away in New Delhi weeks later, on 6 December 1956 - a day now observed as Mahaparinirvan Diwas</p>
 
-          <p class="pull-quote">His constitutional ideals of liberty, equality and fraternity are the founding principles of our Association.</p>
+          <p class="pull-quote">His constitutional ideals of liberty, equality and fraternity are the founding principles of our Association</p>
 
           <div class="mt-10">
             <button onclick="router('heritage')" class="btn-outline">Read Our Heritage</button>
@@ -1692,7 +1678,7 @@
     </div>
   </section>
 
-  <!-- ──────────────── LEADERSHIP ──────────────── -->
+  <!-- ---------------- LEADERSHIP ---------------- -->
   <section id="leadership" class="page-section" aria-label="Leadership">
     <div class="max-w-7xl mx-auto px-6 sm:px-8 py-20">
       <p class="heritage-eyebrow">The State Body</p>
@@ -1855,7 +1841,7 @@
     </div>
   </section>
 
-  <!-- ──────────────── OBJECTIVES ──────────────── -->
+  <!-- ---------------- OBJECTIVES ---------------- -->
   <section id="objectives" class="page-section" aria-label="Objectives">
     <div class="bg-white">
       <div class="max-w-6xl mx-auto px-6 sm:px-8 py-20">
@@ -1950,7 +1936,7 @@
     </div>
   </section>
 
-  <!-- ──────────────── PATRONS & WELL-WISHERS ──────────────── -->
+  <!-- ---------------- PATRONS & WELL-WISHERS ---------------- -->
   <section id="patrons" class="page-section" aria-label="Patrons and Well-Wishers">
     <div class="bg-parchment">
       <div class="max-w-7xl mx-auto px-6 sm:px-8 py-20">
@@ -2004,21 +1990,21 @@
         <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
           <div class="card p-6 text-center"><img src="images/patrons/chair-greeshma-prasad.jpg" alt="Smt. Kavali Greeshma Prasad - Chairperson, Women's Co-operative Finance Corporation" class="patron-photo mx-auto mb-3" loading="lazy" /><h4 class="font-heading font-semibold text-ambedkar-blue text-sm">Smt. Kavali Greeshma Prasad</h4><p class="text-text-muted italic text-xs mt-1">Chairperson, Women's Co-op Finance Corp.</p></div>
           <div class="card p-6 text-center"><img src="images/patrons/chair-mala-welfare-vijay-kumar.jpg" alt="Dr. P. Vijay Kumar - Chairman, Mala Welfare Co-operative Finance Corporation Ltd." class="patron-photo mx-auto mb-3" loading="lazy" /><h4 class="font-heading font-semibold text-ambedkar-blue text-sm">Dr. P. Vijay Kumar</h4><p class="text-text-muted italic text-xs mt-1">Chairman, Mala Welfare Co-op Finance Corp.</p></div>
-          <div class="card p-6 text-center"><img src="images/patrons/sc-gowtham.jpg" alt="Dr. P. Gowtham - Member, SC Commission, Vijayawada" class="patron-photo mx-auto mb-3" loading="lazy" /><h4 class="font-heading font-semibold text-ambedkar-blue text-sm">Dr. P. Gowtham</h4><p class="text-text-muted italic text-xs mt-1">Member, SC Commission · Vijayawada</p></div>
-          <div class="card p-6 text-center"><img src="images/patrons/sc-babu-sripathi.jpg" alt="Sri Babu Sripathi - Member, SC Commission, Sullurupeta" class="patron-photo mx-auto mb-3" loading="lazy" /><h4 class="font-heading font-semibold text-ambedkar-blue text-sm">Sri Babu Sripathi</h4><p class="text-text-muted italic text-xs mt-1">Member, SC Commission · Sullurupeta</p></div>
-          <div class="card p-6 text-center"><img src="images/patrons/sc-seetharam.jpg" alt="Sri R. Seetharam - Member, SC Commission, Palakonda" class="patron-photo mx-auto mb-3" loading="lazy" /><h4 class="font-heading font-semibold text-ambedkar-blue text-sm">Sri R. Seetharam</h4><p class="text-text-muted italic text-xs mt-1">Member, SC Commission · Palakonda</p></div>
+          <div class="card p-6 text-center"><img src="images/patrons/sc-gowtham.jpg" alt="Dr. P. Gowtham - Member, SC Commission, Vijayawada" class="patron-photo mx-auto mb-3" loading="lazy" /><h4 class="font-heading font-semibold text-ambedkar-blue text-sm">Dr. P. Gowtham</h4><p class="text-text-muted italic text-xs mt-1">Member, SC Commission - Vijayawada</p></div>
+          <div class="card p-6 text-center"><img src="images/patrons/sc-babu-sripathi.jpg" alt="Sri Babu Sripathi - Member, SC Commission, Sullurupeta" class="patron-photo mx-auto mb-3" loading="lazy" /><h4 class="font-heading font-semibold text-ambedkar-blue text-sm">Sri Babu Sripathi</h4><p class="text-text-muted italic text-xs mt-1">Member, SC Commission - Sullurupeta</p></div>
+          <div class="card p-6 text-center"><img src="images/patrons/sc-seetharam.jpg" alt="Sri R. Seetharam - Member, SC Commission, Palakonda" class="patron-photo mx-auto mb-3" loading="lazy" /><h4 class="font-heading font-semibold text-ambedkar-blue text-sm">Sri R. Seetharam</h4><p class="text-text-muted italic text-xs mt-1">Member, SC Commission - Palakonda</p></div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ──────────────── THEORY OF CHANGE ──────────────── -->
+  <!-- ---------------- THEORY OF CHANGE ---------------- -->
   <section id="theory-of-change" class="page-section" aria-label="Theory of Change">
     <div class="max-w-7xl mx-auto px-6 sm:px-8 py-20">
       <p class="heritage-eyebrow">Intergenerational Synergy</p>
       <h2 class="text-ambedkar-blue text-4xl mt-2">Our Theory of Change</h2>
       <div class="section-rule"></div>
-      <p class="text-text-muted mb-12 max-w-2xl">Connecting three generations for a common, equitable, and greater future for all.</p>
+      <p class="text-text-muted mb-12 max-w-2xl">Connecting three generations for a common, equitable, and greater future for all</p>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-7 mb-12">
 
@@ -2026,21 +2012,21 @@
           <div class="toc-card-icon w-14 h-14 rounded-xl bg-ambedkar-blue flex items-center justify-center mb-5"><i data-lucide="landmark" class="w-7 h-7 text-bronze-light"></i></div>
           <p class="heritage-eyebrow">The Veterans</p>
           <h3 class="font-heading font-bold text-ambedkar-blue text-xl mt-1 mb-3">Wisdom &amp; Heritage</h3>
-          <p class="text-text-muted leading-relaxed">Our senior officers provide the foundational bedrock of MALGOA. They bring decades of administrative experience, institutional memory, and the steady resilience required to navigate complex challenges. Their guidance ensures that our organizational roots remain deeply grounded in our core principles and historical legacy.</p>
+          <p class="text-text-muted leading-relaxed">Our senior officers provide the foundational bedrock of MALGOA. They bring decades of administrative experience, institutional memory, and the steady resilience required to navigate complex challenges. Their guidance ensures that our organizational roots remain deeply grounded in our core principles and historical legacy</p>
         </div>
 
         <div class="card top-bronze p-8 reveal d2 toc-card" data-stream="execution" role="button" tabindex="0" aria-pressed="false">
           <div class="toc-card-icon w-14 h-14 rounded-xl bg-ambedkar-blue flex items-center justify-center mb-5"><i data-lucide="git-merge" class="w-7 h-7 text-bronze-light"></i></div>
           <p class="heritage-eyebrow">The Core</p>
           <h3 class="font-heading font-bold text-ambedkar-blue text-xl mt-1 mb-3">Strategy &amp; Execution</h3>
-          <p class="text-text-muted leading-relaxed">Serving as the vital bridge between heritage and innovation, this generation translates vision into actionable strategy. With a deep understanding of both traditional governance and modern operational frameworks, they drive the day-to-day execution of MALGOA's objectives, ensuring our mandate is realised efficiently and effectively.</p>
+          <p class="text-text-muted leading-relaxed">Serving as the vital bridge between heritage and innovation, this generation translates vision into actionable strategy. With a deep understanding of both traditional governance and modern operational frameworks, they drive the day-to-day execution of MALGOA's objectives, ensuring our mandate is realised efficiently and effectively</p>
         </div>
 
         <div class="card top-bronze p-8 reveal d3 toc-card" data-stream="innovation" role="button" tabindex="0" aria-pressed="false">
           <div class="toc-card-icon w-14 h-14 rounded-xl bg-ambedkar-blue flex items-center justify-center mb-5"><i data-lucide="compass" class="w-7 h-7 text-bronze-light"></i></div>
           <p class="heritage-eyebrow">The Vanguard</p>
           <h3 class="font-heading font-bold text-ambedkar-blue text-xl mt-1 mb-3">Innovation &amp; Continuity</h3>
-          <p class="text-text-muted leading-relaxed">Our newest officers represent the future and sustainability of the association. As digital natives equipped with fresh perspectives and contemporary technological fluency, they bring the disruptive energy necessary to evolve our advocacy. Their integration ensures MALGOA remains a dynamic, forward-looking force for decades to come.</p>
+          <p class="text-text-muted leading-relaxed">Our newest officers represent the future and sustainability of the association. As digital natives equipped with fresh perspectives and contemporary technological fluency, they bring the disruptive energy necessary to evolve our advocacy. Their integration ensures MALGOA remains a dynamic, forward-looking force for decades to come</p>
         </div>
       </div>
 
@@ -2051,17 +2037,17 @@
           <div class="toc-stream" data-stream="experience">
             <div class="toc-stream-head"><i data-lucide="landmark"></i><span>Experience</span></div>
             <div class="toc-meter"><span class="toc-meter-fill f1"></span></div>
-            <p class="toc-stream-val">The Veterans &middot; institutional memory &amp; resilience</p>
+            <p class="toc-stream-val">The Veterans - institutional memory &amp; resilience</p>
           </div>
           <div class="toc-stream" data-stream="execution">
             <div class="toc-stream-head"><i data-lucide="git-merge"></i><span>Execution</span></div>
             <div class="toc-meter"><span class="toc-meter-fill f2"></span></div>
-            <p class="toc-stream-val">The Core &middot; vision turned into strategy</p>
+            <p class="toc-stream-val">The Core - vision turned into strategy</p>
           </div>
           <div class="toc-stream" data-stream="innovation">
             <div class="toc-stream-head"><i data-lucide="compass"></i><span>Innovation</span></div>
             <div class="toc-meter"><span class="toc-meter-fill f3"></span></div>
-            <p class="toc-stream-val">The Vanguard &middot; fresh energy &amp; continuity</p>
+            <p class="toc-stream-val">The Vanguard - fresh energy &amp; continuity</p>
           </div>
         </div>
         <div class="toc-converge"><i data-lucide="arrow-down"></i></div>
@@ -2072,12 +2058,12 @@
       <div class="creed">
         <h3 class="font-heading font-bold text-bronze-light text-2xl mb-3">The Unified Outcome</h3>
         <p class="text-bronze-light text-lg font-medium mb-4">Experience + Execution + Innovation = Systemic Equality</p>
-        <p class="leading-relaxed" style="color:#FAF7F2;">When the steadfast guidance of our elders merges with the strategic drive of millennials and the dynamic energy of Gen Z, MALGOA transforms from a protective collective into a proactive engine for systemic change. This is how we secure a common, greater future - leaving no officer behind, regardless of age or tenure.</p>
+        <p class="leading-relaxed" style="color:#FAF7F2;">When the steadfast guidance of our elders merges with the strategic drive of millennials and the dynamic energy of Gen Z, MALGOA transforms from a protective collective into a proactive engine for systemic change. This is how we secure a common, greater future - leaving no officer behind, regardless of age or tenure</p>
       </div>
     </div>
   </section>
 
-  <!-- ──────────────── STRATEGIC MANDATE (Realise & Re-innovate) ──────────────── -->
+  <!-- ---------------- STRATEGIC MANDATE (Realise & Re-innovate) ---------------- -->
   <section id="mandate" class="page-section" aria-label="Strategic Mandate">
     <div class="bg-parchment">
       <div class="max-w-7xl mx-auto px-6 sm:px-8 py-20">
@@ -2119,7 +2105,7 @@
     </div>
   </section>
 
-  <!-- ──────────────── MEDIA & MILESTONES ──────────────── -->
+  <!-- ---------------- MEDIA & MILESTONES ---------------- -->
   <section id="media" class="page-section" aria-label="Media and Milestones">
     <div class="max-w-7xl mx-auto px-6 sm:px-8 py-20">
       <p class="heritage-eyebrow">Archive</p>
@@ -2145,7 +2131,7 @@
     </div>
   </section>
 
-  <!-- ──────────────── CONTACT ──────────────── -->
+  <!-- ---------------- CONTACT ---------------- -->
   <section id="contact" class="page-section" aria-label="Contact Us">
     <div class="max-w-7xl mx-auto px-6 sm:px-8 py-20">
       <p class="heritage-eyebrow">Get in Touch</p>
@@ -2251,7 +2237,7 @@
               </div>
               <div class="mb-6">
                 <label for="cf-message" class="block text-sm font-semibold text-ambedkar-blue mb-1.5">Message <span class="text-red-500">*</span></label>
-                <textarea id="cf-message" name="message" rows="5" class="field resize-none" placeholder="Your message…"></textarea>
+                <textarea id="cf-message" name="message" rows="5" class="field resize-none" placeholder="Your message..."></textarea>
                 <p class="error-msg" id="err-message">Please enter a message (at least 10 characters).</p>
               </div>
               <div id="form-result" class="mb-5" role="alert" aria-live="polite"></div>
@@ -2267,7 +2253,7 @@
 
 </main>
 
-<!-- ═══════════════════════ FOOTER ═══════════════════════ -->
+<!-- ======================= FOOTER ======================= -->
 <footer class="text-slate-300" style="background:#0F1E2E;">
   <div class="max-w-7xl mx-auto px-6 sm:px-8 py-12">
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-10">
@@ -2336,12 +2322,12 @@
 
     <div class="border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
       <p>&copy; 2026 MALGOA - Mala Gazetted Officers Association of Andhra Pradesh. Reg. No. 185/2025. All rights reserved.</p>
-      <p>Rooted in the constitutional ideals of Dr. B.R. Ambedkar.</p>
+      <p>Rooted in the constitutional ideals of Dr. B.R. Ambedkar</p>
     </div>
   </div>
 </footer>
 
-<!-- ═══════════════════════ JOIN US MODAL ═══════════════════════ -->
+<!-- ======================= JOIN US MODAL ======================= -->
 <div id="join-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="join-title" aria-hidden="true">
   <div class="modal-card p-8 sm:p-10">
     <div class="flex items-start justify-between mb-2">
@@ -2355,7 +2341,7 @@
     </p>
 
     <div id="join-success" class="modal-success" role="alert" aria-live="polite">
-      Your enrolment request has been received. A Board Member of MALGOA will manually verify your designation and activate your account within 3–5 working days. You will be notified via email.
+      Your enrolment request has been received. A Board Member of MALGOA will manually verify your designation and activate your account within 3-5 working days. You will be notified via email.
     </div>
 
     <form id="join-form" novalidate>
@@ -2380,7 +2366,7 @@
         <div>
           <label for="jf-district" class="block text-sm font-semibold text-ambedkar-blue mb-1.5">District <span class="text-red-500">*</span></label>
           <select id="jf-district" name="district" class="field">
-            <option value="">Select district…</option>
+            <option value="">Select district...</option>
             <option>Alluri Sitharama Raju</option>
             <option>Anakapalli</option>
             <option>Anantapur</option>
@@ -2416,7 +2402,7 @@
       <div class="mb-4">
         <label for="jf-category" class="block text-sm font-semibold text-ambedkar-blue mb-1.5">Category / Designation <span class="text-red-500">*</span></label>
         <select id="jf-category" name="category" class="field">
-          <option value="">Select category…</option>
+          <option value="">Select category...</option>
           <option>Gazetted Officer - Grade I</option>
           <option>Gazetted Officer - Grade II</option>
           <option>MLA / MP / Elected Representative</option>
@@ -2430,14 +2416,14 @@
       </div>
       <div class="mb-6">
         <label for="jf-purpose" class="block text-sm font-semibold text-ambedkar-blue mb-1.5">Statement of Purpose <span class="text-text-muted font-normal">(optional)</span></label>
-        <textarea id="jf-purpose" name="purpose" rows="3" class="field resize-none" placeholder="A brief note on why you wish to join…"></textarea>
+        <textarea id="jf-purpose" name="purpose" rows="3" class="field resize-none" placeholder="A brief note on why you wish to join..."></textarea>
       </div>
       <button type="submit" id="jf-submit" class="btn-cta w-full text-center">Submit Application</button>
     </form>
   </div>
 </div>
 
-<!-- ═══════════════════════ MEMBER LOGIN MODAL ═══════════════════════ -->
+<!-- ======================= MEMBER LOGIN MODAL ======================= -->
 <div id="login-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="login-title" aria-hidden="true">
   <div class="modal-card login p-8 sm:p-10">
     <div class="flex items-start justify-between mb-2">
@@ -2466,7 +2452,7 @@
   </div>
 </div>
 
-<!-- ═══════════════════════ LIGHTBOX ═══════════════════════ -->
+<!-- ======================= LIGHTBOX ======================= -->
 <div id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">
   <button id="lightbox-close" onclick="closeLightbox()"
           class="absolute top-4 right-4 text-white bg-white/10 hover:bg-white/20 rounded-full w-10 h-10 flex items-center justify-center transition-colors z-10"

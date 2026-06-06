@@ -10,6 +10,8 @@ Thumbs.db
 
 # Local-only admin documentation (never publish)
 ADMIN_ACCESS.md
+# Internal backend/RBAC planning doc (discussion only, never publish to live site)
+BACKEND-RBAC-RECOMMENDATION.md
 
 # Large source assets not used by the live site (kept locally only)
 public_html/All pages NEW Update.pdf
