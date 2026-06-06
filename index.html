@@ -197,6 +197,30 @@
         linear-gradient(to top, rgba(15,30,46,0.94) 0%, rgba(15,30,46,0.45) 45%, rgba(15,30,46,0.30) 100%);
     }
     .ambedkar-hero > .ambedkar-hero-inner { position: relative; z-index: 2; }
+
+    /* Reusable muted looping background clip for section heroes (Legacy, Heritage) */
+    .bg-video {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .bg-video-scrim { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+    .bg-video-scrim-navy {
+      background:
+        linear-gradient(to top, rgba(15,23,42,0.92) 0%, rgba(15,23,42,0.62) 50%, rgba(15,23,42,0.58) 100%);
+    }
+    /* Heritage page hero (muted looping background clip behind the title) */
+    .heritage-hero {
+      position: relative;
+      min-height: 58vh;
+      display: flex; align-items: center;
+      overflow: hidden;
+      background: linear-gradient(135deg, #0F1E2E 0%, #1565C0 55%, #0F1E2E 100%);
+    }
+    .heritage-hero > .heritage-hero-inner { position: relative; z-index: 2; width: 100%; }
+
     .ambedkar-fact {
       border-left: 3px solid #B8962E;
       padding: 0.25rem 0 0.25rem 1.1rem;
@@ -951,10 +975,12 @@
 
     <!-- Hero -->
     <div class="relative overflow-hidden bg-navy-deep bg-dot-grid py-24 lg:py-32">
+      <video id="legacyBgVideo" src="videos/legacy.mp4" muted loop playsinline preload="metadata" aria-hidden="true" class="bg-video"></video>
+      <div class="bg-video-scrim bg-video-scrim-navy" aria-hidden="true"></div>
       <div class="accent-blob accent-blob-bronze" style="top:-120px; right:-140px; width:420px; height:420px;"></div>
       <div class="accent-blob accent-blob-blue" style="bottom:-100px; left:-120px; width:360px; height:360px;"></div>
 
-      <div class="relative max-w-5xl mx-auto px-6 sm:px-8 text-center">
+      <div class="relative z-10 max-w-5xl mx-auto px-6 sm:px-8 text-center">
         <p class="text-bronze-light text-xs uppercase tracking-[0.18em] font-medium mb-5">Community Heritage</p>
         <h1 class="text-white text-5xl sm:text-6xl lg:text-7xl mb-7 hero-headline" style="line-height:1.05;">
           <span class="font-display italic">People</span><br />of the Deccan
@@ -1456,10 +1482,19 @@
 
   <!-- ──────────────── HERITAGE & ORIGIN ──────────────── -->
   <section id="heritage" class="page-section" aria-label="Heritage and Origin">
+
+    <!-- Hero with muted looping background clip -->
+    <div class="heritage-hero">
+      <video id="heritageBgVideo" src="videos/heritage.mp4" muted loop playsinline preload="metadata" aria-hidden="true" class="bg-video"></video>
+      <div class="bg-video-scrim bg-video-scrim-navy" aria-hidden="true"></div>
+      <div class="heritage-hero-inner max-w-3xl mx-auto px-6 sm:px-8 text-center">
+        <p class="text-bronze-light text-xs uppercase tracking-[0.18em] font-medium mb-3">The Historical Record</p>
+        <h2 class="text-white text-4xl sm:text-5xl">Heritage &amp; Origin</h2>
+      </div>
+    </div>
+
     <div class="bg-parchment">
       <div class="max-w-3xl mx-auto px-6 sm:px-8 py-20">
-        <p class="heritage-eyebrow">The Historical Record</p>
-        <h2 class="text-ambedkar-blue text-4xl mt-2">Heritage &amp; Origin</h2>
         <div class="ornament"><i data-lucide="scroll-text" class="w-5 h-5"></i></div>
 
         <div class="heritage-prose text-text-primary text-lg">
@@ -1692,15 +1727,51 @@
         </div>
 
         <div class="card top-bronze p-8 text-center card-lift">
+          <img src="images/leadership/vp-sankarayya.jpg" alt="Sri B. Sankarayya - Vice-President, MALGOA" class="leader-photo mx-auto mb-4" loading="lazy" />
+          <h4 class="font-heading font-bold text-ambedkar-blue text-lg">Sri B. Sankarayya</h4>
+          <p class="text-text-muted italic text-sm mt-1">Vice-President</p>
+        </div>
+
+        <div class="card top-bronze p-8 text-center card-lift">
+          <img src="images/leadership/vp-nagaraju.jpg" alt="Sri G. Nagaraju - Vice-President, MALGOA" class="leader-photo mx-auto mb-4" loading="lazy" />
+          <h4 class="font-heading font-bold text-ambedkar-blue text-lg">Sri G. Nagaraju</h4>
+          <p class="text-text-muted italic text-sm mt-1">Vice-President</p>
+        </div>
+
+        <div class="card top-bronze p-8 text-center card-lift">
           <img src="images/leadership/gen-secretary-ramakrishna.jpg" alt="Sri Polakati Ramakrishna - General Secretary, MALGOA" class="leader-photo mx-auto mb-4" loading="lazy" />
           <h4 class="font-heading font-bold text-ambedkar-blue text-lg">Sri Polakati Ramakrishna</h4>
           <p class="text-text-muted italic text-sm mt-1">General Secretary</p>
         </div>
 
         <div class="card top-bronze p-8 text-center card-lift">
-          <div class="leader-placeholder mx-auto mb-4"><i data-lucide="user-round" class="w-10 h-10 text-bronze"></i></div>
+          <img src="images/leadership/addl-gen-secretary-veeranna.jpg" alt="Sri H.D. Veeranna - Additional General Secretary, MALGOA" class="leader-photo mx-auto mb-4" loading="lazy" />
+          <h4 class="font-heading font-bold text-ambedkar-blue text-lg">Sri H.D. Veeranna</h4>
+          <p class="text-text-muted italic text-sm mt-1">Additional General Secretary</p>
+        </div>
+
+        <div class="card top-bronze p-8 text-center card-lift">
+          <img src="images/leadership/women-secretary-surekha.jpg" alt="Smt. Gummadi Surekha - Women Secretary, MALGOA" class="leader-photo mx-auto mb-4" loading="lazy" />
           <h4 class="font-heading font-bold text-ambedkar-blue text-lg">Smt. Gummadi Surekha</h4>
           <p class="text-text-muted italic text-sm mt-1">Women Secretary</p>
+        </div>
+
+        <div class="card top-bronze p-8 text-center card-lift">
+          <img src="images/leadership/secretary-y-suresh.jpg" alt="Sri Y. Suresh - Secretary, MALGOA" class="leader-photo mx-auto mb-4" loading="lazy" />
+          <h4 class="font-heading font-bold text-ambedkar-blue text-lg">Sri Y. Suresh</h4>
+          <p class="text-text-muted italic text-sm mt-1">Secretary</p>
+        </div>
+
+        <div class="card top-bronze p-8 text-center card-lift">
+          <img src="images/leadership/secretary-kannaiah.jpg" alt="Sri A. Kannaiah - Secretary, MALGOA" class="leader-photo mx-auto mb-4" loading="lazy" />
+          <h4 class="font-heading font-bold text-ambedkar-blue text-lg">Sri A. Kannaiah</h4>
+          <p class="text-text-muted italic text-sm mt-1">Secretary</p>
+        </div>
+
+        <div class="card top-bronze p-8 text-center card-lift">
+          <img src="images/leadership/secretary-naga-muniah.jpg" alt="Sri Naga Muniah - Secretary, MALGOA" class="leader-photo mx-auto mb-4" loading="lazy" />
+          <h4 class="font-heading font-bold text-ambedkar-blue text-lg">Sri Naga Muniah</h4>
+          <p class="text-text-muted italic text-sm mt-1">Secretary</p>
         </div>
 
         <div class="card top-bronze p-8 text-center card-lift">
@@ -1710,9 +1781,63 @@
         </div>
 
         <div class="card top-bronze p-8 text-center card-lift">
-          <div class="leader-placeholder mx-auto mb-4"><i data-lucide="user-round" class="w-10 h-10 text-bronze"></i></div>
+          <img src="images/leadership/joint-secretary-gurajala.jpg" alt="Sri S. Gurajala - Joint Secretary, MALGOA" class="leader-photo mx-auto mb-4" loading="lazy" />
+          <h4 class="font-heading font-bold text-ambedkar-blue text-lg">Sri S. Gurajala</h4>
+          <p class="text-text-muted italic text-sm mt-1">Joint Secretary</p>
+        </div>
+
+        <div class="card top-bronze p-8 text-center card-lift">
+          <img src="images/leadership/joint-secretary-ramesh-babu.jpg" alt="Sri K. Ramesh Babu - Joint Secretary, MALGOA" class="leader-photo mx-auto mb-4" loading="lazy" />
+          <h4 class="font-heading font-bold text-ambedkar-blue text-lg">Sri K. Ramesh Babu</h4>
+          <p class="text-text-muted italic text-sm mt-1">Joint Secretary</p>
+        </div>
+
+        <div class="card top-bronze p-8 text-center card-lift">
+          <img src="images/leadership/joint-secretary-gv-satyanayana.jpg" alt="Sri G.V. Satyanayana - Joint Secretary, MALGOA" class="leader-photo mx-auto mb-4" loading="lazy" />
+          <h4 class="font-heading font-bold text-ambedkar-blue text-lg">Sri G.V. Satyanayana</h4>
+          <p class="text-text-muted italic text-sm mt-1">Joint Secretary</p>
+        </div>
+
+        <div class="card top-bronze p-8 text-center card-lift">
+          <img src="images/leadership/treasurer-venkateswarlu.jpg" alt="Sri Pakanati Venkateswarlu - Treasurer, MALGOA" class="leader-photo mx-auto mb-4" loading="lazy" />
           <h4 class="font-heading font-bold text-ambedkar-blue text-lg">Sri Pakanati Venkateswarlu</h4>
           <p class="text-text-muted italic text-sm mt-1">Treasurer</p>
+        </div>
+
+        <div class="card top-bronze p-8 text-center card-lift">
+          <img src="images/leadership/org-secretary-vijay-prasad.jpg" alt="Sri Vijay Prasad - Organizing Secretary, MALGOA" class="leader-photo mx-auto mb-4" loading="lazy" />
+          <h4 class="font-heading font-bold text-ambedkar-blue text-lg">Sri Vijay Prasad</h4>
+          <p class="text-text-muted italic text-sm mt-1">Organizing Secretary</p>
+        </div>
+
+        <div class="card top-bronze p-8 text-center card-lift">
+          <img src="images/leadership/org-secretary-babji.jpg" alt="Sri K. Babji - Organizing Secretary, MALGOA" class="leader-photo mx-auto mb-4" loading="lazy" />
+          <h4 class="font-heading font-bold text-ambedkar-blue text-lg">Sri K. Babji</h4>
+          <p class="text-text-muted italic text-sm mt-1">Organizing Secretary</p>
+        </div>
+
+        <div class="card top-bronze p-8 text-center card-lift">
+          <img src="images/leadership/org-secretary-tirupataiah.jpg" alt="Sri Tirupataiah - Organizing Secretary, MALGOA" class="leader-photo mx-auto mb-4" loading="lazy" />
+          <h4 class="font-heading font-bold text-ambedkar-blue text-lg">Sri Tirupataiah</h4>
+          <p class="text-text-muted italic text-sm mt-1">Organizing Secretary</p>
+        </div>
+
+        <div class="card top-bronze p-8 text-center card-lift">
+          <img src="images/leadership/org-secretary-leela-mohana.jpg" alt="Sri Leela Mohana - Organizing Secretary, MALGOA" class="leader-photo mx-auto mb-4" loading="lazy" />
+          <h4 class="font-heading font-bold text-ambedkar-blue text-lg">Sri Leela Mohana</h4>
+          <p class="text-text-muted italic text-sm mt-1">Organizing Secretary</p>
+        </div>
+
+        <div class="card top-bronze p-8 text-center card-lift">
+          <img src="images/leadership/org-secretary-kiran.jpg" alt="Sri B. Kiran - Organizing Secretary, MALGOA" class="leader-photo mx-auto mb-4" loading="lazy" />
+          <h4 class="font-heading font-bold text-ambedkar-blue text-lg">Sri B. Kiran</h4>
+          <p class="text-text-muted italic text-sm mt-1">Organizing Secretary</p>
+        </div>
+
+        <div class="card top-bronze p-8 text-center card-lift">
+          <img src="images/leadership/org-secretary-srinivasa-rao.jpg" alt="Sri G. Srinivasa Rao - Organizing Secretary, MALGOA" class="leader-photo mx-auto mb-4" loading="lazy" />
+          <h4 class="font-heading font-bold text-ambedkar-blue text-lg">Sri G. Srinivasa Rao</h4>
+          <p class="text-text-muted italic text-sm mt-1">Organizing Secretary</p>
         </div>
       </div>
 
@@ -2366,18 +2491,28 @@
 </div>
 
 <script>
-  /* Ambedkar history page: play the muted background clip on a loop when the page is shown. */
+  /* Section background clips: play the muted clip on a loop only while its page is active. */
   (function () {
-    var clip = document.getElementById('ambedkarBgVideo');
-    if (!clip) return;
-    var section = document.getElementById('ambedkar');
+    var pairs = [
+      ['ambedkar', 'ambedkarBgVideo'],
+      ['legacy', 'legacyBgVideo'],
+      ['heritage', 'heritageBgVideo']
+    ];
+    var clips = pairs
+      .map(function (p) {
+        return { section: document.getElementById(p[0]), clip: document.getElementById(p[1]) };
+      })
+      .filter(function (c) { return c.section && c.clip; });
+    if (!clips.length) return;
     function sync() {
-      if (section && section.classList.contains('active')) {
-        var p = clip.play();
-        if (p && typeof p.catch === 'function') { p.catch(function () {}); }
-      } else {
-        clip.pause();
-      }
+      clips.forEach(function (c) {
+        if (c.section.classList.contains('active')) {
+          var p = c.clip.play();
+          if (p && typeof p.catch === 'function') { p.catch(function () {}); }
+        } else {
+          c.clip.pause();
+        }
+      });
     }
     document.addEventListener('click', function () { setTimeout(sync, 60); });
     sync();

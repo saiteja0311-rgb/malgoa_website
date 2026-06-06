@@ -1,6 +1,9 @@
 # Local Claude Code config
 .claude/
 
+# PDF scan / cropping scratch workspace (local only)
+.pdfscan/
+
 # OS / editor cruft
 Thumbs.db
 .DS_Store
