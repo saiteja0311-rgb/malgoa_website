@@ -167,22 +167,7 @@
     }
     .hero-bg > * { position: relative; z-index: 1; }
 
-    /* Background video slideshow (home hero) */
-    .hero-video-layer {
-      position: absolute; inset: 0;
-      z-index: 0;
-      overflow: hidden;
-      pointer-events: none;
-    }
-    .hero-video-layer video {
-      position: absolute; inset: 0;
-      width: 100%; height: 100%;
-      object-fit: cover;
-      opacity: 0;
-      transition: opacity 1.2s ease-in-out;
-    }
-    .hero-video-layer video.is-active { opacity: 1; }
-    /* Readability scrim so hero text stays legible over footage */
+    /* Readability scrim so hero text stays legible over the gradient */
     .hero-video-scrim {
       position: absolute; inset: 0;
       z-index: 0;
@@ -190,8 +175,31 @@
       background:
         linear-gradient(135deg, rgba(15,30,46,0.86) 0%, rgba(21,101,192,0.62) 55%, rgba(15,30,46,0.88) 100%);
     }
-    @media (prefers-reduced-motion: reduce) {
-      .hero-video-layer video { transition: none; }
+
+    /* Dr. Ambedkar history page hero (muted looping background clip) */
+    .ambedkar-hero {
+      position: relative;
+      min-height: 78vh;
+      display: flex; align-items: flex-end;
+      overflow: hidden;
+      background: linear-gradient(135deg, #0F1E2E 0%, #1565C0 55%, #0F1E2E 100%);
+    }
+    .ambedkar-hero video {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center 18%;
+      z-index: 0;
+    }
+    .ambedkar-hero .ambedkar-hero-scrim {
+      position: absolute; inset: 0; z-index: 1; pointer-events: none;
+      background:
+        linear-gradient(to top, rgba(15,30,46,0.94) 0%, rgba(15,30,46,0.45) 45%, rgba(15,30,46,0.30) 100%);
+    }
+    .ambedkar-hero > .ambedkar-hero-inner { position: relative; z-index: 2; }
+    .ambedkar-fact {
+      border-left: 3px solid #B8962E;
+      padding: 0.25rem 0 0.25rem 1.1rem;
     }
 
     /* Ambedkar / heritage portrait watermark for dark sections */
@@ -716,6 +724,7 @@
         <button class="nav-link" data-page="home"             role="menuitem">Home</button>
         <button class="nav-link" data-page="legacy"           role="menuitem">Our Legacy</button>
         <button class="nav-link" data-page="heritage"         role="menuitem">Heritage</button>
+        <button class="nav-link" data-page="ambedkar"         role="menuitem">Dr. Ambedkar</button>
         <button class="nav-link" data-page="leadership"       role="menuitem">Leadership</button>
         <button class="nav-link" data-page="objectives"       role="menuitem">Objectives</button>
         <button class="nav-link" data-page="patrons"          role="menuitem">Patrons</button>
@@ -741,6 +750,7 @@
       <button class="nav-link text-left py-2.5 px-3 rounded hover:bg-white/5" data-page="home"             role="menuitem">Home</button>
       <button class="nav-link text-left py-2.5 px-3 rounded hover:bg-white/5" data-page="legacy"           role="menuitem">Our Legacy</button>
       <button class="nav-link text-left py-2.5 px-3 rounded hover:bg-white/5" data-page="heritage"         role="menuitem">Heritage &amp; Origin</button>
+      <button class="nav-link text-left py-2.5 px-3 rounded hover:bg-white/5" data-page="ambedkar"         role="menuitem">Dr. B.R. Ambedkar</button>
       <button class="nav-link text-left py-2.5 px-3 rounded hover:bg-white/5" data-page="leadership"       role="menuitem">Leadership</button>
       <button class="nav-link text-left py-2.5 px-3 rounded hover:bg-white/5" data-page="objectives"       role="menuitem">Objectives</button>
       <button class="nav-link text-left py-2.5 px-3 rounded hover:bg-white/5" data-page="patrons"          role="menuitem">Patrons &amp; Well-Wishers</button>
@@ -762,14 +772,6 @@
 
     <!-- Hero -->
     <div class="hero-bg">
-      <!-- Background video slideshow (cycles short clips; muted, autoplay, loops to next) -->
-      <div class="hero-video-layer" id="heroVideoLayer" aria-hidden="true">
-        <video data-hero-video src="videos/hero-clip-1.mp4" muted playsinline preload="auto" class="is-active"></video>
-        <video data-hero-video src="videos/hero-clip-2.mp4" muted playsinline preload="none"></video>
-        <video data-hero-video src="videos/hero-clip-3.mp4" muted playsinline preload="none"></video>
-        <video data-hero-video src="videos/hero-clip-4.mp4" muted playsinline preload="none"></video>
-        <video data-hero-video src="videos/hero-clip-5.mp4" muted playsinline preload="none"></video>
-      </div>
       <div class="hero-video-scrim" aria-hidden="true"></div>
       <div class="accent-blob accent-blob-bronze" style="position:absolute; top:-100px; right:-120px; width:380px; height:380px; z-index:0;"></div>
       <div class="accent-blob accent-blob-blue" style="position:absolute; bottom:-80px; left:-100px; width:320px; height:320px; z-index:0;"></div>
@@ -831,8 +833,6 @@
 
     <!-- Prominent Leaders carousel -->
     <div class="bg-navy-deep py-14 overflow-hidden relative">
-      <!-- Dr. B.R. Ambedkar heritage watermark -->
-      <img src="images/ambedkar-bg.jpg" alt="" aria-hidden="true" class="ambedkar-watermark" loading="lazy" />
       <div class="max-w-7xl mx-auto px-6 sm:px-8 mb-8 text-center reveal-up relative z-10">
         <p class="heritage-eyebrow" style="color:#D4B043;">Prominent Mala Leaders</p>
         <h2 class="text-white text-2xl sm:text-3xl mt-1">Voices That Shaped the People</h2>
@@ -1585,6 +1585,81 @@
     </div>
   </section>
 
+  <!-- ──────────────── DR. B.R. AMBEDKAR ──────────────── -->
+  <section id="ambedkar" class="page-section" aria-label="Dr. B.R. Ambedkar">
+
+    <!-- Hero with muted looping footage drawn from the Malgoa film -->
+    <div class="ambedkar-hero">
+      <video id="ambedkarBgVideo" src="videos/ambedkar-clip.mp4" muted loop playsinline preload="metadata" aria-hidden="true"></video>
+      <div class="ambedkar-hero-scrim" aria-hidden="true"></div>
+      <div class="ambedkar-hero-inner max-w-5xl mx-auto px-6 sm:px-8 py-16 w-full">
+        <p class="heritage-eyebrow" style="color:#D4B043;">The Architect of the Constitution</p>
+        <h2 class="text-white text-4xl sm:text-5xl mt-2 tracking-tight" style="line-height:1.1;">Dr. B.R. Ambedkar</h2>
+        <p class="text-slate-200 text-lg mt-4" style="max-width:60ch;">
+          Bharat Ratna Dr. Bhimrao Ramji Ambedkar (1891&ndash;1956) &mdash; jurist, economist, social reformer, and the principal architect of the Constitution of India. Affectionately known as <em>Babasaheb</em>.
+        </p>
+      </div>
+    </div>
+
+    <!-- Biography -->
+    <div class="bg-parchment">
+      <div class="max-w-3xl mx-auto px-6 sm:px-8 py-20">
+
+        <!-- Key facts -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-6 mb-14">
+          <div class="ambedkar-fact">
+            <p class="text-text-muted text-sm">Born</p>
+            <p class="font-heading text-ambedkar-blue text-lg">14 April 1891 &middot; Mhow, Central Provinces (now Madhya Pradesh)</p>
+          </div>
+          <div class="ambedkar-fact">
+            <p class="text-text-muted text-sm">Passed Away</p>
+            <p class="font-heading text-ambedkar-blue text-lg">6 December 1956 &middot; New Delhi</p>
+          </div>
+          <div class="ambedkar-fact">
+            <p class="text-text-muted text-sm">Education</p>
+            <p class="font-heading text-ambedkar-blue text-lg">Columbia University &middot; London School of Economics &middot; Gray&rsquo;s Inn</p>
+          </div>
+          <div class="ambedkar-fact">
+            <p class="text-text-muted text-sm">Honour</p>
+            <p class="font-heading text-ambedkar-blue text-lg">Bharat Ratna (awarded posthumously, 1990)</p>
+          </div>
+        </div>
+
+        <div class="heritage-prose text-text-primary text-lg">
+
+          <p class="lead-narrative">Born into the Mahar community and made to feel the daily indignities of untouchability, Dr. Ambedkar rose to become one of the most learned figures of his age and the foremost champion of social justice in modern India.</p>
+
+          <p class="heritage-step">Early Life &amp; Education</p>
+          <h3>From Exclusion to Excellence</h3>
+          <p>Bhimrao was the fourteenth and last child of Ramji Maloji Sakpal, a subedar in the British Indian Army, and Bhimabai. Despite the barriers placed before children of his community, he excelled academically &mdash; studying at Elphinstone College in Bombay, then earning postgraduate degrees from Columbia University in New York and a doctorate in economics, alongside study at the London School of Economics and qualification as a barrister at Gray&rsquo;s Inn, London.</p>
+
+          <p class="heritage-step">The Reformer</p>
+          <h3>The Fight Against Caste</h3>
+          <p>Through the 1920s and 1930s, Dr. Ambedkar led landmark movements for the dignity of the oppressed &mdash; the Mahad Satyagraha of 1927 asserting the right to draw water from a public tank, and the Kalaram Temple entry movement. He founded journals such as <em>Mooknayak</em> and <em>Bahishkrit Bharat</em> to give voice to the voiceless, and in 1936 published his powerful treatise <em>Annihilation of Caste</em>.</p>
+
+          <blockquote class="verbatim">
+            <p>&ldquo;I measure the progress of a community by the degree of progress which women have achieved.&rdquo;</p>
+            <p>&ldquo;Be Educated, Be Organised, and Be Agitated.&rdquo;</p>
+          </blockquote>
+
+          <p class="heritage-step">Nation Builder</p>
+          <h3>Father of the Indian Constitution</h3>
+          <p>On 29 August 1947 Dr. Ambedkar was appointed Chairman of the Drafting Committee of the Constituent Assembly, and he steered the drafting of the Constitution of India through years of debate. He served as independent India&rsquo;s first Minister of Law and Justice, and championed the rights of women, workers, and the marginalised &mdash; including the Hindu Code Bill reforms.</p>
+
+          <p class="heritage-step">The Final Chapter</p>
+          <h3>The Turn to Buddhism</h3>
+          <p>On 14 October 1956, at Deekshabhoomi in Nagpur, Dr. Ambedkar embraced Buddhism along with hundreds of thousands of followers, founding the modern Navayana Buddhist movement. He passed away in New Delhi weeks later, on 6 December 1956 &mdash; a day now observed as Mahaparinirvan Diwas.</p>
+
+          <p class="pull-quote">His constitutional ideals of liberty, equality and fraternity are the founding principles of our Association.</p>
+
+          <div class="mt-10">
+            <button onclick="router('heritage')" class="btn-outline">Read Our Heritage</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ──────────────── LEADERSHIP ──────────────── -->
   <section id="leadership" class="page-section" aria-label="Leadership">
     <div class="max-w-7xl mx-auto px-6 sm:px-8 py-20">
@@ -1810,54 +1885,6 @@
           <div class="card p-6 text-center"><img src="images/patrons/sc-gowtham.jpg" alt="Dr. P. Gowtham - Member, SC Commission, Vijayawada" class="patron-photo mx-auto mb-3" loading="lazy" /><h4 class="font-heading font-semibold text-ambedkar-blue text-sm">Dr. P. Gowtham</h4><p class="text-text-muted italic text-xs mt-1">Member, SC Commission · Vijayawada</p></div>
           <div class="card p-6 text-center"><img src="images/patrons/sc-babu-sripathi.jpg" alt="Sri Babu Sripathi - Member, SC Commission, Sullurupeta" class="patron-photo mx-auto mb-3" loading="lazy" /><h4 class="font-heading font-semibold text-ambedkar-blue text-sm">Sri Babu Sripathi</h4><p class="text-text-muted italic text-xs mt-1">Member, SC Commission · Sullurupeta</p></div>
           <div class="card p-6 text-center"><img src="images/patrons/sc-seetharam.jpg" alt="Sri R. Seetharam - Member, SC Commission, Palakonda" class="patron-photo mx-auto mb-3" loading="lazy" /><h4 class="font-heading font-semibold text-ambedkar-blue text-sm">Sri R. Seetharam</h4><p class="text-text-muted italic text-xs mt-1">Member, SC Commission · Palakonda</p></div>
-        </div>
-
-        <!-- Public Policy & Sustainability -->
-        <div class="mt-16">
-          <h3 class="font-heading text-ambedkar-blue text-2xl mb-6 text-center">Public Policy &amp; Sustainability</h3>
-          <p class="text-text-muted text-base leading-relaxed max-w-3xl mx-auto text-center mb-10">
-            Distinguished voices in policy, governance and sustainable development whose counsel guides MALGOA's long-horizon institutional thinking.
-          </p>
-
-          <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
-
-            <div class="text-center">
-              <img src="images/patrons/policy-stephen-anurag.jpg" alt="Stephen Anurag P - Project Officer, NISG, Government of Meghalaya" class="w-32 h-32 mx-auto rounded-full object-cover border-4 border-bronze mb-4" loading="lazy" />
-              <p class="font-heading text-ambedkar-blue text-lg">Stephen Anurag P</p>
-              <p class="text-text-muted text-sm italic mt-1">Project Officer, NISG, Government of Meghalaya</p>
-            </div>
-
-            <div class="text-center">
-              <div class="w-32 h-32 mx-auto rounded-full bg-parchment border-4 border-bronze flex items-center justify-center mb-4">
-                <i data-lucide="user-round" class="w-12 h-12 text-ambedkar-blue/30"></i>
-              </div>
-              <p class="font-heading text-ambedkar-blue text-lg">[Name to be added]</p>
-              <p class="text-text-muted text-sm italic mt-1">[Designation]</p>
-            </div>
-
-            <div class="text-center">
-              <div class="w-32 h-32 mx-auto rounded-full bg-parchment border-4 border-bronze flex items-center justify-center mb-4">
-                <i data-lucide="user-round" class="w-12 h-12 text-ambedkar-blue/30"></i>
-              </div>
-              <p class="font-heading text-ambedkar-blue text-lg">[Name to be added]</p>
-              <p class="text-text-muted text-sm italic mt-1">[Designation]</p>
-            </div>
-
-            <div class="text-center">
-              <div class="w-32 h-32 mx-auto rounded-full bg-parchment border-4 border-bronze flex items-center justify-center mb-4">
-                <i data-lucide="user-round" class="w-12 h-12 text-ambedkar-blue/30"></i>
-              </div>
-              <p class="font-heading text-ambedkar-blue text-lg">[Name to be added]</p>
-              <p class="text-text-muted text-sm italic mt-1">[Designation]</p>
-            </div>
-
-          </div>
-
-          <!-- IMAGE INSTRUCTION FOR CLIENT:
-               To add real headshots, replace each <div class="w-32 h-32 ... flex items-center justify-center">...</div> block with:
-               <img src="images/policy-1.jpg" alt="[Person Name]" class="w-32 h-32 mx-auto rounded-full border-4 border-bronze object-cover mb-4" />
-               Recommended image specs: square crop, minimum 400×400px, professional portrait. Filenames: policy-1.jpg through policy-4.jpg.
-          -->
         </div>
       </div>
     </div>
@@ -2339,48 +2366,21 @@
 </div>
 
 <script>
-  /* Home hero background video slideshow: play one clip, fade to the next on end, loop. */
+  /* Ambedkar history page: play the muted background clip on a loop when the page is shown. */
   (function () {
-    var layer = document.getElementById('heroVideoLayer');
-    if (!layer) return;
-    var vids = Array.prototype.slice.call(layer.querySelectorAll('[data-hero-video]'));
-    if (vids.length === 0) return;
-
-    var current = 0;
-    var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    function show(i) {
-      vids.forEach(function (v, idx) {
-        if (idx === i) v.classList.add('is-active');
-        else v.classList.remove('is-active');
-      });
+    var clip = document.getElementById('ambedkarBgVideo');
+    if (!clip) return;
+    var section = document.getElementById('ambedkar');
+    function sync() {
+      if (section && section.classList.contains('active')) {
+        var p = clip.play();
+        if (p && typeof p.catch === 'function') { p.catch(function () {}); }
+      } else {
+        clip.pause();
+      }
     }
-
-    function play(i) {
-      var v = vids[i];
-      if (!v) return;
-      try { v.currentTime = 0; } catch (e) {}
-      var p = v.play();
-      if (p && typeof p.catch === 'function') { p.catch(function () {}); }
-    }
-
-    function advance() {
-      var next = (current + 1) % vids.length;
-      // Warm up the next clip so the crossfade has frames ready.
-      vids[next].preload = 'auto';
-      show(next);
-      play(next);
-      current = next;
-    }
-
-    vids.forEach(function (v) {
-      v.addEventListener('ended', advance);
-      // Safety net: if a clip stalls or has no duration, move on.
-      v.addEventListener('error', advance);
-    });
-
-    show(0);
-    play(0);
+    document.addEventListener('click', function () { setTimeout(sync, 60); });
+    sync();
   })();
 </script>
 <script src="main.js"></script>

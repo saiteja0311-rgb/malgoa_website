@@ -11,6 +11,8 @@ ADMIN_ACCESS.md
 # Large source assets not used by the live site (kept locally only)
 public_html/All pages NEW Update.pdf
 public_html/Malgoa Video Clips/
+# Source film for the Ambedkar page (759 MB, exceeds GitHub's 100 MB limit; the still + clip extracted from it are committed)
+videos/Malgoa.mp4
 
 # Hostinger parking placeholder (real homepage is index.html)
 public_html/default.php
