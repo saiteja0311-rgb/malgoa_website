@@ -431,6 +431,13 @@
       transition: opacity 0.8s ease, visibility 0.8s ease;
     }
     #launch-overlay.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+    /* Confetti canvas sits behind the overlay content */
+    #lo-confetti {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      z-index: 0; pointer-events: none;
+    }
+    /* Keep all phase content above the confetti */
+    #lo-phase-btn, #lo-phase-count, #lo-phase-logo { position: relative; z-index: 1; }
     .launch-ring {
       width: 180px; height: 180px; border-radius: 50%;
       border: 4px solid rgba(184,150,46,0.25);
@@ -483,14 +490,17 @@
     }
 
     /* Phase 3 - Logo animation */
-    .lo-logo-pre { opacity: 0; transform: scale(0.5); }
-    .lo-logo-animate { animation: loLogoIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
-    .lo-brandname { opacity: 0; animation: loFadeUp 0.5s ease 0.6s forwards; font-family: 'Urbanist', sans-serif; font-size: clamp(2rem, 6vw, 3.5rem); font-weight: 800; letter-spacing: 0.12em; color: #fff; }
-    .lo-brandtag  { opacity: 0; animation: loFadeUp 0.5s ease 0.9s forwards; font-family: 'Figtree', system-ui, sans-serif; font-size: 0.9rem; color: rgba(255,255,255,0.5); letter-spacing: 0.18em; text-transform: uppercase; }
+    /* The logo's natural reveal height; it scales DOWN to this from 75% of the screen. */
+    #lo-logo-img { height: 9rem; width: auto; }
+    .lo-logo-pre { opacity: 0; }
+    .lo-logo-animate { animation: loLogoIn 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+    .lo-brandname { opacity: 0; animation: loFadeUp 0.5s ease 1s forwards; font-family: 'Urbanist', sans-serif; font-size: clamp(2rem, 6vw, 3.5rem); font-weight: 800; letter-spacing: 0.12em; color: #fff; }
+    .lo-brandtag  { opacity: 0; animation: loFadeUp 0.5s ease 1.25s forwards; font-family: 'Figtree', system-ui, sans-serif; font-size: 0.9rem; color: rgba(255,255,255,0.5); letter-spacing: 0.18em; text-transform: uppercase; }
+    /* Clean shrink: start at 75% of the screen, settle to original size. */
     @keyframes loLogoIn {
-      0%   { opacity: 0; transform: scale(0.4) rotate(-8deg); }
-      60%  { opacity: 1; transform: scale(1.12) rotate(2deg); }
-      100% { opacity: 1; transform: scale(1) rotate(0deg); }
+      0%   { opacity: 0; height: min(75vh, 90vw); }
+      15%  { opacity: 1; }
+      100% { opacity: 1; height: 9rem; }
     }
     @keyframes loFadeUp {
       from { opacity: 0; transform: translateY(14px); }
@@ -660,6 +670,21 @@
         animation: carouselScroll 60s linear infinite !important;
         animation-iteration-count: infinite !important;
       }
+      /* The launch overlay is a one-time, user-initiated celebration (the visitor
+         clicks "Launch"), so its logo shrink + brand text fade play even under
+         reduced motion — restore their real durations from the blanket override above. */
+      .lo-logo-animate {
+        animation: loLogoIn 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards !important;
+        animation-duration: 1.2s !important;
+      }
+      .lo-brandname {
+        animation: loFadeUp 0.5s ease 1s forwards !important;
+        animation-duration: 0.5s !important;
+      }
+      .lo-brandtag {
+        animation: loFadeUp 0.5s ease 1.25s forwards !important;
+        animation-duration: 0.5s !important;
+      }
     }
   </style>
 </head>
@@ -674,6 +699,9 @@
 
 <!-- =================== LAUNCH OVERLAY ================== -->
 <div id="launch-overlay" class="hidden" role="dialog" aria-modal="true" aria-label="Official website launch">
+
+  <!-- Celebratory confetti layer (canvas-driven) -->
+  <canvas id="lo-confetti" aria-hidden="true"></canvas>
 
   <!-- Phase 1: Button -->
   <div id="lo-phase-btn" class="lo-active">

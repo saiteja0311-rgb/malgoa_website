@@ -1,3 +1,137 @@
+// --- Confetti engine (canvas) --------------------------------------------------
+window.MALGOA_CONFETTI = (function () {
+  var canvas, ctx, particles = [], rafId = null, running = false, falling = false;
+  var GRAVITY = 0.16;
+  var MAX_FALLING = 170;
+  var COLORS = ['#B8962E', '#D4B043', '#E8C84B', '#F2D777', '#1565C0', '#ffffff'];
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function rand(min, max) { return Math.random() * (max - min) + min; }
+
+  function resize() {
+    if (!canvas) return;
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+
+  function ensure() {
+    if (canvas) return true;
+    canvas = document.getElementById('lo-confetti');
+    if (!canvas) return false;
+    ctx = canvas.getContext('2d');
+    resize();
+    window.addEventListener('resize', resize);
+    return true;
+  }
+
+  function makeParticle(o) {
+    o = o || {};
+    return {
+      x:   o.x  != null ? o.x  : rand(0, canvas.width),
+      y:   o.y  != null ? o.y  : rand(-canvas.height * 0.25, -10),
+      vx:  o.vx != null ? o.vx : rand(-1.2, 1.2),
+      vy:  o.vy != null ? o.vy : rand(1.5, 3.5),
+      size: rand(6, 13),
+      color: COLORS[(Math.random() * COLORS.length) | 0],
+      rot: rand(0, Math.PI * 2),
+      vrot: rand(-0.22, 0.22),
+      shape: Math.random() < 0.55 ? 'rect' : 'circle',
+      sway: rand(0.4, 1.4),
+      swayPhase: rand(0, Math.PI * 2),
+      age: 0
+    };
+  }
+
+  function spawnFalling(n) {
+    for (var i = 0; i < n; i++) particles.push(makeParticle());
+  }
+
+  function burst(n) {
+    // Launch celebration is user-initiated (clicking "Launch"), so it plays
+    // regardless of prefers-reduced-motion. Reduced-motion is honored for
+    // ambient/scroll animations elsewhere, not this one-time opt-in moment.
+    if (!ensure()) return;
+    var cx = canvas.width / 2, cy = canvas.height * 0.42;
+    for (var i = 0; i < n; i++) {
+      var angle = rand(0, Math.PI * 2);
+      var speed = rand(4, 14);
+      particles.push(makeParticle({
+        x: cx, y: cy,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed - 3
+      }));
+    }
+    if (!running) { running = true; loop(); }
+  }
+
+  function draw(p) {
+    ctx.save();
+    ctx.translate(p.x, p.y);
+    ctx.rotate(p.rot);
+    ctx.fillStyle = p.color;
+    if (p.shape === 'rect') {
+      ctx.fillRect(-p.size / 2, -p.size / 4, p.size, p.size / 2);
+    } else {
+      ctx.beginPath();
+      ctx.arc(0, 0, p.size / 2, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.restore();
+  }
+
+  function loop() {
+    if (!canvas) { running = false; return; }
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    if (falling && particles.length < MAX_FALLING && Math.random() < 0.6) {
+      spawnFalling(2);
+    }
+
+    for (var i = particles.length - 1; i >= 0; i--) {
+      var p = particles[i];
+      p.age++;
+      p.vy += GRAVITY;
+      p.vx *= 0.99;
+      p.x += p.vx + Math.sin(p.age * 0.03 + p.swayPhase) * p.sway;
+      p.y += p.vy;
+      p.rot += p.vrot;
+      draw(p);
+      if (p.y > canvas.height + 30 || p.x < -40 || p.x > canvas.width + 40) {
+        particles.splice(i, 1);
+      }
+    }
+
+    if (running && (falling || particles.length > 0)) {
+      rafId = requestAnimationFrame(loop);
+    } else {
+      running = false;
+    }
+  }
+
+  function start() {
+    // User-initiated launch confetti — plays regardless of reduced-motion.
+    if (!ensure()) return;
+    falling = true;
+    spawnFalling(40);
+    if (!running) { running = true; loop(); }
+  }
+
+  function stop() {
+    // Stop spawning; let in-flight pieces fall out naturally.
+    falling = false;
+  }
+
+  function clear() {
+    falling = false;
+    running = false;
+    if (rafId) cancelAnimationFrame(rafId);
+    particles = [];
+    if (ctx && canvas) ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
+  return { start: start, burst: burst, stop: stop, clear: clear };
+}());
+
 // --- Launch overlay ------------------------------------------------------------
 window.MALGOA_LAUNCH = (function () {
   // SET enabled = true to activate the overlay; false to disable permanently.
@@ -18,6 +152,7 @@ window.MALGOA_LAUNCH = (function () {
   function dismiss() {
     var el = document.getElementById('launch-overlay');
     if (el) el.classList.add('hidden');
+    if (window.MALGOA_CONFETTI) window.MALGOA_CONFETTI.clear();
     // Persistence disabled while previewing so the overlay returns on reload.
     // Re-enable to remember dismissal per visitor:
     // try { localStorage.setItem(STORAGE_KEY, '1'); } catch (_) {}
@@ -30,7 +165,11 @@ window.MALGOA_LAUNCH = (function () {
       img.classList.remove('lo-logo-pre');
       img.classList.add('lo-logo-animate');
     }
-    setTimeout(dismiss, 3000);
+    // Confetti is countdown-only: stop spawning so in-flight pieces taper off
+    // as the logo cleanly shrinks into place.
+    if (window.MALGOA_CONFETTI) window.MALGOA_CONFETTI.stop();
+    // Logo shrink/settle (~1.2s) + brand text fade-in completes, then reveal home.
+    setTimeout(dismiss, 3400);
   }
 
   function beginCountdown() {
@@ -45,6 +184,9 @@ window.MALGOA_LAUNCH = (function () {
     countEl.textContent = DURATION;
 
     setPhase('lo-phase-count');
+
+    // Gentle confetti rains down throughout the countdown.
+    if (window.MALGOA_CONFETTI) window.MALGOA_CONFETTI.start();
 
     var remaining = DURATION;
     function tick() {
