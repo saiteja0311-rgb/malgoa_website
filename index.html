@@ -796,6 +796,7 @@
 
     <!-- Hero -->
     <div class="hero-bg">
+      <video id="homeBgVideo" src="videos/legacy.mp4" muted loop playsinline preload="metadata" aria-hidden="true" class="bg-video"></video>
       <div class="hero-video-scrim" aria-hidden="true"></div>
       <div class="accent-blob accent-blob-bronze" style="position:absolute; top:-100px; right:-120px; width:380px; height:380px; z-index:0;"></div>
       <div class="accent-blob accent-blob-blue" style="position:absolute; bottom:-80px; left:-100px; width:320px; height:320px; z-index:0;"></div>
@@ -821,13 +822,13 @@
       <div class="max-w-5xl mx-auto px-6 sm:px-8 grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
         <div>
           <i data-lucide="flag" class="w-7 h-7 text-bronze mx-auto mb-3"></i>
-          <p class="font-heading text-ambedkar-blue text-xl">Founded 24 Jan 2025</p>
-          <p class="text-text-muted text-sm mt-1">Born of principle, in Visakhapatnam</p>
+          <p class="font-heading text-ambedkar-blue text-xl">Founded 7 June 2025</p>
+          <p class="text-text-muted text-sm mt-1">Born of principle, in Amaravati</p>
         </div>
         <div>
           <i data-lucide="users" class="w-7 h-7 text-bronze mx-auto mb-3"></i>
-          <p class="font-heading text-ambedkar-blue text-xl"><span class="stat-counter" data-target="460">460</span>+ Officers United</p>
-          <p class="text-text-muted text-sm mt-1">State General Body, Karakatta</p>
+          <p class="font-heading text-ambedkar-blue text-xl"><span class="stat-counter" data-target="2500">2500</span>+ Officials Registered</p>
+          <p class="text-text-muted text-sm mt-1">United in community</p>
         </div>
         <div>
           <i data-lucide="badge-check" class="w-7 h-7 text-bronze mx-auto mb-3"></i>
@@ -968,12 +969,11 @@
       <div class="max-w-3xl mx-auto px-6 sm:px-8 text-center reveal-up">
         <p class="heritage-eyebrow mb-4">Community Video</p>
         <h2 class="text-ambedkar-blue text-2xl sm:text-3xl mb-6">Our Story in Motion</h2>
-        <div class="relative rounded-xl overflow-hidden border border-divider bg-navy-deep aspect-video flex flex-col items-center justify-center gap-4">
-          <div class="w-16 h-16 rounded-full bg-white/10 border border-white/20 flex items-center justify-center">
-            <i data-lucide="play" class="w-8 h-8 text-bronze ml-1"></i>
-          </div>
-          <p class="text-slate-300 text-sm font-medium">Video - under development</p>
-          <p class="text-slate-500 text-xs">Coming soon</p>
+        <div class="relative rounded-xl overflow-hidden border border-divider bg-navy-deep aspect-video">
+          <video controls preload="metadata" playsinline class="absolute inset-0 w-full h-full object-cover">
+            <source src="videos/malgoa-main.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
         </div>
       </div>
     </div>
@@ -985,7 +985,6 @@
 
     <!-- Hero -->
     <div class="relative overflow-hidden bg-navy-deep bg-dot-grid py-24 lg:py-32">
-      <video id="legacyBgVideo" src="videos/legacy.mp4" muted loop playsinline preload="metadata" aria-hidden="true" class="bg-video"></video>
       <div class="bg-video-scrim bg-video-scrim-navy" aria-hidden="true"></div>
       <div class="accent-blob accent-blob-bronze" style="top:-120px; right:-140px; width:420px; height:420px;"></div>
       <div class="accent-blob accent-blob-blue" style="bottom:-100px; left:-120px; width:360px; height:360px;"></div>
@@ -1318,7 +1317,7 @@
               </div>
               <div class="absolute left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-bronze ring-4 ring-parchment"></div>
               <div class="pl-10">
-                <p class="text-text-primary leading-relaxed">On 24 January 2025 in Visakhapatnam, the Mala Gazetted Officers Association is founded - registered under Reg. No. 185/2025. A new institutional vehicle for the next chapter of the community through government platform</p>
+                <p class="text-text-primary leading-relaxed">On 7 June 2025 in Amaravati, the Mala Gazetted Officers Association is founded - registered under Reg. No. 185/2025. A new institutional vehicle for the next chapter of the community through government platform</p>
               </div>
             </div>
 
@@ -2504,8 +2503,8 @@
   /* Section background clips: play the muted clip on a loop only while its page is active. */
   (function () {
     var pairs = [
+      ['home', 'homeBgVideo'],
       ['ambedkar', 'ambedkarBgVideo'],
-      ['legacy', 'legacyBgVideo'],
       ['heritage', 'heritageBgVideo']
     ];
     var clips = pairs
@@ -2525,6 +2524,10 @@
       });
     }
     document.addEventListener('click', function () { setTimeout(sync, 60); });
+    // Re-sync after the router (in main.js) marks the landing section active on load,
+    // so the home background clip autoplays without needing a first click.
+    window.addEventListener('load', function () { setTimeout(sync, 120); });
+    window.addEventListener('hashchange', function () { setTimeout(sync, 120); });
     sync();
   })();
 </script>
