@@ -492,14 +492,22 @@ document.addEventListener('DOMContentLoaded', function () {
   switchTab('uttandhra');
   initReveal();
 
-  // Legacy hero clip: loop only the first 12 seconds of the source video
+  // Legacy hero clip: loop only the first 12 seconds of the source video.
+  // Belt-and-suspenders: timeupdate fires irregularly (and is throttled while
+  // the section is display:none), so a lightweight interval watchdog backs it up.
   (function capLegacyClip() {
     const LEGACY_CLIP_SECONDS = 12;
     const video = document.getElementById('legacyBgVideo');
     if (!video) return;
-    video.addEventListener('timeupdate', function () {
-      if (video.currentTime >= LEGACY_CLIP_SECONDS) video.currentTime = 0;
-    });
+    const rewind = function () {
+      if (video.currentTime >= LEGACY_CLIP_SECONDS) {
+        video.currentTime = 0;
+        const p = video.play();
+        if (p && typeof p.catch === 'function') p.catch(function () {});
+      }
+    };
+    video.addEventListener('timeupdate', rewind);
+    setInterval(rewind, 500);
   })();
 
   // Deep-link support: open the section named in the URL hash, else Home
