@@ -148,19 +148,6 @@
       pointer-events: none;
       opacity: 0.6;
     }
-    .hero-bg::after {
-      content: '';
-      position: absolute; top: 0; right: 0; bottom: 0;
-      width: 56%;
-      background: url('images/ambedkar-bg.jpg') no-repeat right center;
-      background-size: contain;
-      opacity: 0.12;
-      mix-blend-mode: luminosity;
-      pointer-events: none;
-      -webkit-mask-image: linear-gradient(to left, rgba(0,0,0,1) 35%, transparent 100%);
-      mask-image: linear-gradient(to left, rgba(0,0,0,1) 35%, transparent 100%);
-      animation: ambedkarDrift 22s ease-in-out infinite;
-    }
     @keyframes ambedkarDrift {
       0%, 100% { transform: translateY(0) scale(1);     opacity: 0.11; }
       50%      { transform: translateY(-16px) scale(1.04); opacity: 0.18; }
@@ -985,6 +972,7 @@
 
     <!-- Hero -->
     <div class="relative overflow-hidden bg-navy-deep bg-dot-grid py-24 lg:py-32">
+      <img class="ambedkar-watermark" src="images/ambedkar-bg.jpg" alt="" aria-hidden="true" />
       <div class="bg-video-scrim bg-video-scrim-navy" aria-hidden="true"></div>
       <div class="accent-blob accent-blob-bronze" style="top:-120px; right:-140px; width:420px; height:420px;"></div>
       <div class="accent-blob accent-blob-blue" style="bottom:-100px; left:-120px; width:360px; height:360px;"></div>
