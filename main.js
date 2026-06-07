@@ -1,202 +1,30 @@
-// --- Confetti engine (canvas) --------------------------------------------------
-window.MALGOA_CONFETTI = (function () {
-  var canvas, ctx, particles = [], rafId = null, running = false, falling = false;
-  var GRAVITY = 0.16;
-  var MAX_FALLING = 170;
-  var COLORS = ['#B8962E', '#D4B043', '#E8C84B', '#F2D777', '#1565C0', '#ffffff'];
-  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  function rand(min, max) { return Math.random() * (max - min) + min; }
-
-  function resize() {
-    if (!canvas) return;
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  }
-
-  function ensure() {
-    if (canvas) return true;
-    canvas = document.getElementById('lo-confetti');
-    if (!canvas) return false;
-    ctx = canvas.getContext('2d');
-    resize();
-    window.addEventListener('resize', resize);
-    return true;
-  }
-
-  function makeParticle(o) {
-    o = o || {};
-    return {
-      x:   o.x  != null ? o.x  : rand(0, canvas.width),
-      y:   o.y  != null ? o.y  : rand(-canvas.height * 0.25, -10),
-      vx:  o.vx != null ? o.vx : rand(-1.2, 1.2),
-      vy:  o.vy != null ? o.vy : rand(1.5, 3.5),
-      size: rand(6, 13),
-      color: COLORS[(Math.random() * COLORS.length) | 0],
-      rot: rand(0, Math.PI * 2),
-      vrot: rand(-0.22, 0.22),
-      shape: Math.random() < 0.55 ? 'rect' : 'circle',
-      sway: rand(0.4, 1.4),
-      swayPhase: rand(0, Math.PI * 2),
-      age: 0
-    };
-  }
-
-  function spawnFalling(n) {
-    for (var i = 0; i < n; i++) particles.push(makeParticle());
-  }
-
-  function burst(n) {
-    // Launch celebration is user-initiated (clicking "Launch"), so it plays
-    // regardless of prefers-reduced-motion. Reduced-motion is honored for
-    // ambient/scroll animations elsewhere, not this one-time opt-in moment.
-    if (!ensure()) return;
-    var cx = canvas.width / 2, cy = canvas.height * 0.42;
-    for (var i = 0; i < n; i++) {
-      var angle = rand(0, Math.PI * 2);
-      var speed = rand(4, 14);
-      particles.push(makeParticle({
-        x: cx, y: cy,
-        vx: Math.cos(angle) * speed,
-        vy: Math.sin(angle) * speed - 3
-      }));
-    }
-    if (!running) { running = true; loop(); }
-  }
-
-  function draw(p) {
-    ctx.save();
-    ctx.translate(p.x, p.y);
-    ctx.rotate(p.rot);
-    ctx.fillStyle = p.color;
-    if (p.shape === 'rect') {
-      ctx.fillRect(-p.size / 2, -p.size / 4, p.size, p.size / 2);
-    } else {
-      ctx.beginPath();
-      ctx.arc(0, 0, p.size / 2, 0, Math.PI * 2);
-      ctx.fill();
-    }
-    ctx.restore();
-  }
-
-  function loop() {
-    if (!canvas) { running = false; return; }
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    if (falling && particles.length < MAX_FALLING && Math.random() < 0.6) {
-      spawnFalling(2);
-    }
-
-    for (var i = particles.length - 1; i >= 0; i--) {
-      var p = particles[i];
-      p.age++;
-      p.vy += GRAVITY;
-      p.vx *= 0.99;
-      p.x += p.vx + Math.sin(p.age * 0.03 + p.swayPhase) * p.sway;
-      p.y += p.vy;
-      p.rot += p.vrot;
-      draw(p);
-      if (p.y > canvas.height + 30 || p.x < -40 || p.x > canvas.width + 40) {
-        particles.splice(i, 1);
-      }
-    }
-
-    if (running && (falling || particles.length > 0)) {
-      rafId = requestAnimationFrame(loop);
-    } else {
-      running = false;
-    }
-  }
-
-  function start() {
-    // User-initiated launch confetti — plays regardless of reduced-motion.
-    if (!ensure()) return;
-    falling = true;
-    spawnFalling(40);
-    if (!running) { running = true; loop(); }
-  }
-
-  function stop() {
-    // Stop spawning; let in-flight pieces fall out naturally.
-    falling = false;
-  }
-
-  function clear() {
-    falling = false;
-    running = false;
-    if (rafId) cancelAnimationFrame(rafId);
-    particles = [];
-    if (ctx && canvas) ctx.clearRect(0, 0, canvas.width, canvas.height);
-  }
-
-  return { start: start, burst: burst, stop: stop, clear: clear };
-}());
-
-// --- Launch overlay ------------------------------------------------------------
+// --- Launch overlay (logo reveal) ---------------------------------------------
+// The launch event is over: visitors get a brief MALGOA logo reveal, then the
+// homepage. No Launch button, no 10s countdown, no confetti.
 window.MALGOA_LAUNCH = (function () {
   // SET enabled = true to activate the overlay; false to disable permanently.
   var enabled = true;
 
   var STORAGE_KEY = 'malgoa_launch_shown';
-  var DURATION    = 10; // countdown seconds
-
-  function setPhase(name) {
-    ['lo-phase-btn', 'lo-phase-count', 'lo-phase-logo'].forEach(function (id) {
-      var el = document.getElementById(id);
-      if (el) el.classList.remove('lo-active');
-    });
-    var target = document.getElementById(name);
-    if (target) target.classList.add('lo-active');
-  }
 
   function dismiss() {
     var el = document.getElementById('launch-overlay');
     if (el) el.classList.add('hidden');
-    if (window.MALGOA_CONFETTI) window.MALGOA_CONFETTI.clear();
     // Persistence disabled while previewing so the overlay returns on reload.
     // Re-enable to remember dismissal per visitor:
     // try { localStorage.setItem(STORAGE_KEY, '1'); } catch (_) {}
   }
 
   function showLogo() {
-    setPhase('lo-phase-logo');
+    var phase = document.getElementById('lo-phase-logo');
+    if (phase) phase.classList.add('lo-active');
     var img = document.getElementById('lo-logo-img');
     if (img) {
       img.classList.remove('lo-logo-pre');
       img.classList.add('lo-logo-animate');
     }
-    // Confetti is countdown-only: stop spawning so in-flight pieces taper off
-    // as the logo cleanly shrinks into place.
-    if (window.MALGOA_CONFETTI) window.MALGOA_CONFETTI.stop();
     // Logo shrink/settle (~1.2s) + brand text fade-in completes, then reveal home.
     setTimeout(dismiss, 3400);
-  }
-
-  function beginCountdown() {
-    var countEl = document.getElementById('launch-count');
-    var circle  = document.getElementById('launch-ring-circle');
-    if (!countEl || !circle) { dismiss(); return; }
-
-    var r = 88;
-    var circumference = 2 * Math.PI * r;
-    circle.style.strokeDasharray  = circumference;
-    circle.style.strokeDashoffset = 0;
-    countEl.textContent = DURATION;
-
-    setPhase('lo-phase-count');
-
-    // Gentle confetti rains down throughout the countdown.
-    if (window.MALGOA_CONFETTI) window.MALGOA_CONFETTI.start();
-
-    var remaining = DURATION;
-    function tick() {
-      remaining--;
-      countEl.textContent = remaining;
-      circle.style.strokeDashoffset = circumference * (1 - remaining / DURATION);
-      if (remaining <= 0) { showLogo(); return; }
-      setTimeout(tick, 1000);
-    }
-    setTimeout(tick, 1000);
   }
 
   function start() {
@@ -207,8 +35,9 @@ window.MALGOA_LAUNCH = (function () {
     // try { if (localStorage.getItem(STORAGE_KEY)) return; } catch (_) {}
     var overlay = document.getElementById('launch-overlay');
     if (!overlay) return;
-    setPhase('lo-phase-btn');
     overlay.classList.remove('hidden');
+    // Go straight to the brief logo reveal.
+    showLogo();
   }
 
   // Reset (call from console: MALGOA_LAUNCH.reset()) to re-show the overlay.
@@ -218,7 +47,7 @@ window.MALGOA_LAUNCH = (function () {
 
   document.addEventListener('DOMContentLoaded', start);
 
-  return { dismiss: dismiss, reset: reset, beginCountdown: beginCountdown };
+  return { dismiss: dismiss, reset: reset, showLogo: showLogo };
 }());
 
 // --- Gallery data --------------------------------------------------------------
@@ -472,6 +301,11 @@ function toggleErr(input, errEl, hasError) {
 // --- Join Us form ----------------------------------------------------------------
 
 (function initJoinForm() {
+  // Google Apps Script Web App URL that appends each submission to the MALGOA
+  // members Google Sheet. Paste the deployed "/exec" URL between the quotes.
+  // Until it's set, the form still works visually but data is only logged locally.
+  const ENROLL_ENDPOINT = 'https://script.google.com/macros/s/AKfycbztu7m8Chm3TR5IsrOXKVNEgMvO3vdbk1UlKBqsHqZjyl80rjMT-YHvwufl3QCT55Xm/exec';
+
   const form = document.getElementById('join-form');
   if (!form) return;
   const success = document.getElementById('join-success');
@@ -513,14 +347,45 @@ function toggleErr(input, errEl, hasError) {
       district: fields.district.el.value,
       category: fields.category.el.value,
       purpose:  document.getElementById('jf-purpose').value.trim(),
+      submittedAt: new Date().toISOString(),
     };
-    // TODO: wire to backend API (member registration endpoint)
-    console.log('MALGOA membership application:', payload);
 
+    sendApplication(payload);
+  });
+
+  function showSuccess() {
     form.style.display = 'none';
     success.classList.add('show');
     success.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  });
+  }
+
+  function sendApplication(payload) {
+    // No endpoint configured yet: keep the form working, log locally only.
+    if (!ENROLL_ENDPOINT || ENROLL_ENDPOINT.indexOf('https://') !== 0) {
+      console.log('MALGOA membership application (no endpoint configured):', payload);
+      showSuccess();
+      return;
+    }
+
+    const original = submit ? submit.textContent : '';
+    if (submit) { submit.disabled = true; submit.textContent = 'Submitting…'; }
+
+    // Google Apps Script web app: send as a "simple request" with no-cors so the
+    // browser doesn't block on a missing CORS preflight. The row is appended
+    // server-side; we treat a resolved fetch as success.
+    fetch(ENROLL_ENDPOINT, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(payload),
+    })
+      .then(function () { showSuccess(); })
+      .catch(function (err) {
+        console.error('Membership submission failed:', err);
+        if (submit) { submit.disabled = false; submit.textContent = original || 'Submit'; }
+        alert('Sorry — your application could not be submitted. Please check your connection and try again, or email malgoa.in@gmail.com.');
+      });
+  }
 })();
 
 // --- Member Login form -----------------------------------------------------------

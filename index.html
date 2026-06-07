@@ -431,65 +431,11 @@
       transition: opacity 0.8s ease, visibility 0.8s ease;
     }
     #launch-overlay.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
-    /* Confetti canvas sits behind the overlay content */
-    #lo-confetti {
-      position: absolute; inset: 0; width: 100%; height: 100%;
-      z-index: 0; pointer-events: none;
-    }
-    /* Keep all phase content above the confetti */
-    #lo-phase-btn, #lo-phase-count, #lo-phase-logo { position: relative; z-index: 1; }
-    .launch-ring {
-      width: 180px; height: 180px; border-radius: 50%;
-      border: 4px solid rgba(184,150,46,0.25);
-      display: flex; align-items: center; justify-content: center;
-      position: relative;
-    }
-    .launch-ring svg.ring-progress {
-      position: absolute; inset: -6px; width: calc(100% + 12px); height: calc(100% + 12px);
-      transform: rotate(-90deg);
-    }
-    .launch-ring svg.ring-progress circle {
-      fill: none; stroke: #B8962E; stroke-width: 4;
-      stroke-linecap: round;
-      transition: stroke-dashoffset 0.95s linear;
-    }
-    #launch-count {
-      font-family: 'Urbanist', sans-serif; font-size: 5rem; font-weight: 800;
-      color: #fff; line-height: 1;
-    }
-    #launch-label {
-      font-family: 'Figtree', system-ui, sans-serif; font-size: 0.85rem;
-      color: #B8962E; letter-spacing: 0.2em; text-transform: uppercase;
-    }
-    #launch-title {
-      font-family: 'Urbanist', sans-serif; font-size: clamp(1.4rem, 4vw, 2.5rem);
-      font-weight: 700; color: #fff; max-width: 560px;
-    }
-    #launch-sub {
-      font-family: 'Figtree', system-ui, sans-serif; font-size: 1rem;
-      color: rgba(255,255,255,0.55); max-width: 440px; line-height: 1.6;
-    }
-    /* Phase containers */
-    #lo-phase-btn, #lo-phase-count, #lo-phase-logo { display: none; flex-direction: column; align-items: center; gap: 1.2rem; }
-    #lo-phase-btn.lo-active, #lo-phase-count.lo-active, #lo-phase-logo.lo-active { display: flex; }
+    /* Logo-reveal phase container */
+    #lo-phase-logo { display: none; flex-direction: column; align-items: center; gap: 1.2rem; }
+    #lo-phase-logo.lo-active { display: flex; }
 
-    /* Phase 1 - Launch button */
-    #launch-btn {
-      margin-top: 0.5rem; background: linear-gradient(135deg, #B8962E 0%, #D4B043 100%);
-      border: none; color: #0F1E2E; font-family: 'Urbanist', sans-serif;
-      font-size: 1.15rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
-      padding: 0.9rem 2.8rem; border-radius: 0.5rem; cursor: pointer;
-      box-shadow: 0 0 0 0 rgba(212,176,67,0.6);
-      animation: loBtnPulse 2s ease-in-out infinite;
-      transition: transform 0.15s, box-shadow 0.15s;
-    }
-    #launch-btn:hover { transform: scale(1.04); box-shadow: 0 0 28px rgba(212,176,67,0.5); animation: none; }
-    @keyframes loBtnPulse {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(212,176,67,0.6); }
-      50%       { box-shadow: 0 0 0 14px rgba(212,176,67,0); }
-    }
-
-    /* Phase 3 - Logo animation */
+    /* Logo reveal animation */
     /* The logo's natural reveal height; it scales DOWN to this from 75% of the screen. */
     #lo-logo-img { height: 9rem; width: auto; }
     .lo-logo-pre { opacity: 0; }
@@ -697,40 +643,15 @@
   <div class="splash-spinner" aria-hidden="true"></div>
 </div>
 
-<!-- =================== LAUNCH OVERLAY ================== -->
-<div id="launch-overlay" class="hidden" role="dialog" aria-modal="true" aria-label="Official website launch">
+<!-- =================== LAUNCH OVERLAY (logo reveal) ================== -->
+<div id="launch-overlay" class="hidden" role="dialog" aria-modal="true" aria-label="MALGOA">
 
-  <!-- Celebratory confetti layer (canvas-driven) -->
-  <canvas id="lo-confetti" aria-hidden="true"></canvas>
-
-  <!-- Phase 1: Button -->
-  <div id="lo-phase-btn" class="lo-active">
-    <p id="launch-title">MALGOA - Official Launch</p>
-    <p id="launch-sub">Mala Gazetted Officers Association of Andhra Pradesh</p>
-    <button id="launch-btn" onclick="window.MALGOA_LAUNCH.beginCountdown()">Launch</button>
-    <button class="lo-skip" onclick="window.MALGOA_LAUNCH.dismiss()">Skip</button>
-  </div>
-
-  <!-- Phase 2: Countdown ring -->
-  <div id="lo-phase-count">
-    <p id="launch-title-2">MALGOA - Official Launch</p>
-    <div class="launch-ring">
-      <svg class="ring-progress" viewBox="0 0 192 192" aria-hidden="true">
-        <circle id="launch-ring-circle" cx="96" cy="96" r="88" />
-      </svg>
-      <div>
-        <div id="launch-count">10</div>
-        <div id="launch-label">seconds</div>
-      </div>
-    </div>
-    <button class="lo-skip" onclick="window.MALGOA_LAUNCH.dismiss()">Skip</button>
-  </div>
-
-  <!-- Phase 3: Logo reveal -->
-  <div id="lo-phase-logo">
+  <!-- Brief logo reveal, then the homepage appears -->
+  <div id="lo-phase-logo" class="lo-active">
     <img src="images/logo.png" alt="MALGOA" class="h-36 w-auto object-contain lo-logo-pre" id="lo-logo-img" />
     <p class="lo-brandname">MALGOA</p>
     <p class="lo-brandtag">Mala Gazetted Officers Association - AP</p>
+    <button class="lo-skip" onclick="window.MALGOA_LAUNCH.dismiss()">Skip</button>
   </div>
 
 </div>
@@ -2533,6 +2454,6 @@
     sync();
   })();
 </script>
-<script src="main.js?v=20260606b"></script>
+<script src="main.js?v=20260607b"></script>
 </body>
 </html>
