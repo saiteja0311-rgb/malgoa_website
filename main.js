@@ -273,7 +273,7 @@ function openLogin()  { openModal('login-modal'); }
 function closeLogin() { closeModal('login-modal'); }
 
 // Backdrop click + ESC + focus trap for whichever modal is open
-['join-modal', 'login-modal'].forEach(id => {
+['join-modal', 'login-modal', 'konada-modal'].forEach(id => {
   document.getElementById(id)?.addEventListener('click', function (e) {
     if (e.target === this) closeModal(id);
   });
@@ -504,6 +504,7 @@ document.addEventListener('DOMContentLoaded', function () {
   router(hash && document.getElementById(hash)?.classList.contains('page-section') ? hash : 'home');
   if (hash === 'join')  openJoin();
   if (hash === 'login') openLogin();
+  if (hash === 'konada') { router('legacy'); openModal('konada-modal'); }
 });
 
 // --- Hidden admin portal: triggered by URL hash -----------------------
